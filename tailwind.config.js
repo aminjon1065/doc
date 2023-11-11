@@ -3,11 +3,14 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
+        "./node_modules/react-tailwindcss-select/dist/index.esm.js",
+        "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
     ],
 
     theme: {
@@ -18,5 +21,5 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, 'tailwindcss-no-scrollbar', 'react-tailwindcss-datepicker', 'dayjs'],
 };

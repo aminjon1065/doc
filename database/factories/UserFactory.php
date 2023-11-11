@@ -20,12 +20,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $roles = ['admin', 'common', 'management', 'user'];
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'password' => \Hash::make('password'),
+            'position' => 'Test Position',
+            'department' => 'Test Department',
+            'region' => 'Test Region',
+            'rank' => 'Test Rank',
+            'avatar' => '/logo256.webp',
+            'role' => $roles[array_rand($roles)],
         ];
     }
 

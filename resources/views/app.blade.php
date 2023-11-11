@@ -19,4 +19,7 @@
     <body class="font-sans antialiased">
         @inertia
     </body>
+    <script type="application/javascript">
+        var global = window;
+    </script>
 </html>
