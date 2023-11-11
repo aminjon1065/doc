@@ -21,6 +21,7 @@ const Common = ({managers}) => {
             files: [],
             receiver_ids: [],
             code: '',
+            is_controlled: false,
         });
         const [files, setFiles] = useState([]);
         const [typeSelected, setTypeSelected] = useState('');
@@ -183,13 +184,12 @@ const Common = ({managers}) => {
                     </div>
 
                     <div className={`sm:col-span-3 w-full`}>
-                        <InputLabel htmlFor={"username"}>
-                            Роҳбарият
+                        <InputLabel htmlFor={"receivers"}>
+                            Истифодабарандагон
                         </InputLabel>
-
                         <Select
                             placeholder={"Интихоб кунед..."}
-                            id={"username"}
+                            id={"receivers"}
                             noOptionsMessage={"Ин гуна истифодабарнада нест!"}
                             searchInputPlaceholder={""}
                             isSearchable
@@ -238,23 +238,60 @@ const Common = ({managers}) => {
                         {errors.title && <span>{errors.title}</span>}
                     </div>
                     <div className={`sm:col-span-3 w-full`}>
-                        <InputLabel htmlFor={"status"}>
-                            Статус
-                        </InputLabel>
-                        <select
-                            name="status"
-                            value={typeSelected}
-                            id="status"
-                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                            onChange={(event) => fnSelectedType(event.target.value)}
-                        >
-                            <option disabled={true} value="">
-                                Намуди статусро интихоб кунед
-                            </option>
-                            <option value="inbox">Воридотӣ</option>
-                            <option value="sent">Содиротӣ</option>
-                        </select>
-                        {errors.title && <span>{errors.title}</span>}
+                        <div className={"flex justify-between items-center space-x-2"}>
+                            <InputLabel htmlFor={"status"}>
+                                Статус
+                            </InputLabel>
+                            <select
+                                name="status"
+                                value={typeSelected}
+                                id="status"
+                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                onChange={(event) => fnSelectedType(event.target.value)}
+                            >
+                                <option disabled={true} value="">
+                                    Намуди статусро интихоб кунед
+                                </option>
+                                <option value="inbox">Воридотӣ</option>
+                                <option value="sent">Содиротӣ</option>
+                            </select>
+                            {errors.title && <span>{errors.title}</span>}
+                        </div>
+
+                    </div>
+                    <div className={`sm:col-span-3 w-full`}>
+                        <div className={"flex items-center space-x-2 border border-gray-300 rounded-md  px-2 py-1.5"}>
+                            <label htmlFor="control"
+                                   className="block text-sm font-medium text-gray-700 text-center">
+                                Назоратӣ
+                            </label>
+                            <div
+                                className="flex items-center h-5 space-x-2">
+                                <input
+                                    value={data.is_controlled}
+                                    onChange={(event) => setData('is_controlled', event.target.checked)}
+                                    id="control"
+                                    name="control"
+                                    type="checkbox"
+                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                />
+                                {
+                                    data.is_controlled
+                                        ?
+                                        <div>
+                                            <input
+                                                value={data.date_done}
+                                                onChange={(event) => setData('date_done', event.target.value)}
+                                                type="datetime-local"
+                                                className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                />
+                                        </div>
+                                        :
+                                        null
+                                }
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div className={'sm:col-span-6 mb-5'}>
