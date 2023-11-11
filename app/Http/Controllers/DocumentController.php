@@ -62,25 +62,99 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        $documentTypeArr = [
+            [
+                "code" => "5/3-12",
+                "type" => "Бақайдгирии супоришҳои хаттӣ ва протоколҳои маҷлисҳои назди Сарвазири Ҷумҳурии Тоҷикистон ва муовинони у Роҳбари Дастгоҳи иҷроияи Президенти Ҷумҳурии Тоҷикистон",
+            ],
+            [
+                "code" => "5/3-13",
+                "type" => "Бақайдгирии супоришҳои хаттӣ ва протоколҳои маҷлисҳои Президенти Ҷумҳурии Тоҷикистон",
+            ],
+            [
+                "code" => "5/3-14",
+                "type" => "Бақайдгирии қонунҳо, санадҳои меъёрии ҳуқуқии Президенти Ҷумҳурии Тоҷикистон",
+            ],
+            [
+                'code' => '5/3-15',
+                'type' => 'Бақайдгирии мукотиботи  Ҳукуматӣ',
+            ],
+            [
+                'code' => '5/3-16',
+                'type' => 'Бақайдгирии мукотиботи вазорату идораҳо',
+            ],
+            [
+                'code' => '5/3-17',
+                'type' => 'Бақайдгирии гузоришҳои хизматчиёни ҳарбӣ',
+            ],
+            [
+                'code' => '5/3-18',
+                'type' => 'Бақайдгирии амрҳои Президенти Ҷумҳурии Тоҷикистон ва фармоишҳои Ҳукумати Ҷумҳурии Тоҷикистон',
+            ],
+            [
+                'code' => '5/3-19',
+                'type' => 'Бақайдгирии ҳуҷҷатҳои воридотии БИХ',
+            ],
+            [
+                'code' => '5/3-20',
+                'type' => 'Бақайдгирии барқияҳои ҳукуматӣ',
+            ],
+            [
+                'code' => '5/3-21',
+                'type' => 'Бақайдгирии ҳуҷҷатҳои воридотии Шурои амнияти Ҷумҳурии Тоҷикистон ',
+            ],
+            [
+                'code' => '5/3-22',
+                'type' => 'Бақайдгирии ТАВЗЕҲОТҲО',
+            ],
+            [
+                'code' => '5/3-23',
+                'type' => 'Бақайдгирии ҳуҷҷатҳои Дастгоҳи маркази ва сохторҳои таркибии Кумита ',
+            ],
+            [
+                'code' => '5/3-24',
+                'type' => 'Бақайдгирии ҳуҷҷатҳои вазорату идораҳо',
+            ],
+            [
+                'code' => '5/3-25',
+                'type' => 'Бақайдгирии ҳуҷҷатҳои баргардонидашуда ',
+            ],
+            [
+                'code' => '5/3-26',
+                'type' => 'Бақайдгирии дигар санадҳои меъёрии ҳуқуқии Ҷумҳурии Тоҷикистон, аз ҷумла санадҳои байналмилалӣ',
+            ],
+            [
+                'code' => '5/3-27',
+                'type' => 'Бақайдгирии лоиҳаҳои санадҳои меъёрии ҳуқуқӣ ',
+            ]
+        ];
         $request->validate([
             'title' => 'required|string|max:255',
-            'files.*' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf,doc,docx|max:20480',
             'description' => 'nullable|string',
+            'files.*' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf,doc,docx|max:20480',
         ]);
+
         $document = new Document;
         $document->created_by_id = Auth::id();
-        $document->title = $request->title;
-        $document->type = $request->type;
-        $document->code = $request->code;
+        $document->title = $request->input('title');
+        $document->description = $request->input('description');
+        $document->code = $request->input('code');
+        foreach ($documentTypeArr as $item) {
+            if ($item['code'] === $document->code) {
+                $document->type = $item['type'];
+                break;
+            }
+        }
+        $document->manager_id = $request->input('manager_id');
+        $document->category = $request->input('category');
+        $document->status = $request->filled('status') ? $request->input('status') : 'created';
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
-        $document->description = $request->description;
-        $document->status = 'created';
         $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
         $document->save();
         // Сохраняем файлы
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $filePath = $file->storeAs('/documents/' . \auth()->user()->name, date_format(now(), 'Y-m-d') . '-' . $file->getClientOriginalName(), 'public');
+                $filePath = $file->storeAs('/documents/' . \auth()->user()->name, date_format(now(), 'Y-m-d-H-i-s') . '-' . $file->getClientOriginalName(), 'public');
                 $documentFile = new DocumentFile;
                 $documentFile->document_id = $document->id;
                 $documentFile->file_path = $filePath;
@@ -90,6 +164,13 @@ class DocumentController extends Controller
                 $documentFile->save();
             }
         }
+        $receiverIds = $request->input('receivers');
+
+        // Проверка, что $receiverIds действительно является массивом
+        if (is_array($receiverIds)) {
+            // Связывание получателей с документом
+            $document->receivers()->attach($receiverIds);
+        }
         return redirect()->route('documents.index')->with('success', 'Документ успешно отправлен');
     }
 
@@ -98,7 +179,10 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        //
+        $document->load(['files', 'creator', 'receivers']);
+        return Inertia::render('Documents/Show', [
+            'document' => $document,
+        ]);
     }
 
     /**

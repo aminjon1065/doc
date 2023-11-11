@@ -18,7 +18,6 @@ class GetUsersList extends Controller
             }
             return null;
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
-
         return response()->json($users, 200);
     }
 }

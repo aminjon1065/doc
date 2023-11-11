@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('status')->default('created'); // Добавлено новое поле для статуса
-            $table->string('type');
             $table->string('code');
+            $table->string('type');
             $table->boolean('is_controlled')->default(false);
             $table->dateTime('date_done')->nullable();
             $table->boolean('is_read')->default(false);
