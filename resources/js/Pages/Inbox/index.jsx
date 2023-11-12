@@ -5,7 +5,8 @@ import CommonInbox from "@/Pages/Inbox/CommonInbox.jsx";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 
-const Index = ({auth}) => {
+const Index = ({auth, documents}) => {
+    console.log(documents)
     const user = auth.user;
     return (
         <AuthenticatedLayout

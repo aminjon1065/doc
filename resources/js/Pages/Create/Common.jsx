@@ -59,7 +59,6 @@ const Common = ({managers}) => {
     const removeFile = (fileIndex) => {
         setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
     };
-    console.log(data.receivers);
     const submit = (e) => {
         e.preventDefault();
         const formData = new FormData();

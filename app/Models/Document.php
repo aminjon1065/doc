@@ -32,6 +32,19 @@ class Document extends Model
         return $this->belongsToMany(User::class, 'document_user', 'document_id', 'receiver_id');
     }
 
+    /**
+     * Получить документы для конкретного получателя с дополнительными отношениями.
+     *
+     * @param int $userId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function forReceiver(int $userId): \Illuminate\Database\Eloquent\Builder
+    {
+        return static::whereHas('receivers', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
+        })->with(['creator', 'files', 'receivers']);
+    }
+
     public function userOpenDocument(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_open_document', 'document_id', 'user_id')->withPivot('is_open')->withTimestamps();
