@@ -14,12 +14,17 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = [
-        'created_by_id', 'category', 'title', 'description', 'status', 'type', 'code', 'is_controlled', 'date_done', 'is_read'
+        'created_by_id', 'manager_id', 'category', 'title', 'description', 'status', 'type', 'code', 'is_controlled', 'date_done', 'is_read'
     ];
 
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
     public function files(): HasMany
@@ -84,6 +89,19 @@ class Document extends Model
             return $query->where('status', $status);
         }
         return $query;
+    }
+
+    /**
+     * Область запроса для фильтрации документов с пустой категорией.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithEmptyCategory($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('category')->orWhere('category', '');
+        });
     }
 
     /**

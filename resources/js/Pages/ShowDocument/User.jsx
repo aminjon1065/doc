@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head} from "@inertiajs/react";
-import {PaperClipIcon} from '@heroicons/react/20/solid'
-import formatterDay from "@/Helpers/dateFormatter.js";
 import Modal from "@/Components/Modal.jsx";
-import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import FileViewer from "@/Components/FileViewer.jsx";
-
-const Show = ({auth, document, AccessDenied}) => {
+import formatterDay from "@/Helpers/dateFormatter.js";
+import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
+import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
+const User = ({document}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
@@ -20,16 +16,14 @@ const Show = ({auth, document, AccessDenied}) => {
         setShowModal(true);
     }
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-        >
-            <Head title={document ? document.title : 'EDM'}/>
-            {AccessDenied && <h2>{AccessDenied}</h2>}
+        <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
                    fullViewFn={fullViewFn}>
                 <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
-            <article>
+            <span className={"text-sm"}>Статус: <span
+                className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {document.status}</span></span>
+            <article className={"mt-5"}>
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">
                         <dl className="divide-y divide-gray-100">
@@ -157,18 +151,12 @@ const Show = ({auth, document, AccessDenied}) => {
                                     </ul>
                                 </dd>
                             </div>
-
                         </dl>
                     </div>
                 </div>
-                <div className={"flex justify-end mt-5"}>
-                    <PrimaryButton>
-                        Response
-                    </PrimaryButton>
-                </div>
             </article>
-        </AuthenticatedLayout>
+        </>
     );
 };
 
-export default Show;
+export default User;

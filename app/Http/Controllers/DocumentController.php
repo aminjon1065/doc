@@ -16,6 +16,7 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Document::class);
         $searchTerm = $request->input('search');
         $status = $request->input('status');
         $dateDone = $request->input('date_done');
@@ -23,11 +24,10 @@ class DocumentController extends Controller
         $endDate = $request->input('end_date');     // Предполагается формат 'Y-m-d'
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
-        $userId = Auth::id();
-
         $documents = Document::
         with(['files', 'creator', 'receivers'])
             ->search($searchTerm)
+            ->withEmptyCategory() // Использование нового scope
             ->isControlled($isControlled)
             ->status($status)
             ->dateDone($dateDone)
@@ -51,9 +51,8 @@ class DocumentController extends Controller
     public function create()
     {
         $managers = User::where('role', 'management')->get();
-        return Inertia::render('Create/index', [
+        return Inertia::render('CreateDocument/index', [
             'managers' => $managers,
-
         ]);
     }
 
@@ -171,7 +170,7 @@ class DocumentController extends Controller
             // Связывание получателей с документом
             $document->receivers()->attach($receiverIds);
         }
-        return redirect()->route('documents.index')->with('success', 'Документ успешно отправлен');
+        return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
     }
 
     /**
@@ -179,10 +178,23 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
+        $this->authorize('view', $document);
         $document->load(['files', 'creator', 'receivers']);
-        return Inertia::render('Documents/Show', [
+        return Inertia::render('ShowDocument/index', [
             'document' => $document,
         ]);
+//        if (Auth::user()->isCommonDepartment()) {
+//            $managers = User::where('role', 'management')->get();
+//            $document->load(['files', 'creator', 'receivers']);
+//            return Inertia::render('Documents/CommonShow', [
+//                'document' => $document,
+//                'managers' => $managers
+//            ]);
+//        }
+//        $document->load(['files', 'creator', 'receivers']);
+//        return Inertia::render('Documents/UserShow', [
+//            'document' => $document,
+//        ]);
     }
 
     /**
@@ -190,7 +202,14 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        //
+        $this->authorize('view', $document);
+        $managers = User::where('role', 'management')->get();
+        $document->load(['files', 'creator', 'receivers', 'manager']);
+//        $document->load(['files', 'creator', 'receivers']);
+        return Inertia::render('EditDocument/index', [
+            'document' => $document,
+            'managers' => $managers
+        ]);
     }
 
     /**
@@ -198,7 +217,32 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
-        //
+        $validatedData = $request->validate([
+            'manager_id' => 'nullable|exists:users,id',
+            'category' => 'nullable|string',
+            'status' => 'required|string',
+            'is_controlled' => 'nullable|boolean',
+            'date_done' => 'nullable|date',
+            'receivers' => 'nullable|array',
+        ]);
+        $document->manager_id = $request->input('manager_id', $document->manager_id);
+        $document->category = $request->input('category', $document->category);
+        $document->status = $request->filled('status') ? $request->input('status') : $document->status;
+        $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
+        $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
+        $document->save();
+        if ($request->has('receivers')) {
+            $receiverIds = $request->input('receivers', $document->receivers->pluck('id')->toArray());
+            // Проверка, что $receiverIds действительно является массивом
+            if (isset($receiverIds))
+            {
+                if (is_array($receiverIds)) {
+                    // Связывание получателей с документом
+                    $document->receivers()->attach($receiverIds);
+                }
+            }
+
+        }
     }
 
     /**

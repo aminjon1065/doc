@@ -164,7 +164,7 @@ const Index = ({
                         >
                             {documents.data.map((mail, index) => (
                                 <li key={index}>
-                                    <Link href={route('documents.show', mail.id)}
+                                    <Link href={route('documents.edit', mail.id)}
                                           className={`relative flex justify-between gap-x-12 px-4 py-5 hover:bg-gray-50 sm:px-6 ${mail.is_read ? 'bg-gray-100' : ''}`}>
                                         <div className="flex gap-x-2">
                                             <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={logo}

@@ -1,6 +1,7 @@
 import React from 'react';
 
-const UserSent = () => {
+const UserSent = ({documents}) => {
+    console.log(documents)
     return (
         <div>
             User

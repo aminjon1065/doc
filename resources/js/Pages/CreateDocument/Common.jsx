@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {router, useForm} from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import {useDropzone} from "react-dropzone";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
@@ -446,11 +446,20 @@ const Common = ({managers}) => {
                     }
                 </div>
             </div>
-            <button
-                className={"bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
-            >
-                Send
-            </button>
+            <div className="flex justify-end mt-5 space-x-2">
+                <Link
+                    as="button"
+                    href={route('documents.index')}
+                    className={"bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
+                >
+                    Бекор
+                </Link>
+                <button
+                    className={"bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
+                >
+                    Сохтан
+                </button>
+            </div>
         </form>
     );
 };

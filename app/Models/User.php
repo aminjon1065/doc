@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany(Document::class, 'created_by_id');
     }
 
+    public function managerDocument(): HasMany
+    {
+        return $this->hasMany(Document::class, 'manager_id');
+    }
+    
     public function receivedDocuments(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'document_user', 'receiver_id', 'document_id');

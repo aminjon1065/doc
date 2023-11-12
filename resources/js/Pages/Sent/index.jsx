@@ -5,7 +5,7 @@ import CommonSent from "@/Pages/Sent/CommonSent.jsx";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 
-const Index = ({auth}) => {
+const Index = ({auth, documents}) => {
     const user = auth.user;
     return (
         <AuthenticatedLayout
@@ -13,8 +13,8 @@ const Index = ({auth}) => {
         >
             <Head title={"Sent"}/>
             {user.role === 'management' && <ManagerSent/>}
-            {user.role === 'user' && <UserSent/>}
-            {user.role === 'common' && <CommonSent/>}
+            {user.role === 'user' && <UserSent documents={documents}/>}
+            {user.role === 'common' && <CommonSent documents={documents}/>}
         </AuthenticatedLayout>
     );
 };

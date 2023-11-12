@@ -1,6 +1,7 @@
 import React from 'react';
 
-const CommonSent = () => {
+const CommonSent = ({documents}) => {
+    console.log(documents)
     return (
         <div>
             Common

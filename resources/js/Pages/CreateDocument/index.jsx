@@ -1,8 +1,8 @@
 import React from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
-import User from "@/Pages/Create/User.jsx";
-import Common from "@/Pages/Create/Common.jsx";
+import User from "@/Pages/CreateDocument/User.jsx";
+import Common from "@/Pages/CreateDocument/Common.jsx";
 
 const Index = ({auth, managers}) => {
     const user = auth.user;

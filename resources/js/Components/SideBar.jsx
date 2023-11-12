@@ -15,8 +15,8 @@ import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 const navigation = [
-    {name: 'Сохтан', href: '/documents/create', icon: DocumentPlusIcon},
-    {name: 'Ҳуҷҷатҳо', href: '/documents', icon: DocumentDuplicateIcon},
+    {name: 'Ҳуҷҷати нав', href: '/documents/create', icon: DocumentPlusIcon},
+    {name: 'Ҳуҷҷатҳои умумӣ', href: '/documents', icon: DocumentDuplicateIcon},
     {name: 'Воридотӣ', href: '/inbox', icon: InboxIcon},
     {name: 'Содиротӣ', href: '/sent', icon: PaperAirplaneIcon},
     {name: 'Dashboard', href: '/dashboard', icon: HomeIcon},
@@ -26,6 +26,10 @@ const navigation = [
     {name: 'Reports', href: '#', icon: ChartPieIcon},
 ]
 
+const accessibleItems = {
+    'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Dashboard', 'Users', 'Projects', 'Calendar', 'Reports'],
+    'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
+};
 const teams = [
     {id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false},
     {id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false},
@@ -36,13 +40,10 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function SideBar() {
+export default function SideBar({user}) {
     const {url} = usePage();
-    const [fullView, setFullView] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const fullViewFn = () => {
-        setFullView(!fullView);
-    }
+    const filteredNavigation = navigation.filter(item => accessibleItems[user.role].includes(item.name));
+
     return (
         <>
             <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
@@ -56,7 +57,7 @@ export default function SideBar() {
                         <ul role="list" className="flex flex-1 flex-col gap-y-7">
                             <li>
                                 <ul role="list" className="-mx-2 space-y-1">
-                                    {navigation.map((item) => (
+                                    {filteredNavigation.map((item) => (
                                         <li key={item.name}>
                                             <Link
                                                 href={item.href}
@@ -102,16 +103,6 @@ export default function SideBar() {
                         </ul>
                     </nav>
                 </div>
-            </div>
-
-            <div
-                className="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-                <button type="button" className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
-                        onClick={() => setSidebarOpen(true)}>
-                    <span className="sr-only">Open sidebar</span>
-                    <Bars3Icon className="h-6 w-6" aria-hidden="true"/>
-                </button>
-                <div className="flex-1 text-sm font-semibold leading-6 text-white">Dashboard</div>
             </div>
 
         </>

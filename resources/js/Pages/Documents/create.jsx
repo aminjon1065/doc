@@ -28,7 +28,6 @@ const Create = ({auth}) => {
             setData('type_document', typeSelected);
             setData('code', codeType);
         };
-
         const getContent = (htmlContentProp) => {
             setHtmlContent(htmlContentProp);
             setData('description', htmlContent);
