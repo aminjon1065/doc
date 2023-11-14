@@ -234,8 +234,7 @@ class DocumentController extends Controller
         if ($request->has('receivers')) {
             $receiverIds = $request->input('receivers', $document->receivers->pluck('id')->toArray());
             // Проверка, что $receiverIds действительно является массивом
-            if (isset($receiverIds))
-            {
+            if (isset($receiverIds)) {
                 if (is_array($receiverIds)) {
                     // Связывание получателей с документом
                     $document->receivers()->attach($receiverIds);

@@ -13,6 +13,7 @@ import {
 import {Link, usePage} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import {DocumentTextIcon} from "@heroicons/react/24/outline/index.js";
 
 const navigation = [
     {name: 'Ҳуҷҷати нав', href: '/documents/create', icon: DocumentPlusIcon},
@@ -28,6 +29,7 @@ const navigation = [
 
 const accessibleItems = {
     'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Dashboard', 'Users', 'Projects', 'Calendar', 'Reports'],
+    'management': ['Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ'],
     'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
 };
 const teams = [

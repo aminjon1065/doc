@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +37,17 @@ class Document extends Model
     {
         return $this->belongsToMany(User::class, 'document_user', 'document_id', 'receiver_id');
     }
+
+// ...
+
+    /**
+     * Локальный запрос для выбора документов, где авторизованный пользователь является менеджером.
+     */
+    public function scopeWhereManager($query)
+    {
+        return $query->where('manager_id', Auth::id());
+    }
+
 
     /**
      * Получить документы для конкретного получателя с дополнительными отношениями.
