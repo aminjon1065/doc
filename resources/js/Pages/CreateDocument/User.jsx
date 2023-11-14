@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, router, useForm} from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel.jsx";
@@ -16,6 +16,7 @@ const User = () => {
             files: [],
             code: '',
         });
+        const [fileErrors, setFileErrors] = useState([]);
         const [files, setFiles] = useState([]);
         const [typeSelected, setTypeSelected] = useState('');
         const [codeType, setCodeType] = useState('');
@@ -48,6 +49,15 @@ const User = () => {
         const removeFile = (fileIndex) => {
             setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
         };
+        useEffect(() => {
+            let newFileErrors = [];
+            Object.keys(errors).forEach(key => {
+                if (key.startsWith('files.')) {
+                    newFileErrors[parseInt(key.split('.')[1])] = errors[key];
+                }
+            });
+            setFileErrors(newFileErrors);
+        }, [errors]);
         const submit = (e) => {
             e.preventDefault();
             const formData = new FormData();
@@ -73,6 +83,7 @@ const User = () => {
                 }
             })
         }
+        console.log(errors?.files?.[0]);
         return (
             <form onSubmit={submit}>
                 <div className="flex justify-between items-center space-x-2">
@@ -201,7 +212,9 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
-                                                    </div>
+                                                        {fileErrors[index] && (
+                                                            <div className="error">{fileErrors[index]}</div>
+                                                        )}                                                    </div>
                                                 )
                                             } else if (extension === 'docx' || extension === 'doc') {
                                                 return (
@@ -222,6 +235,7 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
+                                                        {errors.files && <span>{errors.files[index]}</span>}
                                                     </div>
                                                 )
                                             } else if (extension === 'xls' || extension === 'xlsx') {
@@ -243,6 +257,7 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
+                                                        {errors.files && <span>{errors.files[index]}</span>}
                                                     </div>
                                                 )
                                             } else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
@@ -265,6 +280,7 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
+                                                        {errors.files && <span>{errors.files[index]}</span>}
                                                     </div>
                                                 );
                                             } else {
@@ -286,6 +302,7 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
+                                                        {errors.files && <span>{errors.files[index]}</span>}
                                                     </div>
                                                 );
                                             }

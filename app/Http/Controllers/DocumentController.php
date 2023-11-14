@@ -127,6 +127,15 @@ class DocumentController extends Controller
                 'type' => 'Бақайдгирии лоиҳаҳои санадҳои меъёрии ҳуқуқӣ ',
             ]
         ];
+
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'code' => 'required|string',
+            'manager_id' => 'nullable|exists:users,id',
+            'category' => 'nullable|string',
+            'files.*' => 'nullable|file|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,jpg,jpeg,png,gif|max:2048'
+        ]);
         $document = new Document;
         $document->created_by_id = Auth::id();
         $document->title = $request->input('title');
