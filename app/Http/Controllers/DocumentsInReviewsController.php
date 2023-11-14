@@ -18,8 +18,8 @@ class DocumentsInReviewsController extends Controller
         $endDate = $request->input('end_date');     // Предполагается формат 'Y-m-d'
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
-        $documents = Document::
-        with(['files', 'creator', 'receivers'])
+        $documents = Document::where('status', '!=', 'reviewed')
+            ->with(['files', 'creator', 'receivers'])
             ->search($searchTerm)
             ->isControlled($isControlled)
             ->status($status)
