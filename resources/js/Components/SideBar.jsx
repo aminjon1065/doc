@@ -13,11 +13,12 @@ import {
 import {Link, usePage} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {DocumentTextIcon} from "@heroicons/react/24/outline/index.js";
+import {DocumentCheckIcon, DocumentTextIcon} from "@heroicons/react/24/outline/index.js";
 
 const navigation = [
     {name: 'Ҳуҷҷати нав', href: '/documents/create', icon: DocumentPlusIcon},
     {name: 'Ҳуҷҷатҳои умумӣ', href: '/documents', icon: DocumentDuplicateIcon},
+    {name: 'Ҳуҷҷатҳо барои баррасӣ', href: '/documents-in-reviews', icon: DocumentCheckIcon},
     {name: 'Воридотӣ', href: '/inbox', icon: InboxIcon},
     {name: 'Содиротӣ', href: '/sent', icon: PaperAirplaneIcon},
     {name: 'Dashboard', href: '/dashboard', icon: HomeIcon},
@@ -29,7 +30,7 @@ const navigation = [
 
 const accessibleItems = {
     'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Dashboard', 'Users', 'Projects', 'Calendar', 'Reports'],
-    'management': ['Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ'],
+    'management': ['Ҳуҷҷатҳо барои баррасӣ'],
     'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
 };
 const teams = [
@@ -106,7 +107,6 @@ export default function SideBar({user}) {
                     </nav>
                 </div>
             </div>
-
         </>
     )
 }
