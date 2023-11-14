@@ -174,7 +174,7 @@ const UserSent = ({
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={"flex items-center justify-start gap-x-6 w-6/12"}>
+                                        <div className={"flex items-center justify-start gap-x-6 w-5/12"}>
                                             <span>{mail.title}</span>
                                         </div>
                                         <div className={"flex items-center justify-start gap-x-6"}>

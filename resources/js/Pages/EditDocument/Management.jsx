@@ -53,9 +53,7 @@ const Management = ({document, managers}) => {
         });
     };
     return (
-        <
-
-        >
+        <>
 
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
                    fullViewFn={fullViewFn}>
@@ -256,8 +254,9 @@ const Management = ({document, managers}) => {
                                             <li
                                                 className="flex items-center py-4 pl-4 pr-5 text-sm leading-6">
                                                 <input
-                                                    disabled={document.is_controlled}
-                                                    value={document.is_controlled ? document.is_controlled : ''}
+                                                    disabled={data.is_controlled}
+                                                    checked={data.is_controlled ? data.is_controlled : ''}
+                                                    value={data.is_controlled ? data.is_controlled : ''}
                                                     onChange={(event) => setData('is_controlled', event.target.checked)}
                                                     id="control"
                                                     name="control"
@@ -267,8 +266,8 @@ const Management = ({document, managers}) => {
                                                 {document.is_controlled}
                                                 <div>
                                                     <input
-                                                        disabled={document.date_done}
-                                                        value={document.date_done == null ? '' : document.date_done}
+                                                        disabled={data.date_done}
+                                                        value={data.date_done == null ? '' : data.date_done}
                                                         onChange={(event) => setData('date_done', event.target.value)}
                                                         type="datetime-local"
                                                         className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"

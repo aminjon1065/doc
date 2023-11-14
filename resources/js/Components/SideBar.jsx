@@ -25,11 +25,11 @@ const navigation = [
     {name: 'Users', href: '/users', icon: UsersIcon},
     {name: 'Projects', href: '#', icon: FolderIcon},
     {name: 'Calendar', href: '#', icon: CalendarIcon},
-    {name: 'Reports', href: '#', icon: ChartPieIcon},
+    {name: 'Reports', href: '/reports', icon: ChartPieIcon},
 ]
 
 const accessibleItems = {
-    'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Dashboard', 'Users', 'Projects', 'Calendar', 'Reports'],
+    'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Users', 'Reports'],
     'management': ['Ҳуҷҷатҳо барои баррасӣ'],
     'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
 };
