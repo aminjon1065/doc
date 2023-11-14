@@ -127,12 +127,6 @@ class DocumentController extends Controller
                 'type' => 'Бақайдгирии лоиҳаҳои санадҳои меъёрии ҳуқуқӣ ',
             ]
         ];
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'files.*' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf,doc,docx|max:20480',
-        ]);
-
         $document = new Document;
         $document->created_by_id = Auth::id();
         $document->title = $request->input('title');
@@ -168,7 +162,7 @@ class DocumentController extends Controller
         // Проверка, что $receiverIds действительно является массивом
         if (is_array($receiverIds)) {
             // Связывание получателей с документом
-            $document->receivers()->attach($receiverIds);
+            $document->receivers()->sync($receiverIds);
         }
         return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
     }
@@ -240,8 +234,11 @@ class DocumentController extends Controller
                     $document->receivers()->attach($receiverIds);
                 }
             }
-
         }
+        if (Auth::user()->isManagementDepartment()) {
+            return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
+        }
+        return redirect()->route('documents.index')->with('success', 'Документ успешно расмотрен');
     }
 
     /**

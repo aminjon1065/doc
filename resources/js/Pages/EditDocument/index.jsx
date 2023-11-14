@@ -1,15 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
-import formatterDay from "@/Helpers/dateFormatter.js";
-import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
-import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
-import FileViewer from "@/Components/FileViewer.jsx";
-import Modal from "@/Components/Modal.jsx";
-import Select from "react-tailwindcss-select";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import InputLabel from "@/Components/InputLabel.jsx";
 import Common from "@/Pages/EditDocument/Common.jsx";
+import Management from "@/Pages/EditDocument/Management.jsx";
 
 const Index = ({auth, document, managers}) => {
     const {data, setData, put, errors} = useForm({
@@ -60,6 +53,9 @@ const Index = ({auth, document, managers}) => {
             <Head title={"Edit"}/>
             {
                 auth.user.role === 'common' && <Common auth={auth} document={document} managers={managers}/>
+            }
+            {
+                auth.user.role === 'management' && <Management auth={auth} document={document} managers={managers}/>
             }
         </AuthenticatedLayout>
     );

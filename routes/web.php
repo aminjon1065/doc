@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sent', [App\Http\Controllers\SentController::class, 'index'])->name('sent.index');
     Route::get('/inbox', [App\Http\Controllers\InboxController::class, 'index'])->name('inbox.index');
     Route::get('users-list', [GetUsersListAlias::class, 'usersList'])->name('users-list');
-
 });
+Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
 
 require __DIR__ . '/auth.php';

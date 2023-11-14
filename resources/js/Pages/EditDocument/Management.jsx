@@ -10,15 +10,15 @@ import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 
-const Common = ({auth, document, managers}) => {
+const Management = ({document, managers}) => {
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
-        category: document.category || '',
         is_controlled: document.is_controlled || '',
         status: document.status || '',
         receivers: [],
     });
+    console.log(errors);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
     const [fullView, setFullView] = useState(false);
@@ -247,80 +247,42 @@ const Common = ({auth, document, managers}) => {
                                     </ul>
                                 </dd>
                             </div>
-                            <div className="flex justify-between items-center space-x-2 mb-5">
-                                <div className={`sm:col-span-3 w-full`}>
-                                    <InputLabel htmlFor={"category"}>
-                                        Категория
-                                    </InputLabel>
-                                    <select
-                                        disabled={document.category}
-                                        name="category"
-                                        value={data.category}
-                                        id="category"
-                                        className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                        onChange={(event) => setData('category', event.target.value)}
-                                    >
-                                        <option disabled value="">
-                                            Намуди категорияро интихоб кунед
-                                        </option>
-                                        <option value="inbox">Воридотӣ</option>
-                                        <option value="sent">Содиротӣ</option>
-                                    </select>
-                                    {errors.title && <span>{errors.title}</span>}
-                                </div>
-                                <div className={`sm:col-span-3 w-full`}>
-                                    <div className={"flex-col justify-between items-center"}>
-                                        <InputLabel htmlFor={"status"}>
-                                            Статус
-                                        </InputLabel>
-                                        <select
-                                            disabled={document.status === 'created' || document.status === 'in_review' ? false : true}
-                                            name="status"
-                                            value={data.status}
-                                            id="status"
-                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                            onChange={(event) => setData('status', event.target.value)}
-                                        >
-                                            <option disabled value="">
-                                                Намуди статусро интихоб кунед
-                                            </option>
-                                            <option value="created">Сохта шуд</option>
-                                            <option value="in_review">Дар баррасӣ</option>
-                                            <option value="reviewed">Баррасӣ шуд</option>
-                                        </select>
-                                        {errors.title && <span>{errors.title}</span>}
-                                    </div>
-                                </div>
-                                <div className={`sm:col-span-3 w-full`}>
-                                    <label htmlFor="control"
-                                           className="block text-sm font-medium text-gray-700">
-                                        Назоратӣ
-                                    </label>
-                                    <div
-                                        className={"flex items-center space-x-2 border border-gray-300 rounded-md  px-2 py-1.5"}>
-                                        <div
-                                            className="flex items-center h-5 space-x-2">
-                                            <input
-                                                disabled={document.is_controlled}
-                                                value={document.is_controlled == null ? '' : document.is_controlled}
-                                                onChange={(event) => setData('is_controlled', event.target.checked)}
-                                                id="control"
-                                                name="control"
-                                                type="checkbox"
-                                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                                            />
-                                            <div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium leading-6 text-gray-900">Назоратӣ</dt>
+                                <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list"
+                                        className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                        {
+                                            <li
+                                                className="flex items-center py-4 pl-4 pr-5 text-sm leading-6">
                                                 <input
-                                                    disabled={document.date_done}
-                                                    value={document.date_done == null ? '' : document.date_done}
-                                                    onChange={(event) => setData('date_done', event.target.value)}
-                                                    type="datetime-local"
-                                                    className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                    disabled={document.is_controlled}
+                                                    value={document.is_controlled ? document.is_controlled : ''}
+                                                    onChange={(event) => setData('is_controlled', event.target.checked)}
+                                                    id="control"
+                                                    name="control"
+                                                    type="checkbox"
+                                                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                                 />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                {document.is_controlled}
+                                                <div>
+                                                    <input
+                                                        disabled={document.date_done}
+                                                        value={document.date_done == null ? '' : document.date_done}
+                                                        onChange={(event) => setData('date_done', event.target.value)}
+                                                        type="datetime-local"
+                                                        className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                    />
+                                                    {errors.date_done || errors.is_controlled && (
+                                                        <div className="mt-2 text-xs text-red-600">
+                                                            {errors.date_done}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </dd>
                             </div>
                         </dl>
                     </div>
@@ -335,4 +297,4 @@ const Common = ({auth, document, managers}) => {
     );
 };
 
-export default Common;
+export default Management;
