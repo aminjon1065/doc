@@ -180,11 +180,12 @@ const UserInbox = ({
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={"flex items-center justify-start gap-x-6 w-[60%]"}>
+                                        <div className={"flex items-center justify-start gap-x-6 w-6/12"}>
                                             <span>{mail.title}</span>
                                         </div>
                                         <div className={"flex items-center justify-start gap-x-6"}>
-                                           <span className={`${mail.status==="created" ? 'bg-amber-500' : mail.status==="in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded text-sm`}> {mail.status}</span>
+                                            <span
+                                                className={`${mail.status === "created" ? 'bg-amber-500' : mail.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded text-sm`}> {mail.status === 'created' ? "Сохта шуд" : mail.status === 'in_review' ? "Дар баррасӣ" : mail.status === 'reviewed' ? "Баррасӣ шуд" : ''}</span>
                                         </div>
                                         <div className="flex items-center gap-x-2">
                                             <div className="hidden sm:flex sm:flex-col sm:items-end">

@@ -49,15 +49,6 @@ const User = () => {
         const removeFile = (fileIndex) => {
             setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
         };
-        useEffect(() => {
-            let newFileErrors = [];
-            Object.keys(errors).forEach(key => {
-                if (key.startsWith('files.')) {
-                    newFileErrors[parseInt(key.split('.')[1])] = errors[key];
-                }
-            });
-            setFileErrors(newFileErrors);
-        }, [errors]);
         const submit = (e) => {
             e.preventDefault();
             const formData = new FormData();
@@ -79,7 +70,13 @@ const User = () => {
                 },
                 // Обработка ошибок запроса
                 onError: (errors) => {
-                    console.log(errors);
+                    let newFileErrors = [];
+                    Object.keys(errors).forEach(key => {
+                        if (key.startsWith('files.')) {
+                            newFileErrors[parseInt(key.split('.')[1])] = errors[key];
+                        }
+                    });
+                    setFileErrors(newFileErrors);
                 }
             })
         }
@@ -213,8 +210,9 @@ const User = () => {
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
                                                         {fileErrors[index] && (
-                                                            <div className="error">{fileErrors[index]}</div>
-                                                        )}                                                    </div>
+                                                            <span className="text-red-500">Этот файл превышает максимально разрешаемым сервером</span>
+                                                        )}
+                                                    </div>
                                                 )
                                             } else if (extension === 'docx' || extension === 'doc') {
                                                 return (
@@ -235,8 +233,9 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
-                                                        {errors.files && <span>{errors.files[index]}</span>}
-                                                    </div>
+                                                        {fileErrors[index] && (
+                                                            <span className="text-red-500">Этот файл превышает максимально разрешаемым сервером</span>
+                                                        )}                                                    </div>
                                                 )
                                             } else if (extension === 'xls' || extension === 'xlsx') {
                                                 return (
@@ -280,8 +279,9 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
-                                                        {errors.files && <span>{errors.files[index]}</span>}
-                                                    </div>
+                                                        {fileErrors[index] && (
+                                                            <span className="text-red-500">Этот файл превышает максимально разрешаемым сервером</span>
+                                                        )}                                                    </div>
                                                 );
                                             } else {
                                                 return (
@@ -302,8 +302,9 @@ const User = () => {
                                                             </div>
                                                         </div>
                                                         <p className={"truncate text-center"}>{file.name}</p>
-                                                        {errors.files && <span>{errors.files[index]}</span>}
-                                                    </div>
+                                                        {fileErrors[index] && (
+                                                            <span className="text-red-500">Этот файл превышает максимально разрешаемым сервером</span>
+                                                        )}                                                    </div>
                                                 );
                                             }
                                         })}

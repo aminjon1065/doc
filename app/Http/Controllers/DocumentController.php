@@ -134,7 +134,7 @@ class DocumentController extends Controller
             'code' => 'required|string',
             'manager_id' => 'nullable|exists:users,id',
             'category' => 'nullable|string',
-            'files.*' => 'nullable|file|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,jpg,jpeg,png,gif|max:2048'
+            'files.*' => 'nullable|file|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,jpg,jpeg,png,gif|max:1024'
         ]);
         $document = new Document;
         $document->created_by_id = Auth::id();
