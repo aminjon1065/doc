@@ -38,6 +38,8 @@ class Document extends Model
         return $this->belongsToMany(User::class, 'document_user', 'document_id', 'receiver_id');
     }
 
+
+
 // ...
 
     /**

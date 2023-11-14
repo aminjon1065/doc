@@ -53,7 +53,7 @@ const User = () => {
             const formData = new FormData();
             formData.append('title', data.title);
             formData.append('description', data.description);
-            formData.append('code', codeType);
+            formData.append('code', data.code);
             files.forEach(file => formData.append('files[]', file));
             router.post(route('documents.store'), formData, {
                 forceFormData: true,
@@ -105,16 +105,16 @@ const User = () => {
                         </InputLabel>
                         <select
                             name="type_document"
-                            value={typeSelected}
+                            value={data.code}
                             id="type"
                             className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                            onChange={(event) => fnSelectedType(event.target.value)}
+                            onChange={(event) => setData('code', event.target.value)}
                         >
                             <option disabled={true} value="">
                                 Намуди ҳуҷҷатро интихоб кунед
                             </option>
                             {typeDocument.map((item, index) => (
-                                <option value={item.type} key={index}>
+                                <option value={item.code} key={index}>
                                     {item.code} - {item.type}
                                 </option>
                             ))}

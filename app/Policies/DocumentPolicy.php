@@ -13,7 +13,7 @@ class DocumentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'common' || $user->role === 'management';
+        return $user->role === 'common';
     }
 
     /**
