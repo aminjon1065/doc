@@ -220,6 +220,12 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+        if ($request->category) {
+            if ($document->status !== 'reviewed' && $request->status !== 'reviewed') {
+                return back()->with('error', 'Обновление недоступно, так как документ не находится на рассмотрении.');
+            }
+        }
+
         $validatedData = $request->validate([
             'manager_id' => 'nullable|exists:users,id',
             'category' => 'nullable|string',

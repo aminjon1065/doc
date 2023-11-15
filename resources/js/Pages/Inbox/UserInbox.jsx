@@ -164,7 +164,7 @@ const UserInbox = ({
                                 <li key={index}>
                                     <Link href={route('documents.show', mail.id)}
                                           className={`relative flex justify-between gap-x-12 px-4 py-5 hover:bg-gray-50 sm:px-6 ${mail.is_read ? 'bg-gray-100' : ''}`}>
-                                        <div className="flex gap-x-2">
+                                        <div className="flex gap-x-2 w-3/12">
                                             <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={logo}
                                                  alt="avatar"/>
                                             <div className="min-w-0 flex-auto">
@@ -180,7 +180,7 @@ const UserInbox = ({
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={"flex items-center justify-start gap-x-6 w-6/12"}>
+                                        <div className={"flex items-center justify-start gap-x-6 w-5/12"}>
                                             <span>{mail.title}</span>
                                         </div>
                                         <div className={"flex items-center justify-start gap-x-6"}>
