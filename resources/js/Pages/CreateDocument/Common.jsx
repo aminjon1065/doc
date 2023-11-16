@@ -9,7 +9,7 @@ import {BsFileEarmarkExcelFill, BsFileEarmarkPdfFill, BsFileEarmarkWordFill} fro
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import Select from "react-tailwindcss-select";
 
-const Common = ({managers}) => {
+const Common = ({managers, users}) => {
     const {data, setData, post, errors} = useForm({
         manager_id: '',
         category: '',
@@ -24,21 +24,10 @@ const Common = ({managers}) => {
         receivers: [],
     });
     const [files, setFiles] = useState([]);
-    const [userSelected, setUserSelected] = useState(null);
-    const [usersList, setUsersList] = useState([]);
-    useEffect(() => {
-        axios.get(route('users-list')).then((response) => {
-            setUsersList(response.data)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }, []);
     const getContent = (htmlContentProp) => {
         setData('description', htmlContentProp);
     };
-
     const fnUserSelected = (value) => {
-        setUserSelected(value);
         setData('receivers', value);
     };
     const onDrop = useCallback((acceptedFiles) => {
@@ -191,9 +180,9 @@ const Common = ({managers}) => {
                         searchInputPlaceholder={""}
                         isSearchable
                         isMultiple
-                        value={userSelected}
+                        value={data.receivers}
                         onChange={fnUserSelected}
-                        options={usersList}
+                        options={users}
                         classNames={{
                             menuButton: ({isDisabled}) => (
                                 `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${

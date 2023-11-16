@@ -51,8 +51,18 @@ class DocumentController extends Controller
     public function create()
     {
         $managers = User::where('role', 'management')->get();
+        $users = User::all()->map(function ($user) {
+            if ($user->role == 'user') {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->name . '-' . $user->department . ' (' . $user->region . ')'
+                ];
+            }
+            return null;
+        })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         return Inertia::render('CreateDocument/index', [
             'managers' => $managers,
+            'users'=> $users
         ]);
     }
 
@@ -240,16 +250,30 @@ class DocumentController extends Controller
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
         $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
         $document->save();
-        if ($request->has('receivers')) {
-            $receiverIds = $request->input('receivers', $document->receivers->pluck('id')->toArray());
-            // Проверка, что $receiverIds действительно является массивом
-            if (isset($receiverIds)) {
-                if (is_array($receiverIds)) {
-                    // Связывание получателей с документом
-                    $document->receivers()->attach($receiverIds);
-                }
-            }
-        }
+//        $document->receivers()->detach();
+//        if ($request->has('receivers')) {
+//            $receiverIds = $request->input('receivers', $document->receivers->pluck('id')->toArray());
+//            // Проверка, что $receiverIds действительно является массивом
+//            if (isset($receiverIds)) {
+//                if (is_array($receiverIds)) {
+//                    // Связывание получателей с документом
+//                    $document->receivers()->attach($receiverIds);
+//                }
+//            }
+//        }
+        // Current receiver IDs
+        $currentReceiverIds = $document->receivers->pluck('id')->toArray();
+
+        // New receivers to add
+        $receiversToAdd = array_diff($request->receivers, $currentReceiverIds);
+
+        // Receivers to remove
+        $receiversToRemove = array_diff($currentReceiverIds, $request->receivers);
+
+        // Update receivers
+//        $document->receivers()->detach($receiversToRemove);
+        $document->receivers()->attach($receiversToAdd);
+
         if (Auth::user()->isManagementDepartment()) {
             return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
         }
