@@ -62,7 +62,7 @@ class DocumentController extends Controller
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         return Inertia::render('CreateDocument/index', [
             'managers' => $managers,
-            'users'=> $users
+            'users' => $users
         ]);
     }
 
@@ -235,7 +235,6 @@ class DocumentController extends Controller
                 return back()->with('error', 'Обновление недоступно, так как документ не находится на рассмотрении.');
             }
         }
-
         $validatedData = $request->validate([
             'manager_id' => 'nullable|exists:users,id',
             'category' => 'nullable|string',
