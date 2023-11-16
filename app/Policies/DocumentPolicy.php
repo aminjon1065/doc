@@ -30,11 +30,18 @@ class DocumentPolicy
         if ($user->role === 'user') {
             return $document->created_by_id == $user->id || $document->receivers->contains($user);
         }
-        if ($user->role==='management')
-        {
+        if ($user->role === 'management') {
             return $document->manager()->id == $user->id;
         }
         // Запретить доступ для всех остальных
+        return false;
+    }
+
+    public function edit(User $user, Document $document): bool
+    {
+        if ($user->role === 'common') {
+            return true;
+        }
         return false;
     }
 

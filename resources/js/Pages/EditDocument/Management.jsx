@@ -18,7 +18,6 @@ const Management = ({document, managers}) => {
         status: document.status || '',
         receivers: [],
     });
-    console.log(errors);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
     const [fullView, setFullView] = useState(false);

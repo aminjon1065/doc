@@ -4,6 +4,8 @@ import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
 import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
 import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
+import {Link} from "@inertiajs/react";
+
 const Common = ({document}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -21,8 +23,12 @@ const Common = ({document}) => {
                    fullViewFn={fullViewFn}>
                 <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
-            <span className={"text-sm"}>Статус: <span
-                className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {document.status}</span></span>
+            <div className="flex justify-between">
+                <span className={"text-sm"}>Статус: <span
+                    className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {document.status}</span></span>
+                <span className={"text-sm"}><Link as={"button"}
+                                                  href={route(`document-edit-only-common-department.edit`, {'id': document.id})}>Edit</Link></span>
+            </div>
             <article className={"mt-5"}>
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">
