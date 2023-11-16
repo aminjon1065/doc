@@ -17,7 +17,7 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers}) => {
             user={auth.user}
         >
             <Head title={"Edit"}/>
-            
+
         </AuthenticatedLayout>
     );
 };
