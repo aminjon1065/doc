@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\DocumentFile;
+use App\Models\TypesDocument;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class DocumentController extends Controller
         $endDate = $request->input('end_date');     // Предполагается формат 'Y-m-d'
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
+        $typesDocument = TypesDocument::all();
         $documents = Document::
         with(['files', 'creator', 'receivers'])
             ->search($searchTerm)

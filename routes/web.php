@@ -45,4 +45,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::resource('types-document', \App\Http\Controllers\TypesDocumentController::class);
+});
 require __DIR__ . '/auth.php';

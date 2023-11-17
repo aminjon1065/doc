@@ -30,8 +30,8 @@ class UserFactory extends Factory
             'region' => 'Test Region',
             'rank' => 'Test Rank',
             'avatar' => '/logo256.webp',
-            'role' => 'user',
-//            'role' => $roles[array_rand($roles)],
+//            'role' => 'user',
+            'role' => $roles[array_rand($roles)],
         ];
     }
 

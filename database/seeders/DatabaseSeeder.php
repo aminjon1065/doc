@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(50)->create();
-
+        \App\Models\User::factory(10)->create();
+//
 //        \App\Models\User::factory()->create([
 //            'name' => 'Test User',
 //            'email' => 'test@example.com',
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 //            'region' => 'Test Region',
 //            'rank' => 'Test Rank',
 //            'avatar' => '/logo256.webp',
-//            'role' => 'admin',
+//            'role' => 'common',
 //        ]);
     }
 }
