@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Оҳфотвлофтҷл.',
+    'failed' => 'Почтаи электронӣ ё рамз хато аст.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
