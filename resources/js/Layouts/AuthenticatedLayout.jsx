@@ -1,10 +1,11 @@
 import {useState} from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import {Link} from '@inertiajs/react';
 import SideBar from "@/Components/SideBar.jsx";
+import {__} from "@/Libs/Lang";
+import LangToggle from "@/Components/LangToggle.jsx";
 
 export default function Authenticated({user, header, children}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -22,6 +23,7 @@ export default function Authenticated({user, header, children}) {
                             </div>
                         </div>
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
+                            <LangToggle/>
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>

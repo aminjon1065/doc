@@ -19,33 +19,38 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+Route::middleware('locale')->group(function () {
+
+    Route::get('/', function () {
+        return Inertia::render('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+        ]);
+    });
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    Route::middleware('auth')->group(function () {
+        Route::resource('documents', DocumentControllerAlias::class);
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('users', [UsersListAlias::class, 'index'])->name('users.index');
+        Route::get('/sent', [App\Http\Controllers\SentController::class, 'index'])->name('sent.index');
+        Route::get('/inbox', [App\Http\Controllers\InboxController::class, 'index'])->name('inbox.index');
+        Route::get('users-list', [GetUsersListAlias::class, 'usersList'])->name('users-list');
+        Route::get('document-edit-only-common-department/{document}', [App\Http\Controllers\DocumentEditOnlyCommonDepartment::class, 'edit'])->name('document-edit-only-common-department.edit');
+    });
+    Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
+
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::resource('types-document', \App\Http\Controllers\TypesDocumentController::class);
+    });
+    require __DIR__ . '/auth.php';
+    Route::post('/language', [App\Http\Controllers\LanguageController::class, 'store'])->name('language.store');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::resource('documents', DocumentControllerAlias::class);
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('users', [UsersListAlias::class, 'index'])->name('users.index');
-    Route::get('/sent', [App\Http\Controllers\SentController::class, 'index'])->name('sent.index');
-    Route::get('/inbox', [App\Http\Controllers\InboxController::class, 'index'])->name('inbox.index');
-    Route::get('users-list', [GetUsersListAlias::class, 'usersList'])->name('users-list');
-    Route::get('document-edit-only-common-department/{document}', [App\Http\Controllers\DocumentEditOnlyCommonDepartment::class, 'edit'])->name('document-edit-only-common-department.edit');
-});
-Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('types-document', \App\Http\Controllers\TypesDocumentController::class);
-});
-require __DIR__ . '/auth.php';
