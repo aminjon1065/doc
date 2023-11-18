@@ -39,7 +39,7 @@ Route::middleware('locale')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('users', [UsersListAlias::class, 'index'])->name('users.index');
+        Route::resource('users', UsersListAlias::class)->name('users', 'users');
         Route::get('/sent', [App\Http\Controllers\SentController::class, 'index'])->name('sent.index');
         Route::get('/inbox', [App\Http\Controllers\InboxController::class, 'index'])->name('inbox.index');
         Route::get('users-list', [GetUsersListAlias::class, 'usersList'])->name('users-list');

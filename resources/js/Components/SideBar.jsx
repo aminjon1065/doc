@@ -25,7 +25,8 @@ const navigation = [
 const accessibleItems = {
     'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'Reports'],
     'management': ['ReviewDocument'],
-    'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
+    'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ'],
+    'admin': ['Users',],
 };
 const teams = [
     {id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false},

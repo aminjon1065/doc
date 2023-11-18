@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 
 const Index = ({auth, users}) => {
+    console.log(users)
     return (
         <AuthenticatedLayout
             user={auth.user}

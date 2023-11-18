@@ -34,11 +34,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(
-            Auth::user()->role == 'management' ? RouteServiceProvider::HOMEMANAGEMENT : (Auth::user()->role === 'common'
-                ? RouteServiceProvider::HOMECOMMON
-                : RouteServiceProvider::HOME)
-        );
+        $userRole = Auth::user()->role;
+
+        return match ($userRole) {
+            'management' => redirect()->intended(RouteServiceProvider::HOMEMANAGEMENT),
+            'common' => redirect()->intended(RouteServiceProvider::HOMECOMMON),
+            'admin' => redirect()->intended(RouteServiceProvider::HOMEADMIN),
+            default => redirect()->intended(RouteServiceProvider::HOME),
+        };
+
 
     }
 
