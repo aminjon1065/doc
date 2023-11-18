@@ -24,6 +24,7 @@ const Common = ({managers, users}) => {
         receivers: [],
     });
     const [files, setFiles] = useState([]);
+    const [errorResponse, setErrorResponse] = useState()
     const getContent = (htmlContentProp) => {
         setData('description', htmlContentProp);
     };
@@ -77,12 +78,12 @@ const Common = ({managers, users}) => {
             onSuccess: (success) => {
                 console.log('success')
             },
-            // Обработка ошибок запроса
             onError: (errors) => {
-                console.log(errors);
+                setErrorResponse(errors)
             }
         })
     }
+    console.log(errorResponse);
     return (
         <form onSubmit={submit}>
             <div className="flex justify-between items-center space-x-2 mb-5">
@@ -102,7 +103,7 @@ const Common = ({managers, users}) => {
                         placeholder="Title"
                         className={`block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0`}
                     />
-                    {errors.title && <span className={"text-red-700"}>{errors.title}</span>}
+                    <span className={"text-red-700"}>{errorResponse?.title}</span>
                 </div>
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"type"}>
@@ -129,7 +130,7 @@ const Common = ({managers, users}) => {
                             </option>
                         ))}
                     </select>
-                    {errors.type_document && <span>{errors.type_document}</span>}
+                    <span className={"text-red-700"}>{errorResponse?.code}</span>
                 </div>
             </div>
             <div className="sm:col-span-6 mb-5">

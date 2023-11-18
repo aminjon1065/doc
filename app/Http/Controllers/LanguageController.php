@@ -8,8 +8,9 @@ class LanguageController extends Controller
 {
     public function store(Request $request)
     {
+//        dd($request->language);
         $request->validate([
-            'language' => ['required', 'string', 'max:2', 'in:en,tj']
+            'language' => ['required', 'string', 'max:2']
         ]);
 
         session(['locale' => $request->language]);

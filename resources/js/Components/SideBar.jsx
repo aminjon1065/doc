@@ -1,36 +1,30 @@
-import {Fragment, useState} from 'react'
-import {Dialog, Transition} from '@headlessui/react'
+import {Fragment} from 'react'
 import {
-    Bars3Icon,
-    CalendarIcon,
     ChartPieIcon,
     DocumentDuplicateIcon,
-    FolderIcon,
     HomeIcon, InboxIcon, PaperAirplaneIcon,
     UsersIcon,
     DocumentPlusIcon
 } from '@heroicons/react/24/outline'
 import {Link, usePage} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {DocumentCheckIcon, DocumentTextIcon} from "@heroicons/react/24/outline/index.js";
+import {DocumentCheckIcon} from "@heroicons/react/24/outline/index.js";
+import {__} from '@/Libs/Lang.jsx';
 
 const navigation = [
-    {name: 'Ҳуҷҷати нав', href: '/documents/create', icon: DocumentPlusIcon},
-    {name: 'Ҳуҷҷатҳои умумӣ', href: '/documents', icon: DocumentDuplicateIcon},
-    {name: 'Ҳуҷҷатҳо барои баррасӣ', href: '/documents-in-reviews', icon: DocumentCheckIcon},
-    {name: 'Воридотӣ', href: '/inbox', icon: InboxIcon},
-    {name: 'Содиротӣ', href: '/sent', icon: PaperAirplaneIcon},
+    {name: 'NewDocument', href: '/documents/create', icon: DocumentPlusIcon},
+    {name: 'CommonDocuments', href: '/documents', icon: DocumentDuplicateIcon},
+    {name: 'ReviewDocument', href: '/documents-in-reviews', icon: DocumentCheckIcon},
+    {name: 'Inbox', href: '/inbox', icon: InboxIcon},
+    {name: 'Sent', href: '/sent', icon: PaperAirplaneIcon},
     {name: 'Dashboard', href: '/dashboard', icon: HomeIcon},
     {name: 'Users', href: '/users', icon: UsersIcon},
-    {name: 'Projects', href: '#', icon: FolderIcon},
-    {name: 'Calendar', href: '#', icon: CalendarIcon},
     {name: 'Reports', href: '/reports', icon: ChartPieIcon},
 ]
 
 const accessibleItems = {
-    'common': ['Ҳуҷҷати нав', 'Ҳуҷҷатҳои умумӣ', 'Воридотӣ', 'Содиротӣ', 'Users', 'Reports'],
-    'management': ['Ҳуҷҷатҳо барои баррасӣ'],
+    'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'Reports'],
+    'management': ['ReviewDocument'],
     'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ']
 };
 const teams = [
@@ -72,7 +66,7 @@ export default function SideBar({user}) {
                                                 )}
                                             >
                                                 <item.icon className="h-6 w-6 shrink-0" aria-hidden="true"/>
-                                                {item.name}
+                                                {__(item.name)}
                                             </Link>
                                         </li>
                                     ))}

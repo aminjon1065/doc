@@ -15,17 +15,17 @@ export default function LangToggle() {
             </Menu.Button>
             <Menu.Items className="absolute w-32 right-0 top-full mt-2 border shadow-sm bg-white">
                 <Menu.Item>
-                    <Link className={classNames} href={route('language.store')} data={{language: 'en'}}
+                    <Link className={classNames} href={route('language.store')} data={{language: 'ru'}}
                           method="post" as="button">
-                        <span>🇺🇸</span>
-                        <span>English</span>
+                        <span>🇷🇺</span>
+                        <span>Русский</span>
                     </Link>
                 </Menu.Item>
                 <Menu.Item>
                     <Link className={classNames} href={route('language.store')} data={{language: 'tj'}}
                           method="post" as="button">
-                        <span>🇮🇩</span>
-                        <span>Russia</span>
+                        <span>🇹🇯</span>
+                        <span>Тоҷикӣ</span>
                     </Link>
                 </Menu.Item>
             </Menu.Items>
