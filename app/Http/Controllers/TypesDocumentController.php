@@ -13,7 +13,10 @@ class TypesDocumentController extends Controller
      */
     public function index()
     {
-        return Inertia::render('AdminPages/AddTypeDocument');
+        $typesDocuments = TypesDocument::all();
+        return Inertia::render('AdminPages/AddTypeDocument', [
+            'typesDocuments' => $typesDocuments
+        ]);
     }
 
     /**
@@ -29,7 +32,18 @@ class TypesDocumentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required|unique:types_documents,code',
+            'type_tj' => 'required|unique:types_documents,type_tj',
+            'type_ru' => 'required|unique:types_documents,type_ru',
+        ]);
+        TypesDocument::create([
+            'code' => $request->code,
+            'type_tj' => $request->type_tj,
+            'type_ru' => $request->type_ru,
+        ]);
+
+        return redirect()->back()->with('success', 'Тип документа успешно добавлен');
     }
 
     /**

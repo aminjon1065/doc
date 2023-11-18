@@ -9,7 +9,7 @@ import {useDropzone} from 'react-dropzone'
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import {BsFileEarmarkPdfFill, BsFileEarmarkWordFill, BsFileEarmarkExcelFill} from "react-icons/bs";
 
-const User = () => {
+const User = ({typesDocuments}) => {
         const {data, setData, post, processing, errors} = useForm({
             title: '',
             description: '',
@@ -121,9 +121,9 @@ const User = () => {
                             <option disabled={true} value="">
                                 Намуди ҳуҷҷатро интихоб кунед
                             </option>
-                            {typeDocument.map((item, index) => (
+                            {typesDocuments.map((item, index) => (
                                 <option value={item.code} key={index}>
-                                    {item.code} - {item.type}
+                                    {item.code} - {item.type_tj}
                                 </option>
                             ))}
                         </select>

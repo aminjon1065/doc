@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(10)->create();
 
 //        \App\Models\User::factory()->create([
-//            'name' => 'Rais Rais',
-//            'email' => 'admin@example.com',
+//            'name' => 'Admin Admin',
+//            'email' => 'common@example.com',
 //            'password' => \Hash::make('password'),
 //            'position' => 'Test Position',
 //            'department' => 'Test Department',
 //            'region' => 'Test Region',
 //            'rank' => 'Test Rank',
 //            'avatar' => '/logo256.webp',
-//            'role' => 'management',
+//            'role' => 'common',
 //        ]);
     }
 }

@@ -25,7 +25,6 @@ class DocumentController extends Controller
         $endDate = $request->input('end_date');     // Предполагается формат 'Y-m-d'
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
-        $typesDocument = TypesDocument::all();
         $documents = Document::
         with(['files', 'creator', 'receivers'])
             ->search($searchTerm)
@@ -53,6 +52,7 @@ class DocumentController extends Controller
     public function create()
     {
         $managers = User::where('role', 'management')->get();
+        $typesDocuments = TypesDocument::all();
         $users = User::all()->map(function ($user) {
             if ($user->role == 'user') {
                 return [
@@ -64,7 +64,8 @@ class DocumentController extends Controller
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         return Inertia::render('CreateDocument/index', [
             'managers' => $managers,
-            'users' => $users
+            'users' => $users,
+            'typesDocuments' => $typesDocuments
         ]);
     }
 

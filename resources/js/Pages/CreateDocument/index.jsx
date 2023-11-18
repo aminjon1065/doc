@@ -4,7 +4,7 @@ import {Head} from "@inertiajs/react";
 import User from "@/Pages/CreateDocument/User.jsx";
 import Common from "@/Pages/CreateDocument/Common.jsx";
 
-const Index = ({auth, managers, users}) => {
+const Index = ({auth, managers, users, typesDocuments, currentLocale}) => {
     const user = auth.user;
     return (
         <AuthenticatedLayout
@@ -15,10 +15,10 @@ const Index = ({auth, managers, users}) => {
                 user.role === 'management' && <div>Manager</div>
             }
             {
-                user.role === 'user' && <User/>
+                user.role === 'user' && <User typesDocuments={typesDocuments} currentLocale={currentLocale}/>
             }
             {
-                user.role === 'common' && <Common managers={managers} users={users}/>
+                user.role === 'common' && <Common managers={managers} users={users} typesDocuments={typesDocuments} currentLocale={currentLocale}/>
             }
         </AuthenticatedLayout>
     );

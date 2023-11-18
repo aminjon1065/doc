@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn () => [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
@@ -43,7 +43,10 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
-            'language' => fn () => translations(base_path('lang/' . app()->getLocale() . '.json')),
+            'currentLocale' => function () use ($request) {
+                return session('locale', config('app.locale'));
+            },
+            'language' => fn() => translations(base_path('lang/' . app()->getLocale() . '.json')),
         ];
     }
 }

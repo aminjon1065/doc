@@ -3,13 +3,12 @@ import {Link, router, useForm} from "@inertiajs/react";
 import {useDropzone} from "react-dropzone";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
-import {typeDocument} from "@/Helpers/typeDocuments.js";
 import EditorComponent from "@/Components/EditorComponent.jsx";
 import {BsFileEarmarkExcelFill, BsFileEarmarkPdfFill, BsFileEarmarkWordFill} from "react-icons/bs";
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import Select from "react-tailwindcss-select";
 
-const Common = ({managers, users}) => {
+const Common = ({managers, users, typesDocuments, currentLocale}) => {
     const {data, setData, post, errors} = useForm({
         manager_id: '',
         category: '',
@@ -24,7 +23,7 @@ const Common = ({managers, users}) => {
         receivers: [],
     });
     const [files, setFiles] = useState([]);
-    const [errorResponse, setErrorResponse] = useState()
+    const [errorResponse, setErrorResponse] = useState();
     const getContent = (htmlContentProp) => {
         setData('description', htmlContentProp);
     };
@@ -83,7 +82,6 @@ const Common = ({managers, users}) => {
             }
         })
     }
-    console.log(errorResponse);
     return (
         <form onSubmit={submit}>
             <div className="flex justify-between items-center space-x-2 mb-5">
@@ -124,9 +122,9 @@ const Common = ({managers, users}) => {
                         <option disabled={true} value="">
                             Намуди ҳуҷҷатро интихоб кунед
                         </option>
-                        {typeDocument.map((item, index) => (
+                        {typesDocuments.map((item, index) => (
                             <option value={item.code} key={index}>
-                                {item.code} - {item.type}
+                                {item.code} - {currentLocale === 'ru' ? item.type_ru : item.type_tj}
                             </option>
                         ))}
                     </select>

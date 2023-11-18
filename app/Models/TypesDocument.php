@@ -10,7 +10,8 @@ class TypesDocument extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type',
         'code',
+        'type_tj',
+        'type_ru',
     ];
 }

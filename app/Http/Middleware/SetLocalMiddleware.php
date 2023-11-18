@@ -16,10 +16,10 @@ class SetLocalMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         {
-            app()->setLocale(config('app.locale'));
-
-            if (session()->has('locale')) {
-                app()->setLocale(session('locale'));
+            if ($request->session()->has('locale')) {
+                app()->setLocale($request->session()->get('locale'));
+            } else {
+                app()->setLocale(config('app.locale'));
             }
             return $next($request);
         }

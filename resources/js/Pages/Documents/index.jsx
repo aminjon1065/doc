@@ -21,7 +21,7 @@ const Index = ({
                    dateDone,
                    startDate,
                    endDate,
-                   is_controlled,
+                   is_controlled
                }) => {
     const [values, setValues] = useState({
         page: page || 1,

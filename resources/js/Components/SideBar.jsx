@@ -4,7 +4,7 @@ import {
     DocumentDuplicateIcon,
     HomeIcon, InboxIcon, PaperAirplaneIcon,
     UsersIcon,
-    DocumentPlusIcon
+    DocumentPlusIcon, TagIcon
 } from '@heroicons/react/24/outline'
 import {Link, usePage} from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
@@ -20,13 +20,14 @@ const navigation = [
     {name: 'Dashboard', href: '/dashboard', icon: HomeIcon},
     {name: 'Users', href: '/users', icon: UsersIcon},
     {name: 'Reports', href: '/reports', icon: ChartPieIcon},
+    {name: 'TypeDocument', href: '/types-document', icon: TagIcon},
 ]
 
 const accessibleItems = {
     'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'Reports'],
     'management': ['ReviewDocument'],
-    'user': ['Ҳуҷҷати нав', 'Воридотӣ', 'Содиротӣ'],
-    'admin': ['Users',],
+    'user': ['NewDocument', 'Inbox', 'Sent'],
+    'admin': ['Users',"TypeDocument"],
 };
 const teams = [
     {id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false},
