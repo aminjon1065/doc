@@ -20,5 +20,18 @@
   "Inbox": "Входящие",
   "Sent": "Исходящие",
   "Users": "Пользователи",
-  "Reports": "Отчеты"
+  "Reports": "Отчеты",
+  "Settings": "Настройки",
+  "LogOut": "Выйти",
+  "Document": "Документ",
+  "Documents": "Документы",
+  "DocumentType": "Тип документа",
+  "DocumentTypes": "Типы документов",
+  "Previous": "Предыдущий",
+  "Next": "Следующий",
+  "IsControlled": "Контрольный",
+  "PeriodDatePicker": "От - До",
+  "Showed": "Показано",
+  "from": "из"
+
 }

@@ -1,6 +1,7 @@
 import {Link} from "@inertiajs/react";
 import TextInput from "@/Components/TextInput.jsx";
 import {useState} from "react";
+import {__} from "@/Libs/Lang.jsx";
 
 export default function Pagination({nextPage, prevPage, currentPage, total, to, handleSearchChange}) {
     const [pageInput, setPageInput] = useState(currentPage || 1);
@@ -35,7 +36,7 @@ export default function Pagination({nextPage, prevPage, currentPage, total, to, 
         >
             <div className="hidden sm:block">
                 <p className="text-sm text-gray-700">
-                    Нишон дода шуд <span className="font-medium">{to}</span> аз{' '}
+                    {__("Showed")} <span className="font-medium"> {to ? to : 0} </span> {__("from")}{' '}
                     <span className="font-medium">{total}</span>
                 </p>
             </div>
@@ -46,14 +47,15 @@ export default function Pagination({nextPage, prevPage, currentPage, total, to, 
                     onClick={PrevPage}
                     className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
                 >
-                    Ба қафо
+                    {__('Previous')}
                 </Link>
                 <TextInput
+                    type={"number"}
                     value={pageInput}
                     onChange={handleInputChange}
                     name={'page'}
                     onKeyPress={handleKeyPress}
-                    className=" ml-2 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 border border-gray-300"
+                    className=" ml-2 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 border border-gray-300 text-center"
                 />
                 <Link
                     className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
@@ -61,7 +63,7 @@ export default function Pagination({nextPage, prevPage, currentPage, total, to, 
                     disabled={!nextPage}
                     onClick={NextPage}
                 >
-                    Ба пеш
+                    {__('Next')}
                 </Link>
 
             </div>

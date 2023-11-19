@@ -18,11 +18,13 @@ class DocumentController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Document::class);
+        $typesDocuments = TypesDocument::all();
         $searchTerm = $request->input('search');
         $status = $request->input('status');
         $dateDone = $request->input('date_done');
         $startDate = $request->input('start_date'); // Предполагается формат 'Y-m-d'
         $endDate = $request->input('end_date');     // Предполагается формат 'Y-m-d'
+        $typeDocument = $request->input('typeDocument');
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
         $documents = Document::
@@ -34,6 +36,7 @@ class DocumentController extends Controller
             ->dateDone($dateDone)
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')
+            ->code($typeDocument)
             ->paginate($perPage);
         return Inertia::render('Documents/index', [
             'documents' => $documents,
@@ -43,6 +46,8 @@ class DocumentController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
             'is_controlled' => $isControlled,
+            'typesDocuments' => $typesDocuments,
+            'typeDocument' => $typeDocument
         ]);
     }
 

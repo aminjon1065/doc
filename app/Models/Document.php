@@ -176,4 +176,12 @@ class Document extends Model
         return $query->where('is_controlled', true);
     }
 
+    public function scopeCode($query, $code)
+    {
+        if ($code) {
+            return $query->where('code', $code);
+        }
+        return $query;
+    }
+
 }

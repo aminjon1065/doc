@@ -20,5 +20,18 @@
   "Inbox": "Воридотӣ",
   "Sent": "Содиротӣ",
   "Users": "Корбарон",
-  "Reports": "Ҳисоботҳо"
+  "Reports": "Ҳисоботҳо",
+  "Settings": "Танзимотҳо",
+  "LogOut": "Баромад",
+  "Document": "Ҳуҷҷат",
+  "Documents": "Ҳуҷҷатҳо",
+  "DocumentType": "Намуди ҳуҷҷат",
+  "DocumentTypes": "Намудҳои ҳуҷҷат",
+  "Previous": "Ба пеш",
+  "Next": "Ба қафо",
+  "IsControlled": "Назоратӣ",
+  "PeriodDatePicker": "Аз кай то кай",
+  "Showed": "Нишон дода шуд",
+  "from": "аз"
 }
+
