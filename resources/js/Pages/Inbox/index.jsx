@@ -16,6 +16,9 @@ const Index = ({
                    startDate,
                    endDate,
                    is_controlled,
+                   typesDocuments,
+                   typeDocument,
+                   currentLocale
                }) => {
     const user = auth.user;
     return (
@@ -34,6 +37,9 @@ const Index = ({
                 startDate={startDate}
                 endDate={endDate}
                 is_controlled={is_controlled}
+                typeDocument={typeDocument}
+                typesDocuments={typesDocuments}
+                currentLocale={currentLocale}
             />}
             {user.role === 'common' && <CommonInbox
                 documents={documents}
@@ -45,6 +51,9 @@ const Index = ({
                 startDate={startDate}
                 endDate={endDate}
                 is_controlled={is_controlled}
+                typeDocument={typeDocument}
+                typesDocuments={typesDocuments}
+                currentLocale={currentLocale}
             />}
         </AuthenticatedLayout>
     );

@@ -8,7 +8,7 @@ import Modal from "@/Components/Modal.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 
-const AddTypeDocument = ({auth, typesDocuments}) => {
+const AddTypeDocument = ({auth, typesDocuments, currentLocale}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [errorsTypes, setErrorsTypes] = useState({
@@ -68,7 +68,6 @@ const AddTypeDocument = ({auth, typesDocuments}) => {
                             onChange={e => setData('code', e.target.value)}
                         />
                         {errorsTypes.code && (<span className={"text-red-500"}>{errorsTypes.code}</span>)}
-
                     </div>
                     <div className={"mx-4 mb-5"}>
                         <InputLabel
@@ -117,13 +116,37 @@ const AddTypeDocument = ({auth, typesDocuments}) => {
                 </PrimaryButton>
             </div>
             <div>
-                {typesDocuments.map((typeDocument) => (
-                    <div className={"flex justify-between"}>
-                        <p>{typeDocument.type_tj}</p>
-                        <p>{typeDocument.type_ru}</p>
-                        <p>{typeDocument.code}</p>
-                    </div>
-                ))}
+                <table className="min-w-full divide-y divide-gray-300">
+                    <thead>
+                    <tr>
+                        <th scope="col"
+                            className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                            {__("CodeDocument")}
+                        </th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            {__("TypeDocument")}
+                        </th>
+                        <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
+                            <span className="sr-only">Edit</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                    {typesDocuments.map((typeDocument) => (
+                        <tr key={typeDocument.code}>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                {typeDocument.code}
+                            </td>
+                            <td className=" px-3 py-4 text-sm text-gray-500"> {currentLocale === "ru" ? typeDocument.type_ru : typeDocument.type_tj}</td>
+                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                    Edit<span className="sr-only">, {typeDocument.code}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
         </AuthenticatedLayout>
     );

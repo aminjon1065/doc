@@ -32,6 +32,8 @@
   "IsControlled": "Контрольный",
   "PeriodDatePicker": "От - До",
   "Showed": "Показано",
-  "from": "из"
-
+  "from": "из",
+  "created": "создан",
+  "in_review": "на рассмотрении",
+  "reviewed": "рассмотрен"
 }

@@ -32,6 +32,9 @@
   "IsControlled": "Назоратӣ",
   "PeriodDatePicker": "Аз кай то кай",
   "Showed": "Нишон дода шуд",
-  "from": "аз"
+  "from": "аз",
+  "created": "сохта шуд",
+  "in_review": "дар баррасӣ",
+  "reviewed": "баррасӣ шуд"
 }
 

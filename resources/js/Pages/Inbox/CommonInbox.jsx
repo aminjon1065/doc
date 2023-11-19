@@ -10,6 +10,7 @@ import Pagination from "@/Components/pagination.jsx";
 import pickBy from 'lodash/pickBy';
 import {usePrevious} from 'react-use';
 import formatterDay from "@/Helpers/dateFormatter.js";
+import {__} from "@/Libs/Lang.jsx";
 
 const CommonInbox = ({
                          auth,
@@ -22,6 +23,9 @@ const CommonInbox = ({
                          startDate,
                          endDate,
                          is_controlled,
+                         typesDocuments,
+                         typeDocument,
+                         currentLocale
                      }) => {
     const [values, setValues] = useState({
         page: page || 1,
@@ -30,7 +34,8 @@ const CommonInbox = ({
         date_done: dateDone || '',
         startDate: startDate || '',
         endDate: endDate || '',
-        is_controlled: is_controlled || false
+        is_controlled: is_controlled || false,
+        typeDocument: typeDocument || '',
     });
     const handleValueChangeDates = (newValue) => {
         setValues(prevState => ({
@@ -48,6 +53,14 @@ const CommonInbox = ({
         }));
     }
     const handleSearchChange = (event) => {
+        const key = event.target.name;
+        const value = event.target.value;
+        setValues(values => ({
+            ...values,
+            [key]: value
+        }));
+    }
+    const selectTypeChange = (event) => {
         const key = event.target.name;
         const value = event.target.value;
         setValues(values => ({
@@ -84,8 +97,8 @@ const CommonInbox = ({
                                 separator="то"
                                 classNames={
                                     `block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
-                                i18n={'tg'}
-                                placeholder={"Аз кай то кай"}
+                                i18n={currentLocale === 'ru' ? 'ru' : 'tg'}
+                                placeholder={__("PeriodDatePicker")}
                                 useRange
                                 showShortcuts={true}
                                 configs={{
@@ -101,17 +114,26 @@ const CommonInbox = ({
                                 onChange={handleValueChangeDates}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex w-6/12">
                             <select
-                                className="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-
+                                className="block w-2/4 rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                name={"typeDocument"}
+                                onChange={selectTypeChange}
                             >
-                                <option value="all">Ҳама</option>
-                                <option value="read">Хондашуда</option>
+                                <option value="">{__("DocumentType")}</option>
+                                {
+                                    typesDocuments.map((type, index) => (
+                                        <option key={index}
+                                                value={type.code}
+                                        >
+                                            {type.code} - {currentLocale === 'ru' ? type.type_ru : type.type_tj}
+                                        </option>
+                                    ))
+                                }
                             </select>
                         </div>
                     </div>
-                    <div className={"flex items-center justify-center space-x-2"}>
+                    <div className={"flex items-center justify-center space-x-2 w-6/12"}>
                         <div
                             className={"flex items-center justify-center space-x-2 border border-gray-300 px-3 py-1.5 rounded-md"}>
                             <label htmlFor="control"

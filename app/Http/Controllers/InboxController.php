@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\TypesDocument;
 use Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,11 +13,13 @@ class InboxController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->input('search');
+        $typesDocuments = TypesDocument::all();
         $status = $request->input('status');
         $dateDone = $request->input('date_done');
         $startDate = $request->input('startDate'); // Предполагается формат 'Y-m-d'
         $endDate = $request->input('endDate');     // Предполагается формат 'Y-m-d'
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
+        $typeDocument = $request->input('typeDocument');
         $perPage = 10; // Количество элементов на странице
         $documents = Document::
         where('category', 'inbox')
@@ -27,6 +30,7 @@ class InboxController extends Controller
             ->dateDone($dateDone)
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')
+            ->code($typeDocument)
             ->paginate($perPage);
         if (Auth::user()->isCommonDepartment()) {
             return Inertia::render('Inbox/index', [
@@ -37,6 +41,8 @@ class InboxController extends Controller
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'is_controlled' => $isControlled,
+                'typesDocuments' => $typesDocuments,
+                'typeDocument' => $typeDocument
             ]);
         }
         $userId = Auth::id(); // Или любой другой ID пользователя
@@ -48,6 +54,7 @@ class InboxController extends Controller
             ->dateDone($dateDone)
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')
+            ->code($typeDocument)
             ->paginate($perPage);
         return Inertia::render('Inbox/index', [
             'documents' => $documents,
@@ -57,6 +64,9 @@ class InboxController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
             'is_controlled' => $isControlled,
+            'typesDocuments' => $typesDocuments,
+            'typeDocument' => $typeDocument
+
         ]);
     }
 }
