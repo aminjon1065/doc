@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DocumentController as DocumentControllerAlias;
 use App\Http\Controllers\GetUsersList as GetUsersListAlias;
+use App\Http\Controllers\MainPageController as MainPageControllerAlias;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersList as UsersListAlias;
 use Illuminate\Foundation\Application;
@@ -20,16 +21,7 @@ use Inertia\Inertia;
 */
 
 Route::middleware('locale')->group(function () {
-
-    Route::get('/', function () {
-        return Inertia::render('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
-    });
-
+    Route::get('/', [MainPageControllerAlias::class, 'index'])->name('main-page');
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');

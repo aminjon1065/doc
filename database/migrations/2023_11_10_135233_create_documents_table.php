@@ -19,7 +19,8 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('status')->default('created'); // Добавлено новое поле для статуса
             $table->string('code');
-            $table->string('type');
+            $table->string('type_tj');
+            $table->string('type_ru');
             $table->boolean('is_controlled')->default(false);
             $table->dateTime('date_done')->nullable();
             $table->boolean('is_read')->default(false);
