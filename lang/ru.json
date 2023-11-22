@@ -35,5 +35,20 @@
   "from": "из",
   "created": "создан",
   "in_review": "на рассмотрении",
-  "reviewed": "рассмотрен"
+  "reviewed": "рассмотрен",
+  "From": "От",
+  "DateIn": "Когда принято",
+  "ControlDate": "Срок контроля",
+  "IsNotControlled": "Не контрольный",
+  "Rayosat": "Управление",
+  "Department": "Отдел",
+  "Position": "Должность",
+  "Rank": "Звание",
+  "Title": "Заголовок",
+  "Text": "Текст",
+  "See": "Просмотр",
+  "Download": "Скачать",
+  "Manager": "Руководство"
+
+
 }

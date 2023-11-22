@@ -3,8 +3,9 @@ import Modal from "@/Components/Modal.jsx";
 import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
 import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
-import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
+import {ArrowDownTrayIcon, EyeIcon, PencilIcon} from "@heroicons/react/24/outline/index.js";
 import {Link} from "@inertiajs/react";
+import {__} from "@/Libs/Lang.jsx";
 
 const Common = ({document}) => {
     const [fullView, setFullView] = useState(false);
@@ -17,6 +18,7 @@ const Common = ({document}) => {
         setFileUrl(url)
         setShowModal(true);
     }
+
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
@@ -25,51 +27,64 @@ const Common = ({document}) => {
             </Modal>
             <div className="flex justify-between">
                 <span className={"text-sm"}>Статус: <span
-                    className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {document.status}</span></span>
-                <span className={"text-sm"}><Link as={"button"}
-                                                  href={route(`document-edit-only-common-department.edit`, {'id': document.id})}>Edit</Link></span>
+                    className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}>{__(document.status)}</span></span>
+                <span
+                    className={"text-sm"}
+                >
+                    <Link as={"button"}
+                          className={"text-indigo-600 hover:text-indigo-500 flex hover:bg-gray-300 py-2 px-4 rounded justify-between space-x-2 items-center"}
+                          href={route(`document-edit-only-common-department.edit`, {'id': document.id})}
+                    >
+                        <PencilIcon className={"w-4 h-4"}/>
+                        <span>{__("Edit")}</span>
+                    </Link>
+                </span>
             </div>
             <article className={"mt-5"}>
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">
                         <dl className="divide-y divide-gray-100">
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Аз номи ки</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("From")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.name}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("DateIn")}/{__("ControlDate")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : 'Назорати нест'}
+                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : __("IsNotControlled")}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Раёсат/шуъба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Rayosat")}/{__("Department")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.department}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Вазифа/рутба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Position")}/{__("Rank")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.position} / {document.creator.rank}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Сарлавҳа</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Manager")}</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.manager.name}</dd>
+                            </div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">{__("Title")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.title}</dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Матн</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Text")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Ҳуҷҷатҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Documents")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -92,7 +107,7 @@ const Common = ({document}) => {
                                                             </div>
 
                                                             <div
-                                                                className="ml-4 flex-shrink-0 space-x-2 flex justify-between">
+                                                                className="ml-4 flex-shrink-0 space-x-3 flex justify-between">
                                                                 <button
                                                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                     onClick={() => openModal(`/storage/${file.file_path}`)}
@@ -100,7 +115,7 @@ const Common = ({document}) => {
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
                                                                         <EyeIcon className={"w-4 h-4"}/>
-                                                                        Дидан
+                                                                        <span>{__("See")}</span>
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
@@ -109,7 +124,7 @@ const Common = ({document}) => {
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
                                                                         <ArrowDownTrayIcon className={"w-4 h-4"}/>
-                                                                        Боргиркунӣ
+                                                                        <span>{__("Download")}</span>
                                                                     </div>
                                                                 </a>
                                                             </div>
@@ -126,7 +141,7 @@ const Common = ({document}) => {
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Истифодабарандаҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Users")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">

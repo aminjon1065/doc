@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DocumentCreatedMail;
 use App\Models\Document;
 use App\Models\DocumentFile;
 use App\Models\TypesDocument;
 use App\Models\User;
+use App\Notifications\DocumentReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class DocumentController extends Controller
@@ -96,7 +99,8 @@ class DocumentController extends Controller
         $document->code = $request->input('code');
         foreach ($documentTypeArr as $item) {
             if ($item['code'] === $document->code) {
-                $document->type = $item['type'];
+                $document->type_tj = $item['type_tj'];
+                $document->type_ru = $item['type_ru'];
                 break;
             }
         }
@@ -120,12 +124,20 @@ class DocumentController extends Controller
             }
         }
         $receiverIds = $request->input('receivers');
-
-        // Проверка, что $receiverIds действительно является массивом
         if (is_array($receiverIds)) {
-            // Связывание получателей с документом
             $document->receivers()->sync($receiverIds);
+            $receivers = User::whereIn('id', $receiverIds)->get();
+            Mail::to($receivers)->send(new DocumentCreatedMail($document));
+//            foreach ($receivers as $receiver) {
+//                Mail::to($receiver->email)->queue(new DocumentCreatedMail($document));
+//            }
+            // Получение экземпляров пользователей и отправка уведомления
+//            $receivers = User::whereIn('id', $receiverIds)->get();
+//            foreach ($receivers as $receiver) {
+//                $receiver->notify(new DocumentReceived($document));
+//            }
         }
+
         return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
     }
 
@@ -135,7 +147,7 @@ class DocumentController extends Controller
     public function show(Document $document)
     {
         $this->authorize('view', $document);
-        $document->load(['files', 'creator', 'receivers']);
+        $document->load(['files', 'creator', 'receivers', 'manager']);
         return Inertia::render('ShowDocument/index', [
             'document' => $document,
         ]);
@@ -192,18 +204,6 @@ class DocumentController extends Controller
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
         $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
         $document->save();
-//        $document->receivers()->detach();
-//        if ($request->has('receivers')) {
-//            $receiverIds = $request->input('receivers', $document->receivers->pluck('id')->toArray());
-//            // Проверка, что $receiverIds действительно является массивом
-//            if (isset($receiverIds)) {
-//                if (is_array($receiverIds)) {
-//                    // Связывание получателей с документом
-//                    $document->receivers()->attach($receiverIds);
-//                }
-//            }
-//        }
-        // Current receiver IDs
         $currentReceiverIds = $document->receivers->pluck('id')->toArray();
 
         // New receivers to add
@@ -211,11 +211,14 @@ class DocumentController extends Controller
 
         // Receivers to remove
         $receiversToRemove = array_diff($currentReceiverIds, $request->receivers);
-
+        $receiverIds = $request->input('receivers');
+        if (is_array($receiverIds)) {
+            $receivers = User::whereIn('id', $receiverIds)->get();
+            Mail::to($receivers)->send(new DocumentCreatedMail($document));
+        }
         // Update receivers
 //        $document->receivers()->detach($receiversToRemove);
         $document->receivers()->attach($receiversToAdd);
-
         if (Auth::user()->isManagementDepartment()) {
             return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
         }

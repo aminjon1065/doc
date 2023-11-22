@@ -35,6 +35,20 @@
   "from": "аз",
   "created": "сохта шуд",
   "in_review": "дар баррасӣ",
-  "reviewed": "баррасӣ шуд"
+  "reviewed": "баррасӣ шуд",
+  "From": "Аз номи ки",
+  "DateIn": "Кай кабул шуд",
+  "ControlDate": "Мӯҳлати назоратӣ",
+  "IsNotControlled": "Назоратӣ нест",
+  "Rayosat": "Раёсат",
+  "Department": "Шуъба",
+  "Position": "Вазифа",
+  "Rank": "Рутба",
+  "Title": "Сарлавҳа",
+  "Text": "Матн",
+  "See": "Дидан",
+  "Download": "Боргиркунӣ",
+  "Manager": "Роҳбарият"
+
 }
 

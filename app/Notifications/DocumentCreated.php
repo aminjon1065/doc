@@ -8,10 +8,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DocumentReceived extends Notification
+class DocumentCreated extends Notification
 {
     use Queueable;
-
     protected $document;
 
     /**
@@ -40,7 +39,7 @@ class DocumentReceived extends Notification
         return (new MailMessage)
             ->greeting('Здравствуйте, ' . $notifiable->name . '!')
             ->line('Вам отправлен новый документ: ' . $this->document->title)
-            ->action('Просмотреть Документ', url('/documents/' . $this->document->id))
+            ->action('Просмотреть Документ', url('/documents/'.$this->document->id))
             ->line('Спасибо за использование нашего приложения!');
     }
 
