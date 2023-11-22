@@ -7,7 +7,7 @@
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
     <meta name="description" content="EDM, app for document flow">
 
-    <link rel="shortcut icon" href="{{public_path('/favicon.ico')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>

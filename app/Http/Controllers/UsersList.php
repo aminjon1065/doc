@@ -11,7 +11,12 @@ class UsersList extends Controller
     public function index()
     {
         return Inertia::render('Users/index', [
-            'users' => User::all()
+            'users' => User::paginate(10)
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        
     }
 }

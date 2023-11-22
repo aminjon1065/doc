@@ -40,33 +40,66 @@ export default function Pagination({nextPage, prevPage, currentPage, total, to, 
                     <span className="font-medium">{total}</span>
                 </p>
             </div>
-            <div className="flex flex-1 justify-between items-center sm:justify-end">
-                <Link
-                    as="button"
-                    disabled={!prevPage}
-                    onClick={PrevPage}
-                    className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-                >
-                    {__('Previous')}
-                </Link>
-                <TextInput
-                    type={"number"}
-                    value={pageInput}
-                    onChange={handleInputChange}
-                    name={'page'}
-                    onKeyPress={handleKeyPress}
-                    className=" ml-2 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 border border-gray-300 text-center"
-                />
-                <Link
-                    className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
-                    as="button"
-                    disabled={!nextPage}
-                    onClick={NextPage}
-                >
-                    {__('Next')}
-                </Link>
+            {
+                handleSearchChange
+                    ?
+                    <div className="flex flex-1 justify-between items-center sm:justify-end">
+                        <Link
+                            as="button"
+                            disabled={!prevPage}
+                            onClick={PrevPage}
+                            className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+                        >
+                            {__('Previous')}
+                        </Link>
+                        <TextInput
+                            type={"number"}
+                            value={pageInput}
+                            onChange={handleInputChange}
+                            name={'page'}
+                            onKeyPress={handleKeyPress}
+                            className=" ml-2 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 border border-gray-300 text-center"
+                        />
+                        <Link
+                            className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+                            as="button"
+                            disabled={!nextPage}
+                            onClick={NextPage}
+                        >
+                            {__('Next')}
+                        </Link>
 
-            </div>
+                    </div>
+                    :
+                    <div className="flex flex-1 justify-between items-center sm:justify-end">
+                        <Link
+                            as="button"
+                            disabled={!prevPage}
+                            href={prevPage}
+                            className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+                        >
+                            {__('Previous')}
+                        </Link>
+                        <TextInput
+                            type={"number"}
+                            value={pageInput}
+                            disabled={true}
+                            onChange={handleInputChange}
+                            name={'page'}
+                            onKeyPress={handleKeyPress}
+                            className=" ml-2 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 border border-gray-300 text-center"
+                        />
+                        <Link
+                            className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+                            as="button"
+                            disabled={!nextPage}
+                            href={nextPage}
+                        >
+                            {__('Next')}
+                        </Link>
+
+                    </div>
+            }
         </nav>
     )
 }
