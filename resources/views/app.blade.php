@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <meta name="description" content="EDM, app for document flow">
 
     <link rel="shortcut icon" href="{{public_path('/favicon.ico')}}" type="image/x-icon">
     <!-- Fonts -->

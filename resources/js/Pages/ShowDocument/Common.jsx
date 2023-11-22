@@ -18,7 +18,6 @@ const Common = ({document}) => {
         setFileUrl(url)
         setShowModal(true);
     }
-
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
