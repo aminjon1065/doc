@@ -6,7 +6,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import TextInput from "@/Components/TextInput.jsx";
 import {ChevronRightIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline/index.js";
 import logo from "@/assets/logo256.webp";
-import Pagination from "@/Components/pagination.jsx";
+import Pagination from "@/Components/Pagination.jsx";
 import pickBy from 'lodash/pickBy';
 import {usePrevious} from 'react-use';
 import formatterDay from "@/Helpers/dateFormatter.js";
