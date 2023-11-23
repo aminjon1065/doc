@@ -11,13 +11,14 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 
 const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => {
+    const initialReceiverIds = document.receivers.map(receiver => receiver.id);
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
         category: document.category || '',
         is_controlled: document.is_controlled || '',
         status: document.status || '',
-        receivers: [],
+        receivers: initialReceiverIds,
     });
     const initialReceivers = document.receivers.map(receiver => ({
         value: receiver.id,
@@ -31,7 +32,6 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
     const fnUserSelected = (selectedOptions) => {
         setSelectedReceivers(selectedOptions);
         const receiverIds = selectedOptions.map(option => option.value);
-        console.log(receiverIds);
         setData('receivers', receiverIds);
     };
     const fullViewFn = () => {
@@ -44,6 +44,7 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
     const handleSubmit = (e) => {
         e.preventDefault();
         put(route('documents.update', document.id), {
+            data: {...data},
             preserveScroll: true,
             onSuccess: () => {
                 console.log("success")

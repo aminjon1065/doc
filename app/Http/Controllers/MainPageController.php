@@ -23,7 +23,7 @@ class MainPageController extends Controller
                 $route = 'documents-in-reviews.index';
                 break;
             case 'user':
-                $route = 'inbox';
+                $route = 'inbox.index';
                 break;
         endswitch;
         return redirect()->route($route);

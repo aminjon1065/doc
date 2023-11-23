@@ -5,8 +5,10 @@ import {__} from "@/Libs/Lang.jsx";
 import {PlusCircleIcon} from "@heroicons/react/24/outline/index.js";
 import Pagination from "@/Components/Pagination.jsx";
 import Modal from "@/Components/Modal.jsx";
+import AddUserForm from "@/Pages/Users/AddUserForm.jsx";
+import Alert from "@/Components/Alert.jsx";
 
-const Index = ({auth, users}) => {
+const Index = ({auth, users, flash}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const fullViewFn = () => {
@@ -15,6 +17,8 @@ const Index = ({auth, users}) => {
     const openModal = () => {
         setShowModal(true);
     }
+    const [visible, setVisible] = useState(true);
+    const handleCloseAlert = () => setVisible(false);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -26,8 +30,14 @@ const Index = ({auth, users}) => {
                 fullView={fullView}
                 fullViewFn={fullViewFn}
             >
-                Lorem ipsum dolor sit amet, consectetur.
+                <AddUserForm onClose={() => setShowModal(false)}/>
             </Modal>
+            {visible && flash.success &&
+                <Alert onClose={handleCloseAlert} message={flash.success}/>
+            }
+            {visible && flash.error &&
+                <Alert onClose={handleCloseAlert} message={flash.error}/>
+            }
             <div>
                 <div className="px-4 sm:px-6 lg:px-8">
                     <div className="sm:flex sm:items-center">

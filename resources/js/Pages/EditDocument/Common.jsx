@@ -9,15 +9,18 @@ import Modal from "@/Components/Modal.jsx";
 import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
+import {__} from "@/Libs/Lang.jsx";
 
-const Common = ({auth, document, managers}) => {
+const Common = ({auth, document, managers, flash}) => {
+    console.log(flash)
+    const initialReceiverIds = document.receivers.map(receiver => receiver.id);
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
         category: document.category || '',
         is_controlled: document.is_controlled || '',
         status: document.status || '',
-        receivers: [],
+        receivers: initialReceiverIds
     });
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
@@ -47,6 +50,7 @@ const Common = ({auth, document, managers}) => {
         e.preventDefault();
         put(route('documents.update', document.id), {
             preserveScroll: true,
+            data: {...data},
             onSuccess: () => {
                 console.log("success")
             },
@@ -56,11 +60,13 @@ const Common = ({auth, document, managers}) => {
         <
 
         >
-
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
                    fullViewFn={fullViewFn}>
                 <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
+            {
+                flash.error ? (<div><p className={"text-red-700"}>{__(flash.error)}</p></div>) : null
+            }
             <div className={"mt-5 overflow-auto"}>
                 <div className="bg-white min-h-full  shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">

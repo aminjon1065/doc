@@ -179,7 +179,7 @@ class DocumentController extends Controller
     {
         if ($request->category) {
             if ($document->status !== 'reviewed' && $request->status !== 'reviewed') {
-                return back()->with('error', 'Обновление недоступно, так как документ не находится на рассмотрении.');
+                return back()->with('error', 'ReviewedError');
             }
         }
         $validatedData = $request->validate([
@@ -191,28 +191,28 @@ class DocumentController extends Controller
             'receivers' => 'nullable|array',
         ]);
         $document->manager_id = $request->input('manager_id', $document->manager_id);
+
         $document->category = $request->input('category', $document->category);
         $document->status = $request->filled('status') ? $request->input('status') : $document->status;
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
         $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
         $document->save();
-        $currentReceiverIds = $document->receivers->pluck('id')->toArray();
+        if ($request->has('receivers')) {
+            $receiverIds = $request->input('receivers', []);
 
-        // New receivers to add
-        $receiversToAdd = array_diff($request->receivers, $currentReceiverIds);
+            // Отправка писем только новым получателям
+            $currentReceiverIds = $document->receivers->pluck('id')->toArray();
+            $receiversToAdd = array_diff($receiverIds, $currentReceiverIds);
 
-        // Receivers to remove
-        $receiversToRemove = array_diff($currentReceiverIds, $request->receivers);
-        $receiverIds = $request->input('receivers');
-        if ($request->has("receivers")) {
-            if (is_array($receiverIds)) {
-                $receivers = User::whereIn('id', $receiverIds)->get();
-                Mail::to($receivers)->send(new DocumentCreatedMail($document));
+            if (!empty($receiversToAdd)) {
+                $newReceivers = User::whereIn('id', $receiversToAdd)->get();
+                Mail::to($newReceivers)->send(new DocumentCreatedMail($document));
             }
+
+            // Обновление списка получателей
+            $document->receivers()->sync($receiverIds);
         }
-        // Update receivers
-//        $document->receivers()->detach($receiversToRemove);
-        $document->receivers()->attach($receiversToAdd);
+
         if (Auth::user()->isManagementDepartment()) {
             return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
         }
