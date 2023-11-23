@@ -9,7 +9,6 @@ import LangToggle from "@/Components/LangToggle.jsx";
 
 export default function Authenticated({user, header, children}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
@@ -52,7 +51,7 @@ export default function Authenticated({user, header, children}) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link href={route('logout')}  method="post" as="button">
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>

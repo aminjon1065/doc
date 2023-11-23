@@ -7,7 +7,7 @@ import EditorComponent from "@/Components/EditorComponent.jsx";
 import {BsFileEarmarkExcelFill, BsFileEarmarkPdfFill, BsFileEarmarkWordFill} from "react-icons/bs";
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import Select from "react-tailwindcss-select";
-
+import {__} from '@/Libs/Lang.jsx';
 const Common = ({managers, users, typesDocuments, currentLocale}) => {
     const {data, setData, post, errors} = useForm({
         manager_id: '',
@@ -87,7 +87,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
             <div className="flex justify-between items-center space-x-2 mb-5">
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"title"}>
-                        Сарлавҳа
+                        {__('Title')}
                         <sup
                             className={"text-red-500 font-bold"}
                         >
@@ -105,7 +105,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                 </div>
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"type"}>
-                        Намуди ҳуҷҷат
+                        {__('TypeDocument')}
                         <sup
                             className={"text-red-500 font-bold"}
                         >
@@ -120,7 +120,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                         onChange={(event) => setData('code', event.target.value)}
                     >
                         <option disabled={true} value="">
-                            Намуди ҳуҷҷатро интихоб кунед
+                            {__("Select")}
                         </option>
                         {typesDocuments.map((item, index) => (
                             <option value={item.code} key={index}>
@@ -134,20 +134,20 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
             <div className="sm:col-span-6 mb-5">
                 <label htmlFor="description"
                        className="block text-sm font-medium text-gray-700">
-                    Мактуб
+                    {__('Text')}
                 </label>
                 <div
                     className="z-10">
                     <EditorComponent getContent={getContent}/>
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                    пурра кардани матни ҳуҷҷат ва д.
+                    {__('TextInfo')}
                 </p>
             </div>
             <div className="flex justify-between items-center space-x-2 mb-5">
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"managers"}>
-                        Роҳбарият
+                        {__('Manager')}
                     </InputLabel>
                     <select
                         name="manager_id"
@@ -170,7 +170,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
 
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"receivers"}>
-                        Истифодабарандагон
+                        {__('Users')}
                     </InputLabel>
                     <Select
                         placeholder={"Интихоб кунед..."}
@@ -205,7 +205,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
             <div className="flex justify-between items-center space-x-2 mb-5">
                 <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"category"}>
-                        Категория
+                        {__('Category')}
                     </InputLabel>
                     <select
                         name="category"
@@ -225,7 +225,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                 <div className={`sm:col-span-3 w-full`}>
                     <div className={"flex-col justify-between items-center"}>
                         <InputLabel htmlFor={"status"}>
-                            Статус
+                            {__('Status')}
                         </InputLabel>
                         <select
                             name="status"
@@ -246,7 +246,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                 <div className={`sm:col-span-3 w-full`}>
                     <label htmlFor="control"
                            className="block text-sm font-medium text-gray-700">
-                        Назоратӣ
+                        {__('IsControlled')}
                     </label>
                     <div className={"flex items-center space-x-2 border border-gray-300 rounded-md  px-2 py-1.5"}>
                         <div
@@ -303,7 +303,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                                           <span
                                               className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                                           >
-                                              Боргиркунии ҳуҷҷатҳо
+                                              {__('UploadDocuments')}
                                           </span>
                         </div>
                         <p className="text-xs text-gray-500">DOCX,
@@ -440,12 +440,12 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                     href={route('documents.index')}
                     className={"bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
                 >
-                    Бекор
+                    {__('Cancel')}
                 </Link>
                 <button
                     className={"bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
                 >
-                    Сохтан
+                    {__('Create')}
                 </button>
             </div>
         </form>

@@ -17,6 +17,7 @@
     "CommonDocuments": "Общие документы",
     "ReviewDocument": "Документы на рассмотрение",
     "TypeDocument": "Тип документа",
+    "Select": "Выбрать",
     "CodeDocument": "Код документа",
     "Inbox": "Входящие",
     "Sent": "Исходящие",
@@ -61,7 +62,13 @@
     "UpdatePasswordInfo": "Вы можете обновить свой пароль",
     "CurrentPassword": "Текущий парооль",
     "NewPassword": "Новый пароль",
-    "NewPasswordConfirm": "Новый пароль ещё раз введите"
-
+    "NewPasswordConfirm": "Новый пароль ещё раз введите",
+    "ForgotPassword": "Забыли пароль?",
+    "ForgotPasswordFeedBack": "Если забыли свой пароль, пожалуйста обращайтесь в Общий отдел",
+    "TextInfo": "заполнить текст документа и тд.",
+    "Category": "Категория",
+    "Status": "Статус",
+    "Create": "Создать",
+    "UploadDocuments": "Загрузить документы"
 
 }

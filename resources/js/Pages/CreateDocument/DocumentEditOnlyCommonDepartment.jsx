@@ -34,8 +34,6 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         console.log(receiverIds);
         setData('receivers', receiverIds);
     };
-    console.log(document);
-    console.log(selectedReceivers);
     const fullViewFn = () => {
         setFullView(!fullView);
     }

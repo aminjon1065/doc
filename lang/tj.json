@@ -17,6 +17,7 @@
     "CommonDocuments": "Ҳуҷҷатҳои умумӣ",
     "ReviewDocument": "Ҳуҷҷатҳо барои баррасӣ",
     "TypeDocument": "Намуди ҳуҷҷат",
+    "Select": "Интихоб",
     "CodeDocument": "Коди ҳуҷҷат",
     "Inbox": "Воридотӣ",
     "Sent": "Содиротӣ",
@@ -61,6 +62,13 @@
     "UpdatePasswordInfo": "Метавноед дар инҷо рамзи худро иваз кунед",
     "CurrentPassword": "Рамзи ҷорӣ",
     "NewPassword": "Рамзи нав",
-    "NewPasswordConfirm": "Рамзи навро такрор ворид кунед"
+    "NewPasswordConfirm": "Рамзи навро такрор ворид кунед",
+    "ForgotPassword": "Рамзро фаромуш кардед?",
+    "ForgotPasswordFeedBack": "Агар рамзи худро фаромуш карда бошед, ба Шуъбаи умумӣ муроҷиат намоед",
+    "TextInfo": "пурра кардани матни ҳуҷҷат ва д.",
+    "Category": "Категория",
+    "Status": "Статус",
+    "Create": "Сохтан",
+    "UploadDocuments": "Боргирӣ ҳуҷҷатҳо"
 }
 

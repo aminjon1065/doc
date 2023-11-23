@@ -128,14 +128,6 @@ class DocumentController extends Controller
             $document->receivers()->sync($receiverIds);
             $receivers = User::whereIn('id', $receiverIds)->get();
             Mail::to($receivers)->send(new DocumentCreatedMail($document));
-//            foreach ($receivers as $receiver) {
-//                Mail::to($receiver->email)->queue(new DocumentCreatedMail($document));
-//            }
-            // Получение экземпляров пользователей и отправка уведомления
-//            $receivers = User::whereIn('id', $receiverIds)->get();
-//            foreach ($receivers as $receiver) {
-//                $receiver->notify(new DocumentReceived($document));
-//            }
         }
 
         return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
