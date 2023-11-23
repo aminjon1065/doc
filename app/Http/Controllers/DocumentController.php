@@ -204,9 +204,11 @@ class DocumentController extends Controller
         // Receivers to remove
         $receiversToRemove = array_diff($currentReceiverIds, $request->receivers);
         $receiverIds = $request->input('receivers');
-        if (is_array($receiverIds)) {
-            $receivers = User::whereIn('id', $receiverIds)->get();
-            Mail::to($receivers)->send(new DocumentCreatedMail($document));
+        if ($request->has("receivers")) {
+            if (is_array($receiverIds)) {
+                $receivers = User::whereIn('id', $receiverIds)->get();
+                Mail::to($receivers)->send(new DocumentCreatedMail($document));
+            }
         }
         // Update receivers
 //        $document->receivers()->detach($receiversToRemove);
