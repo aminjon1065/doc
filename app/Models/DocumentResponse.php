@@ -20,7 +20,7 @@ class DocumentResponse extends Model
         return $this->belongsTo(Document::class);
     }
 
-    public function sender(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

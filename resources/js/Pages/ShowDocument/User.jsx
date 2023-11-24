@@ -4,9 +4,13 @@ import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
 import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
 import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import {__} from "@/Libs/Lang.jsx";
+
 const User = ({document}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showResponseModal, setShowResponseModal] = useState()
     const [fileUrl, setFileUrl] = useState('');
     const fullViewFn = () => {
         setFullView(!fullView);
@@ -15,55 +19,67 @@ const User = ({document}) => {
         setFileUrl(url)
         setShowModal(true);
     }
+
+    const openResponseModal = () => {
+        setShowResponseModal(true);
+    }
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
                    fullViewFn={fullViewFn}>
                 <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
+            <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
+                   fullViewFn={fullViewFn}>
+                response
+            </Modal>
             <span className={"text-sm"}>Статус: <span
-                className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {document.status}</span></span>
+                className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}> {__(document.status)}</span></span>
             <article className={"mt-5"}>
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">
                         <dl className="divide-y divide-gray-100">
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Аз номи ки</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("From")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.name}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("DateIn")}/{__("ControlDate")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
                                     className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : 'Назорати нест'}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Раёсат/шуъба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Rayosat")}/{__("Department")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.department}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Вазифа/рутба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Position")}/{__("Rank")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.position} / {document.creator.rank}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Сарлавҳа</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Manager")}</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.manager.name}</dd>
+                            </div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">{__("Title")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.title}</dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Матн</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Text")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Ҳуҷҷатҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Documents")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -94,7 +110,8 @@ const User = ({document}) => {
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
                                                                         <EyeIcon className={"w-4 h-4"}/>
-                                                                        Дидан
+                                                                        <span>{__("See")}</span>
+
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
@@ -103,7 +120,7 @@ const User = ({document}) => {
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
                                                                         <ArrowDownTrayIcon className={"w-4 h-4"}/>
-                                                                        Боргиркунӣ
+                                                                        <span>{__("Download")}</span>
                                                                     </div>
                                                                 </a>
                                                             </div>
@@ -120,7 +137,7 @@ const User = ({document}) => {
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Истифодабарандаҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Users")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -153,6 +170,13 @@ const User = ({document}) => {
                             </div>
                         </dl>
                     </div>
+                </div>
+                <div className="flex mt-5 justify-end">
+                    <PrimaryButton
+                        onClick={openResponseModal}
+                    >
+                        {__("Reply")}
+                    </PrimaryButton>
                 </div>
             </article>
         </>
