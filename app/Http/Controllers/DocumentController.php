@@ -182,6 +182,7 @@ class DocumentController extends Controller
                 return back()->with('error', 'ReviewedError');
             }
         }
+
         $validatedData = $request->validate([
             'manager_id' => 'nullable|exists:users,id',
             'category' => 'nullable|string',
@@ -199,7 +200,6 @@ class DocumentController extends Controller
         $document->save();
         if ($request->has('receivers')) {
             $receiverIds = $request->input('receivers', []);
-
             // Отправка писем только новым получателям
             $currentReceiverIds = $document->receivers->pluck('id')->toArray();
             $receiversToAdd = array_diff($receiverIds, $currentReceiverIds);
@@ -208,7 +208,6 @@ class DocumentController extends Controller
                 $newReceivers = User::whereIn('id', $receiversToAdd)->get();
                 Mail::to($newReceivers)->send(new DocumentCreatedMail($document));
             }
-
             // Обновление списка получателей
             $document->receivers()->sync($receiverIds);
         }

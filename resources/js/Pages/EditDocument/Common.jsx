@@ -12,7 +12,6 @@ import InputLabel from "@/Components/InputLabel.jsx";
 import {__} from "@/Libs/Lang.jsx";
 
 const Common = ({auth, document, managers, flash}) => {
-    console.log(flash)
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
@@ -20,16 +19,21 @@ const Common = ({auth, document, managers, flash}) => {
         category: document.category || '',
         is_controlled: document.is_controlled || '',
         status: document.status || '',
-        receivers: initialReceiverIds
+        receivers: initialReceiverIds,
     });
+    const initialReceivers = document.receivers.map(receiver => ({
+        value: receiver.id,
+        label: `${receiver.name} - ${receiver.department} (${receiver.region})`
+    }));
+    const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
-    const fnUserSelected = (value) => {
-        setUserSelected(value);
-        const receiverIds = value ? value.map(item => item.value) : [];
+    const fnUserSelected = (selectedOptions) => {
+        setSelectedReceivers(selectedOptions);
+        const receiverIds = selectedOptions.map(option => option.value);
         setData('receivers', receiverIds);
     };
     useEffect(() => {
@@ -223,12 +227,11 @@ const Common = ({auth, document, managers, flash}) => {
                                                         id={"receivers"}
                                                         noOptionsMessage={"Ин гуна истифодабарнада нест!"}
                                                         searchInputPlaceholder={""}
-                                                        isDisabled={document.receivers.length >= 1}
                                                         isSearchable
                                                         isMultiple
-                                                        value={userSelected}
+                                                        value={selectedReceivers}
                                                         onChange={fnUserSelected}
-                                                        options={usersList}
+                                                        options={users}
                                                         classNames={{
                                                             menuButton: ({isDisabled}) => (
                                                                 `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${

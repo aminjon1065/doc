@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
 import formatterDay from "@/Helpers/dateFormatter.js";
@@ -12,6 +12,10 @@ import InputLabel from "@/Components/InputLabel.jsx";
 
 const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
+    const initialReceivers = document.receivers.map(receiver => ({
+        value: receiver.id,
+        label: `${receiver.name} - ${receiver.department} (${receiver.region})`
+    }));
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
@@ -20,11 +24,6 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         status: document.status || '',
         receivers: initialReceiverIds,
     });
-    const initialReceivers = document.receivers.map(receiver => ({
-        value: receiver.id,
-        label: `${receiver.name} - ${receiver.department} (${receiver.region})`
-    }));
-
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -34,6 +33,9 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         const receiverIds = selectedOptions.map(option => option.value);
         setData('receivers', receiverIds);
     };
+    useEffect(() => {
+        console.log("Data to be sent:", data);
+    }, [data]);
     const fullViewFn = () => {
         setFullView(!fullView);
     }
@@ -42,9 +44,10 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         setShowModal(true);
     }
     const handleSubmit = (e) => {
+        console.log(data);
         e.preventDefault();
         put(route('documents.update', document.id), {
-            data: {...data},
+            data: {...data, receivers: data.receivers},
             preserveScroll: true,
             onSuccess: () => {
                 console.log("success")
