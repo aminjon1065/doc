@@ -9,4 +9,5 @@ class DocumentFileResponse extends Model
 {
     use HasFactory;
 
+
 }

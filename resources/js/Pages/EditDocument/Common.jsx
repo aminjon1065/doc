@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, useForm} from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import formatterDay from "@/Helpers/dateFormatter.js";
-import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
-import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
+import { PaperClipIcon } from "@heroicons/react/20/solid/index.js";
+import { ArrowDownTrayIcon, EyeIcon } from "@heroicons/react/24/outline/index.js";
 import FileViewer from "@/Components/FileViewer.jsx";
 import Modal from "@/Components/Modal.jsx";
 import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
-import {__} from "@/Libs/Lang.jsx";
+import { __ } from "@/Libs/Lang.jsx";
 
-const Common = ({auth, document, managers, flash}) => {
+const Common = ({ document, managers, flash, users }) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
-    const {data, setData, put, errors} = useForm({
+    const { data, setData, put, errors } = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
         category: document.category || '',
@@ -27,7 +27,6 @@ const Common = ({auth, document, managers, flash}) => {
     }));
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
     const [userSelected, setUserSelected] = useState(null);
-    const [usersList, setUsersList] = useState([]);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
@@ -36,13 +35,6 @@ const Common = ({auth, document, managers, flash}) => {
         const receiverIds = selectedOptions.map(option => option.value);
         setData('receivers', receiverIds);
     };
-    useEffect(() => {
-        axios.get(route('users-list')).then((response) => {
-            setUsersList(response.data)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }, []);
     const fullViewFn = () => {
         setFullView(!fullView);
     }
@@ -54,19 +46,17 @@ const Common = ({auth, document, managers, flash}) => {
         e.preventDefault();
         put(route('documents.update', document.id), {
             preserveScroll: true,
-            data: {...data},
+            data: { ...data },
             onSuccess: () => {
                 console.log("success")
             },
         });
     };
     return (
-        <
-
-        >
+        <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
-                   fullViewFn={fullViewFn}>
-                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
+                fullViewFn={fullViewFn}>
+                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl} />
             </Modal>
             {
                 flash.error ? (<div><p className={"text-red-700"}>{__(flash.error)}</p></div>) : null
@@ -85,7 +75,7 @@ const Common = ({auth, document, managers, flash}) => {
                                 <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex items-center">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : "Назорати нест"}
+                                        className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : "Назорати нест"}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -107,7 +97,7 @@ const Common = ({auth, document, managers, flash}) => {
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">Матн</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    <div dangerouslySetInnerHTML={{__html: document.description}}></div>
+                                    <div dangerouslySetInnerHTML={{ __html: document.description }}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -122,6 +112,7 @@ const Common = ({auth, document, managers, flash}) => {
                                                 <select
                                                     name="manager_id"
                                                     id="manager_id"
+                                                    defaultValue=""
                                                     onChange={(e) => setData('manager_id', e.target.value)}
                                                     className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
                                                 >
@@ -154,10 +145,10 @@ const Common = ({auth, document, managers, flash}) => {
                                                             <div className="flex w-0 flex-1 items-center">
                                                                 <PaperClipIcon
                                                                     className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                    aria-hidden="true"/>
+                                                                    aria-hidden="true" />
                                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                                    <span
-                                                        className="truncate font-medium">{file.file_name}</span>
+                                                                    <span
+                                                                        className="truncate font-medium">{file.file_name}</span>
                                                                     <span
                                                                         className="flex-shrink-0 text-gray-400">{file.file_size}kb</span>
                                                                 </div>
@@ -171,16 +162,16 @@ const Common = ({auth, document, managers, flash}) => {
                                                                 >
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <EyeIcon className={"w-4 h-4"}/>
+                                                                        <EyeIcon className={"w-4 h-4"} />
                                                                         Дидан
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
-                                                                   download={`/storage/${file.file_path}`}
-                                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                    download={`/storage/${file.file_path}`}
+                                                                    className="font-medium text-indigo-600 hover:text-indigo-500">
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <ArrowDownTrayIcon className={"w-4 h-4"}/>
+                                                                        <ArrowDownTrayIcon className={"w-4 h-4"} />
                                                                         Боргиркунӣ
                                                                     </div>
                                                                 </a>
@@ -210,8 +201,8 @@ const Common = ({auth, document, managers, flash}) => {
                                                             className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                                                             <div className="flex w-0 flex-1 items-center">
                                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                                        <span
-                                                            className="truncate font-medium">{receiver.name}</span>
+                                                                    <span
+                                                                        className="truncate font-medium">{receiver.name}</span>
                                                                     <span
                                                                         className="flex-shrink-0 text-gray-400">{receiver.department} / {receiver.region}</span>
                                                                 </div>
@@ -220,38 +211,37 @@ const Common = ({auth, document, managers, flash}) => {
                                                     ))
                                                 )
                                                 :
-                                                <li
-                                                    className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                                    <Select
-                                                        placeholder={"Интихоб кунед..."}
-                                                        id={"receivers"}
-                                                        noOptionsMessage={"Ин гуна истифодабарнада нест!"}
-                                                        searchInputPlaceholder={""}
-                                                        isSearchable
-                                                        isMultiple
-                                                        value={selectedReceivers}
-                                                        onChange={fnUserSelected}
-                                                        options={users}
-                                                        classNames={{
-                                                            menuButton: ({isDisabled}) => (
-                                                                `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                                                                    isDisabled
+                                                (<span>
+                                                    <div className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                        <Select
+                                                            placeholder={"Интихоб кунед..."}
+                                                            id={"receivers"}
+                                                            noOptionsMessage={"Ин гуна истифодабарнада нест!"}
+                                                            searchInputPlaceholder={""}
+                                                            isSearchable
+                                                            isMultiple
+                                                            value={selectedReceivers}
+                                                            onChange={fnUserSelected}
+                                                            options={users}
+                                                            classNames={{
+                                                                menuButton: ({ isDisabled }) => (
+                                                                    `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${isDisabled
                                                                         ? "bg-gray-200"
                                                                         : "block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                                }`
-                                                            ),
-                                                            menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
-                                                            listItem: ({isSelected}) => (
-                                                                `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
-                                                                    isSelected
+                                                                    }`
+                                                                ),
+                                                                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                                                                listItem: ({ isSelected }) => (
+                                                                    `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${isSelected
                                                                         ? `text-white bg-blue-500`
                                                                         : `text-gray-500 hover:bg-indigo-100 hover:text-indigo-600`
-                                                                }`
-                                                            )
-                                                        }}
-                                                        primaryColor={"indigo"}
-                                                    />
-                                                </li>
+                                                                    }`
+                                                                )
+                                                            }}
+                                                            primaryColor={"indigo"}
+                                                        />
+                                                    </div>
+                                                </span>)
                                         }
                                     </ul>
                                 </dd>
@@ -302,7 +292,7 @@ const Common = ({auth, document, managers, flash}) => {
                                 </div>
                                 <div className={`sm:col-span-3 w-full`}>
                                     <label htmlFor="control"
-                                           className="block text-sm font-medium text-gray-700">
+                                        className="block text-sm font-medium text-gray-700">
                                         Назоратӣ
                                     </label>
                                     <div
@@ -335,7 +325,7 @@ const Common = ({auth, document, managers, flash}) => {
                     </div>
                     <div className="px-4 py-6 flex justify-end items-center">
                         <PrimaryButton className={""} onClick={handleSubmit}>
-                            test
+                            {__("Save")}
                         </PrimaryButton>
                     </div>
                 </div>

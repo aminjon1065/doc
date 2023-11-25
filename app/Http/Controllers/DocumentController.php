@@ -30,8 +30,7 @@ class DocumentController extends Controller
         $typeDocument = $request->input('typeDocument');
         $isControlled = filter_var($request->input('is_controlled'), FILTER_VALIDATE_BOOLEAN);
         $perPage = 10; // Количество элементов на странице
-        $documents = Document::
-        with(['files', 'creator', 'receivers'])
+        $documents = Document::with(['files', 'creator', 'receivers'])
             ->search($searchTerm)
             ->withEmptyCategory() // Использование нового scope
             ->isControlled($isControlled)
@@ -139,22 +138,22 @@ class DocumentController extends Controller
     public function show(Document $document)
     {
         $this->authorize('view', $document);
-        $document->load(['files', 'creator', 'receivers', 'manager']);
+        $document->load(['files', 'creator', 'receivers', 'manager', 'responses']);
         return Inertia::render('ShowDocument/index', [
             'document' => $document,
         ]);
-//        if (Auth::user()->isCommonDepartment()) {
-//            $managers = User::where('role', 'management')->get();
-//            $document->load(['files', 'creator', 'receivers']);
-//            return Inertia::render('Documents/CommonShow', [
-//                'document' => $document,
-//                'managers' => $managers
-//            ]);
-//        }
-//        $document->load(['files', 'creator', 'receivers']);
-//        return Inertia::render('Documents/UserShow', [
-//            'document' => $document,
-//        ]);
+        //        if (Auth::user()->isCommonDepartment()) {
+        //            $managers = User::where('role', 'management')->get();
+        //            $document->load(['files', 'creator', 'receivers']);
+        //            return Inertia::render('Documents/CommonShow', [
+        //                'document' => $document,
+        //                'managers' => $managers
+        //            ]);
+        //        }
+        //        $document->load(['files', 'creator', 'receivers']);
+        //        return Inertia::render('Documents/UserShow', [
+        //            'document' => $document,
+        //        ]);
     }
 
     /**
@@ -163,12 +162,22 @@ class DocumentController extends Controller
     public function edit(Document $document)
     {
         $this->authorize('view', $document);
+        $users = User::all()->map(function ($user) {
+            if ($user->role == 'user') {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->name . '-' . $user->department . ' (' . $user->region . ')'
+                ];
+            }
+            return null;
+        })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         $managers = User::where('role', 'management')->get();
         $document->load(['files', 'creator', 'receivers', 'manager']);
-//        $document->load(['files', 'creator', 'receivers']);
+        //        $document->load(['files', 'creator', 'receivers']);
         return Inertia::render('EditDocument/index', [
             'document' => $document,
-            'managers' => $managers
+            'managers' => $managers,
+            'users' => $users,
         ]);
     }
 

@@ -13,7 +13,11 @@ class DocumentResponse extends Model
     protected $fillable = [
         'document_id',
         'user_id',
+        "description"
     ];
+
+
+
 
     public function document(): BelongsTo
     {
@@ -23,5 +27,10 @@ class DocumentResponse extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function files(): BelongsTo
+    {
+        return $this->belongsTo(DocumentFileResponse::class);
     }
 }

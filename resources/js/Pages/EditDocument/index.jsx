@@ -4,7 +4,7 @@ import {Head, useForm} from "@inertiajs/react";
 import Common from "@/Pages/EditDocument/Common.jsx";
 import Management from "@/Pages/EditDocument/Management.jsx";
 
-const Index = ({auth, document, managers, flash}) => {
+const Index = ({auth, document, managers, users,flash}) => {
 
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
@@ -54,7 +54,7 @@ const Index = ({auth, document, managers, flash}) => {
             <Head title={"Edit"}/>
             {
                 auth.user.role === 'common' &&
-                <Common auth={auth} document={document} managers={managers} flash={flash}/>
+                <Common auth={auth} document={document} managers={managers} flash={flash} users={users}/>
             }
             {
                 auth.user.role === 'management' && <Management auth={auth} document={document} managers={managers}/>

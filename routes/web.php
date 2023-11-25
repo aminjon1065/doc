@@ -8,7 +8,7 @@ use App\Http\Controllers\UsersList as UsersListAlias;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\DocumentResponseController as DocumentResponseControllerAlias;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +35,7 @@ Route::middleware('locale')->group(function () {
         Route::get('/sent', [App\Http\Controllers\SentController::class, 'index'])->name('sent.index');
         Route::get('/inbox', [App\Http\Controllers\InboxController::class, 'index'])->name('inbox.index');
         Route::get('users-list', [GetUsersListAlias::class, 'usersList'])->name('users-list');
+        Route::post('reply-to-documents/', [DocumentResponseControllerAlias::class, 'store'])->name('reply-to-documents.store');
         Route::get('document-edit-only-common-department/{document}', [App\Http\Controllers\DocumentEditOnlyCommonDepartment::class, 'edit'])->name('document-edit-only-common-department.edit');
     });
     Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
@@ -45,4 +46,3 @@ Route::middleware('locale')->group(function () {
     require __DIR__ . '/auth.php';
     Route::post('/language', [App\Http\Controllers\LanguageController::class, 'store'])->name('language.store');
 });
-

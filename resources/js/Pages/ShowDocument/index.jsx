@@ -14,7 +14,7 @@ const Index = ({auth, document}) => {
             <Head title={document ? document.title : 'EDM'}/>
             {
                 user.role === 'user' && (
-                    <User document={document}/>
+                    <User document={document} userId={user.id}/>
                 )
             }
             {
@@ -24,7 +24,7 @@ const Index = ({auth, document}) => {
             }
             {
                 user.role === 'common' && (
-                    <Common document={document}/>
+                    <Common document={document} userId={user.id}/>
                 )
             }
         </AuthenticatedLayout>
