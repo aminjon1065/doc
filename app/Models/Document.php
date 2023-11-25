@@ -40,7 +40,7 @@ class Document extends Model
 
     public function responses(): HasMany
     {
-        return $this->hasMany(DocumentResponse::class);
+        return $this->hasMany(DocumentResponse::class)->with(['user', 'files']);
     }
 
 

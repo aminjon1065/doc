@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DocumentResponse extends Model
 {
@@ -16,9 +17,6 @@ class DocumentResponse extends Model
         "description"
     ];
 
-
-
-
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
@@ -29,8 +27,8 @@ class DocumentResponse extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function files(): BelongsTo
+    public function files(): HasMany
     {
-        return $this->belongsTo(DocumentFileResponse::class);
+        return $this->hasMany(DocumentFileResponse::class, 'document_responses_id', 'id');
     }
 }

@@ -10,6 +10,9 @@ import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 import { __ } from "@/Libs/Lang.jsx";
+import {RiQuestionAnswerFill} from "react-icons/ri";
+import ShowReply from "@/Components/ShowReply.jsx";
+import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
 
 const Common = ({ document, managers, flash, users }) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
@@ -26,10 +29,11 @@ const Common = ({ document, managers, flash, users }) => {
         label: `${receiver.name} - ${receiver.department} (${receiver.region})`
     }));
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
-    const [userSelected, setUserSelected] = useState(null);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
+    const [showResponseModal, setShowResponseModal] = useState()
+
     const fnUserSelected = (selectedOptions) => {
         setSelectedReceivers(selectedOptions);
         const receiverIds = selectedOptions.map(option => option.value);
@@ -41,6 +45,14 @@ const Common = ({ document, managers, flash, users }) => {
     const openModal = (url) => {
         setFileUrl(url)
         setShowModal(true);
+    }
+    const openFileModal = (fileUrl) => {
+        setFileUrl(fileUrl);
+        setShowModal(true);
+        console.log(fileUrl);
+    }
+    const openResponseModal = () => {
+        setShowResponseModal(true);
     }
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -58,9 +70,32 @@ const Common = ({ document, managers, flash, users }) => {
                 fullViewFn={fullViewFn}>
                 <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl} />
             </Modal>
+            <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
+                   fullViewFn={fullViewFn}>
+                <ReplyToDocument documentId={document.id} onClose={() => setShowResponseModal(false)}/>
+            </Modal>
             {
                 flash.error ? (<div><p className={"text-red-700"}>{__(flash.error)}</p></div>) : null
             }
+            <div className='flex justify-between items-center'>
+                <span className={"text-sm"}>
+                    Статус:
+                    <span
+                        className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}
+                    >
+                        {__(document.status)}
+                    </span>
+                </span>
+                {
+                    document.status !== "reviewed" && (
+                        <PrimaryButton
+                            onClick={openResponseModal}
+                        >
+                            {__("Reply")}
+                        </PrimaryButton>
+                    )
+                }
+            </div>
             <div className={"mt-5 overflow-auto"}>
                 <div className="bg-white min-h-full  shadow sm:rounded-lg">
                     <div className="border-t border-gray-100">
@@ -330,6 +365,37 @@ const Common = ({ document, managers, flash, users }) => {
                     </div>
                 </div>
             </div>
+
+            {
+                document.responses.length >= 1 ?
+                    <div className={"mt-5"}>
+                        <div className="flex items-center mb-2">
+                            <RiQuestionAnswerFill/>
+                            <h3>{__("Replies")}</h3>
+                        </div>
+                        <div className="overflow-hidden bg-white shadow sm:rounded-lg p-5">
+                            <div className="border-t border-gray-100">
+                                <dl className="divide-y divide-gray-100">
+                                    {
+
+                                        document.responses.map((reply, index) => (
+                                            <div key={index}>
+                                                <ShowReply
+                                                    userName={reply.user.name}
+                                                    description={reply.description}
+                                                    files={reply.files} createdAt={reply.created_at}
+                                                    onFileClick={openFileModal}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    null
+            }
         </>
     );
 };

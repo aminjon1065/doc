@@ -7,6 +7,8 @@ import { ArrowDownTrayIcon, EyeIcon, PencilIcon } from "@heroicons/react/24/outl
 import { Link } from "@inertiajs/react";
 import { __ } from "@/Libs/Lang.jsx";
 import ReplyToDocument from '@/Components/ReplyToDocument';
+import {RiQuestionAnswerFill} from "react-icons/ri";
+import ShowReply from "@/Components/ShowReply.jsx";
 
 const Common = ({ document, userId }) => {
     const [fullView, setFullView] = useState(false);
@@ -177,6 +179,36 @@ const Common = ({ document, userId }) => {
                     </div>
                 </div>
             </article>
+            {
+                document.responses.length >= 1 ?
+                    <div className={"mt-5"}>
+                        <div className="flex items-center mb-2">
+                            <RiQuestionAnswerFill/>
+                            <h3>{__("Replies")}</h3>
+                        </div>
+                        <div className="overflow-hidden bg-white shadow sm:rounded-lg p-5">
+                            <div className="border-t border-gray-100">
+                                <dl className="divide-y divide-gray-100">
+                                    {
+
+                                        document.responses.map((reply, index) => (
+                                            <div key={index}>
+                                                <ShowReply
+                                                    userName={reply.user.name}
+                                                    description={reply.description}
+                                                    files={reply.files} createdAt={reply.created_at}
+                                                    onFileClick={openFileModal}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    null
+            }
             <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
                 fullViewFn={fullViewFn}>
                 <ReplyToDocument documentId={document.id} userId={userId} onClose={() => setShowResponseModal(false)} />

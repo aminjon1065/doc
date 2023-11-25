@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Modal from "@/Components/Modal.jsx";
 import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
-import { PaperClipIcon } from "@heroicons/react/20/solid/index.js";
-import { ArrowDownTrayIcon, EyeIcon } from "@heroicons/react/24/outline/index.js";
+import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
+import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import { __ } from "@/Libs/Lang.jsx";
+import {__} from "@/Libs/Lang.jsx";
 import ReplyToDocument from '@/Components/ReplyToDocument';
+import {RiQuestionAnswerFill} from "react-icons/ri";
+import ShowReply from "@/Components/ShowReply.jsx";
 
-const User = ({ document, userId }) => {
+const User = ({document, userId}) => {
+    console.log(document)
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showResponseModal, setShowResponseModal] = useState()
@@ -20,29 +23,34 @@ const User = ({ document, userId }) => {
         setFileUrl(url)
         setShowModal(true);
     }
-
+    const openFileModal = (fileUrl) => {
+        setFileUrl(fileUrl);
+        setShowModal(true);
+        console.log(fileUrl);
+    }
     const openResponseModal = () => {
         setShowResponseModal(true);
     }
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
-                fullViewFn={fullViewFn}>
-                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl} />
+                   fullViewFn={fullViewFn}>
+                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
             <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
-                fullViewFn={fullViewFn}>
-                <ReplyToDocument documentId={document.id} userId={userId} onClose={() => setShowResponseModal(false)} />
+                   fullViewFn={fullViewFn}>
+                <ReplyToDocument documentId={document.id} userId={userId} onClose={() => setShowResponseModal(false)}/>
             </Modal>
+
             <div className='flex justify-between items-center'>
                 <span className={"text-sm"}>
                     Статус:
-                    <span className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}
+                    <span
+                        className={`${document.status === "created" ? 'bg-amber-500' : document.status === "in_review" ? "bg-yellow-400" : "bg-green-500"} px-2 py-1 rounded`}
                     >
                         {__(document.status)}
                     </span>
                 </span>
-
                 {
                     document.status !== "reviewed" && (
                         <PrimaryButton
@@ -52,7 +60,6 @@ const User = ({ document, userId }) => {
                         </PrimaryButton>
                     )
                 }
-
             </div>
             <article className={"mt-5"}>
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -68,7 +75,7 @@ const User = ({ document, userId }) => {
                                 <dt className="text-sm font-medium text-gray-900">{__("DateIn")}/{__("ControlDate")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                        className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : 'Назорати нест'}
+                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : 'Назорати нест'}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -94,7 +101,7 @@ const User = ({ document, userId }) => {
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Text")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    <div dangerouslySetInnerHTML={{ __html: document.description }}></div>
+                                    <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -111,7 +118,7 @@ const User = ({ document, userId }) => {
                                                             <div className="flex w-0 flex-1 items-center">
                                                                 <PaperClipIcon
                                                                     className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                    aria-hidden="true" />
+                                                                    aria-hidden="true"/>
                                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
                                                                     <span
                                                                         className="truncate font-medium">{file.file_name}</span>
@@ -128,17 +135,17 @@ const User = ({ document, userId }) => {
                                                                 >
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <EyeIcon className={"w-4 h-4"} />
+                                                                        <EyeIcon className={"w-4 h-4"}/>
                                                                         <span>{__("See")}</span>
 
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
-                                                                    download={`/storage/${file.file_path}`}
-                                                                    className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                   download={`/storage/${file.file_path}`}
+                                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <ArrowDownTrayIcon className={"w-4 h-4"} />
+                                                                        <ArrowDownTrayIcon className={"w-4 h-4"}/>
                                                                         <span>{__("Download")}</span>
                                                                     </div>
                                                                 </a>
@@ -191,6 +198,37 @@ const User = ({ document, userId }) => {
                     </div>
                 </div>
             </article>
+            {
+                document.responses.length >= 1 ?
+                    <div className={"mt-5"}>
+                        <div className="flex items-center mb-2">
+                            <RiQuestionAnswerFill/>
+                            <h3>{__("Replies")}</h3>
+                        </div>
+                        <div className="overflow-hidden bg-white shadow sm:rounded-lg p-5">
+                            <div className="border-t border-gray-100">
+                                <dl className="divide-y divide-gray-100">
+                                    {
+
+                                        document.responses.map((reply, index) => (
+                                            <div key={index}>
+                                                <ShowReply
+                                                    userName={reply.user.name}
+                                                    description={reply.description}
+                                                    files={reply.files} createdAt={reply.created_at}
+                                                    onFileClick={openFileModal}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    :
+                    null
+            }
+
         </>
     );
 };

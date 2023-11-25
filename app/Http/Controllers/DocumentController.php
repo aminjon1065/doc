@@ -172,7 +172,7 @@ class DocumentController extends Controller
             return null;
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         $managers = User::where('role', 'management')->get();
-        $document->load(['files', 'creator', 'receivers', 'manager']);
+        $document->load(['files', 'creator', 'receivers', 'manager','responses']);
         //        $document->load(['files', 'creator', 'receivers']);
         return Inertia::render('EditDocument/index', [
             'document' => $document,
