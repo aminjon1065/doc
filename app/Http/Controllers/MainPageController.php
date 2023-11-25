@@ -14,7 +14,7 @@ class MainPageController extends Controller
         $route = 'login';
         switch (\Auth::user()->role):
             case 'admin':
-                $route = 'types-document.index';
+                $route = 'users.index';
                 break;
             case 'common':
                 $route = 'documents.index';

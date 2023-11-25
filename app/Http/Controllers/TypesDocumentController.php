@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TypesDocument;
+use Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,10 +14,13 @@ class TypesDocumentController extends Controller
      */
     public function index()
     {
-        $typesDocuments = TypesDocument::all();
-        return Inertia::render('AdminPages/AddTypeDocument', [
-            'typesDocuments' => $typesDocuments
-        ]);
+        if (Auth::user()->role === 'common' || Auth::user()->role === 'admin') {
+            $typesDocuments = TypesDocument::all();
+            return Inertia::render('AdminPages/AddTypeDocument', [
+                'typesDocuments' => $typesDocuments
+            ]);
+        }
+        return redirect()->back();
     }
 
     /**

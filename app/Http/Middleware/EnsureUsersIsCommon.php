@@ -4,23 +4,22 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-class EnsureUserIsAdmin
+class EnsureUsersIsCommon
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
-            // Если пользователь не авторизован или его роль не 'admin', перенаправьте его
+        if (!Auth::check() || Auth::user()->role !== 'common') {
+            // Если пользователь не авторизован или его роль не 'common', перенаправьте его
             return redirect('/'); // или куда-то ещё, куда вы хотите перенаправить неавторизованных пользователей
         }
-
         return $next($request);
     }
 }

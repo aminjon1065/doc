@@ -1,4 +1,3 @@
-import {Fragment} from 'react'
 import {
     ChartPieIcon,
     DocumentDuplicateIcon,
@@ -24,11 +23,12 @@ const navigation = [
 ]
 
 const accessibleItems = {
-    'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'Reports'],
+    'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'TypeDocument','Reports'],
     'management': ['ReviewDocument'],
     'user': ['NewDocument', 'Inbox', 'Sent'],
     'admin': ['Users',"TypeDocument"],
 };
+
 const teams = [
     {id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false},
     {id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false},
@@ -42,7 +42,6 @@ function classNames(...classes) {
 export default function SideBar({user}) {
     const {url} = usePage();
     const filteredNavigation = navigation.filter(item => accessibleItems[user.role].includes(item.name));
-
     return (
         <>
             <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
