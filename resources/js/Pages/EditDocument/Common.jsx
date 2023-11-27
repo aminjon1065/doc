@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import { Head, useForm } from "@inertiajs/react";
+import {Head, useForm} from "@inertiajs/react";
 import formatterDay from "@/Helpers/dateFormatter.js";
-import { PaperClipIcon } from "@heroicons/react/20/solid/index.js";
-import { ArrowDownTrayIcon, EyeIcon } from "@heroicons/react/24/outline/index.js";
+import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
+import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
 import FileViewer from "@/Components/FileViewer.jsx";
 import Modal from "@/Components/Modal.jsx";
 import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
-import { __ } from "@/Libs/Lang.jsx";
+import {__} from "@/Libs/Lang.jsx";
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
 
-const Common = ({ document, managers, flash, users }) => {
+const Common = ({document, managers, flash, users}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
-    const { data, setData, put, errors } = useForm({
+    const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
         category: document.category || '',
@@ -33,7 +33,6 @@ const Common = ({ document, managers, flash, users }) => {
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
     const [showResponseModal, setShowResponseModal] = useState()
-
     const fnUserSelected = (selectedOptions) => {
         setSelectedReceivers(selectedOptions);
         const receiverIds = selectedOptions.map(option => option.value);
@@ -58,7 +57,7 @@ const Common = ({ document, managers, flash, users }) => {
         e.preventDefault();
         put(route('documents.update', document.id), {
             preserveScroll: true,
-            data: { ...data },
+            data: {...data},
             onSuccess: () => {
                 console.log("success")
             },
@@ -67,8 +66,8 @@ const Common = ({ document, managers, flash, users }) => {
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
-                fullViewFn={fullViewFn}>
-                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl} />
+                   fullViewFn={fullViewFn}>
+                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
             <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
                    fullViewFn={fullViewFn}>
@@ -110,7 +109,7 @@ const Common = ({ document, managers, flash, users }) => {
                                 <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex items-center">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                        className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : "Назорати нест"}
+                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : "Назорати нест"}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -132,7 +131,7 @@ const Common = ({ document, managers, flash, users }) => {
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">Матн</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    <div dangerouslySetInnerHTML={{ __html: document.description }}></div>
+                                    <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -180,7 +179,7 @@ const Common = ({ document, managers, flash, users }) => {
                                                             <div className="flex w-0 flex-1 items-center">
                                                                 <PaperClipIcon
                                                                     className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                    aria-hidden="true" />
+                                                                    aria-hidden="true"/>
                                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
                                                                     <span
                                                                         className="truncate font-medium">{file.file_name}</span>
@@ -197,16 +196,16 @@ const Common = ({ document, managers, flash, users }) => {
                                                                 >
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <EyeIcon className={"w-4 h-4"} />
+                                                                        <EyeIcon className={"w-4 h-4"}/>
                                                                         Дидан
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
-                                                                    download={`/storage/${file.file_path}`}
-                                                                    className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                   download={`/storage/${file.file_path}`}
+                                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <ArrowDownTrayIcon className={"w-4 h-4"} />
+                                                                        <ArrowDownTrayIcon className={"w-4 h-4"}/>
                                                                         Боргиркунӣ
                                                                     </div>
                                                                 </a>
@@ -247,7 +246,8 @@ const Common = ({ document, managers, flash, users }) => {
                                                 )
                                                 :
                                                 (<span>
-                                                    <div className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                    <div
+                                                        className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                                                         <Select
                                                             placeholder={"Интихоб кунед..."}
                                                             id={"receivers"}
@@ -259,14 +259,14 @@ const Common = ({ document, managers, flash, users }) => {
                                                             onChange={fnUserSelected}
                                                             options={users}
                                                             classNames={{
-                                                                menuButton: ({ isDisabled }) => (
+                                                                menuButton: ({isDisabled}) => (
                                                                     `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${isDisabled
                                                                         ? "bg-gray-200"
                                                                         : "block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                                     }`
                                                                 ),
                                                                 menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
-                                                                listItem: ({ isSelected }) => (
+                                                                listItem: ({isSelected}) => (
                                                                     `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${isSelected
                                                                         ? `text-white bg-blue-500`
                                                                         : `text-gray-500 hover:bg-indigo-100 hover:text-indigo-600`
@@ -327,7 +327,7 @@ const Common = ({ document, managers, flash, users }) => {
                                 </div>
                                 <div className={`sm:col-span-3 w-full`}>
                                     <label htmlFor="control"
-                                        className="block text-sm font-medium text-gray-700">
+                                           className="block text-sm font-medium text-gray-700">
                                         Назоратӣ
                                     </label>
                                     <div

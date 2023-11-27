@@ -1,23 +1,28 @@
 import React, {useState} from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head} from "@inertiajs/react";
+import {Head, Link} from "@inertiajs/react";
 import {__} from "@/Libs/Lang.jsx";
 import {PlusCircleIcon} from "@heroicons/react/24/outline/index.js";
 import Pagination from "@/Components/Pagination.jsx";
 import Modal from "@/Components/Modal.jsx";
 import AddUserForm from "@/Pages/Users/AddUserForm.jsx";
 import Alert from "@/Components/Alert.jsx";
+import EditUserForm from "@/Pages/Users/EditUserForm.jsx";
 
 const Index = ({auth, users, flash}) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [visible, setVisible] = useState(true);
     const fullViewFn = () => {
         setFullView(!fullView);
     }
     const openModal = () => {
         setShowModal(true);
     }
-    const [visible, setVisible] = useState(true);
+    const openShowEditModal = () => {
+        setShowEditModal(true);
+    }
     const handleCloseAlert = () => setVisible(false);
     return (
         <AuthenticatedLayout
@@ -31,6 +36,14 @@ const Index = ({auth, users, flash}) => {
                 fullViewFn={fullViewFn}
             >
                 <AddUserForm onClose={() => setShowModal(false)}/>
+            </Modal>
+            <Modal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                fullView={fullView}
+                fullViewFn={fullViewFn}
+            >
+                <EditUserForm onClose={() => setShowEditModal(false)}/>
             </Modal>
             {visible && flash.success &&
                 <Alert onClose={handleCloseAlert} message={flash.success}/>
@@ -97,10 +110,13 @@ const Index = ({auth, users, flash}) => {
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.role}</td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                                <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                                <Link
+                                                    href={route('users.edit', person.id)}
+                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                >
                                                     {__("Edit")}
                                                     <span className="sr-only">, {person.name}</span>
-                                                </a>
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
