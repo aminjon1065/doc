@@ -32,7 +32,7 @@ class InboxController extends Controller
             ->orderBy('created_at', 'desc')
             ->code($typeDocument)
             ->paginate($perPage);
-        if (Auth::user()->isCommonDepartment()) {
+        if (Auth::user()->isCommonRole()) {
             return Inertia::render('Inbox/index', [
                 'documents' => $documents,
                 'searchTerm' => $searchTerm,

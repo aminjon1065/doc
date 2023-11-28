@@ -23,10 +23,11 @@ const navigation = [
 ]
 
 const accessibleItems = {
-    'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'TypeDocument','Reports'],
-    'management': ['ReviewDocument'],
-    'user': ['NewDocument', 'Inbox', 'Sent'],
-    'admin': ['Users',"TypeDocument"],
+    'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'TypeDocument', 'Reports'],
+    'boss': ['ReviewDocument'],
+    'deputy': ['ReviewDocument'],
+    'user': ['NewDocument', 'Inbox', 'Sent', 'Reports'],
+    'admin': ['Users', "TypeDocument"],
 };
 
 const teams = [

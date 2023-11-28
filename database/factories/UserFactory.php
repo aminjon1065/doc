@@ -20,7 +20,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $roles = ['admin', 'common', 'management', 'user'];
+        $roles = ['admin', 'common', 'boss', 'deputy', 'user'];
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->email,

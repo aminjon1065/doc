@@ -15,7 +15,14 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = [
-        'created_by_id', 'manager_id', 'category', 'title', 'description', 'status', 'type', 'code', 'is_controlled', 'date_done', 'is_read'
+        'created_by_id', 'toBoss', 'category', 'title', 'description', 'status', 'type', 'code', 'is_controlled', 'date_done', 'is_read'
+    ];
+
+    protected $casts = [
+        'date_done' => 'datetime',
+        'toBoss' => 'boolean',
+        'is_controlled' => 'boolean',
+        'is_read' => 'boolean',
     ];
 
     public function creator(): BelongsTo
@@ -23,10 +30,15 @@ class Document extends Model
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
-    public function manager(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'manager_id');
-    }
+//    public function manager(): BelongsTo
+//    {
+//        return $this->belongsTo(User::class, 'manager_id');
+//    }
+
+//    public function boss(): BelongsTo
+//    {
+//        return $this->belongsTo(User::class, 'toBoss');
+//    }
 
     public function files(): HasMany
     {
@@ -36,6 +48,11 @@ class Document extends Model
     public function receivers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'document_user', 'document_id', 'receiver_id');
+    }
+
+    public function deputy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'document_deputy', 'document_id', 'deputy_id');
     }
 
     public function responses(): HasMany

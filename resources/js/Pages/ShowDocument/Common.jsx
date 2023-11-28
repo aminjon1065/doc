@@ -10,7 +10,7 @@ import ReplyToDocument from '@/Components/ReplyToDocument';
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 
-const Common = ({ document, userId }) => {
+const Common = ({ document, userId, bossName }) => {
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showResponseModal, setShowResponseModal] = useState();
@@ -22,6 +22,7 @@ const Common = ({ document, userId }) => {
         setFileUrl(url)
         setShowModal(true);
     }
+
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Link, router, useForm} from "@inertiajs/react";
 import {useDropzone} from "react-dropzone";
 import InputLabel from "@/Components/InputLabel.jsx";
@@ -8,9 +8,10 @@ import {BsFileEarmarkExcelFill, BsFileEarmarkPdfFill, BsFileEarmarkWordFill} fro
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import Select from "react-tailwindcss-select";
 import {__} from '@/Libs/Lang.jsx';
-const Common = ({managers, users, typesDocuments, currentLocale}) => {
+
+const Common = ({users, deputies, typesDocuments, currentLocale}) => {
     const {data, setData, post, errors} = useForm({
-        manager_id: '',
+        toBoss: false,
         category: '',
         status: '',
         title: '',
@@ -21,6 +22,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
         is_read: '',
         files: [],
         receivers: [],
+        deputies: [],
     });
     const [files, setFiles] = useState([]);
     const [errorResponse, setErrorResponse] = useState();
@@ -29,6 +31,9 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
     };
     const fnUserSelected = (value) => {
         setData('receivers', value);
+    };
+    const fnDeputySelected = (value) => {
+        setData('deputies', value);
     };
     const onDrop = useCallback((acceptedFiles) => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
@@ -45,6 +50,11 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
             'image/jpeg': ['.jpeg', '.png', '.jpg'],
         }
     });
+    const onChangeToBoss = (event) => {
+        setData('toBoss', event.target.checked)
+    }
+
+    console.log(data.toBoss)
     const removeFile = (fileIndex) => {
         setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
     };
@@ -54,13 +64,14 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
         formData.append('title', data.title);
         formData.append('description', data.description);
         formData.append('code', data.code);
-        formData.append('manager_id', data.manager_id);
+        formData.append('toBoss', !!data.toBoss);
         formData.append('category', data.category);
         formData.append('status', data.status);
         formData.append('is_controlled', data.is_controlled);
         formData.append('date_done', data.date_done);
         // formData.append('is_read', data.is_read);
         // userSelected.forEach((item) => formData.append(`receivers[]`, item.id));
+        data.deputies.forEach((item) => formData.append(`deputy[]`, item.value));
         data.receivers.forEach(receiver => {
             formData.append('receivers[]', receiver.value);
         });
@@ -78,6 +89,7 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
                 console.log('success')
             },
             onError: (errors) => {
+                console.log(errors)
                 setErrorResponse(errors)
             }
         })
@@ -146,26 +158,52 @@ const Common = ({managers, users, typesDocuments, currentLocale}) => {
             </div>
             <div className="flex justify-between items-center space-x-2 mb-5">
                 <div className={`sm:col-span-3 w-full`}>
+                    <div className="flex items-center space-x-3">
+                        <InputLabel htmlFor={"managers"}>
+                            {__('ToTheBoss')}
+                        </InputLabel>
+                        <input
+                            type="checkbox"
+                            value={data.toBoss}
+                            onChange={onChangeToBoss}
+                            className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                        />
+                    </div>
+                </div>
+                <div className={`sm:col-span-3 w-full`}>
                     <InputLabel htmlFor={"managers"}>
                         {__('Manager')}
                     </InputLabel>
-                    <select
-                        name="manager_id"
-                        value={data.manager_id}
-                        id="managers"
-                        className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                        onChange={(event) => setData('manager_id', event.target.value)}
-                    >
-                        <option disabled={true} value="">
-                            Намуди ҳуҷҷатро интихоб кунед
-                        </option>
-                        {managers.map((item, index) => (
-                            <option value={item.id} key={index}>
-                                {item.id} - {item.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.title && <span>{errors.title}</span>}
+                    <Select
+                        placeholder={"Интихоб кунед..."}
+                        id={"receivers"}
+                        noOptionsMessage={"Ин гуна истифодабарнада нест!"}
+                        searchInputPlaceholder={""}
+                        isSearchable
+                        isMultiple
+                        value={data.deputies}
+                        onChange={fnDeputySelected}
+                        options={deputies}
+                        classNames={{
+                            menuButton: ({isDisabled}) => (
+                                `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                                    isDisabled
+                                        ? "bg-gray-200"
+                                        : "block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                }`
+                            ),
+                            menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                            listItem: ({isSelected}) => (
+                                `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${
+                                    isSelected
+                                        ? `text-white bg-blue-500`
+                                        : `text-gray-500 hover:bg-indigo-100 hover:text-indigo-600`
+                                }`
+                            )
+                        }}
+                    />
+
+                    {errors.deputy && <span>{errors.deputy}</span>}
                 </div>
 
                 <div className={`sm:col-span-3 w-full`}>

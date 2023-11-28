@@ -28,7 +28,7 @@ class SentController extends Controller
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
-        if (Auth::user()->isCommonDepartment()) {
+        if (Auth::user()->isCommonRole()) {
             return Inertia::render('Sent/index', [
                 'documents' => $documents,
                 'searchTerm' => $searchTerm,

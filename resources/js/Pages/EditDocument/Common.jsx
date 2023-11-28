@@ -13,9 +13,12 @@ import {__} from "@/Libs/Lang.jsx";
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
+import {FcCheckmark} from "react-icons/fc";
 
-const Common = ({document, managers, flash, users}) => {
+const Common = ({document, managers, bossName, flash, users}) => {
+    console.log(document);
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
+    const initialDeputyIds = document.deputy.map(deputy => deputy.id);
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
@@ -23,12 +26,19 @@ const Common = ({document, managers, flash, users}) => {
         is_controlled: document.is_controlled || '',
         status: document.status || '',
         receivers: initialReceiverIds,
+        deputies: initialDeputyIds
     });
     const initialReceivers = document.receivers.map(receiver => ({
         value: receiver.id,
         label: `${receiver.name} - ${receiver.department} (${receiver.region})`
     }));
+    const initialDeputies = document.deputy.map(deputy => ({
+        value: deputy.id,
+        label: `${deputy.name} - ${deputy.department} (${deputy.region})`
+    }));
+
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
+    const [selectedDeputies, setSelectedDeputies] = useState(initialDeputies)
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
@@ -38,6 +48,13 @@ const Common = ({document, managers, flash, users}) => {
         const receiverIds = selectedOptions.map(option => option.value);
         setData('receivers', receiverIds);
     };
+
+    const fnDeputySelected = (selectedOptions) => {
+        setSelectedDeputies(selectedOptions);
+        const deputyIds = selectedOptions.map(option => option.value);
+        setData('deputies', deputyIds);
+    }
+
     const fullViewFn = () => {
         setFullView(!fullView);
     }
@@ -105,6 +122,21 @@ const Common = ({document, managers, flash, users}) => {
                                     {document.creator.name}
                                 </dd>
                             </div>
+                            {
+                                bossName && (
+                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                        <dt className="text-sm font-medium text-gray-900">Раис</dt>
+                                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                            <div className="flex items-center space-x-3">
+                                        <span>
+                                            {bossName.name}
+                                        </span>
+                                                <FcCheckmark/>
+                                            </div>
+                                        </dd>
+                                    </div>
+                                )
+                            }
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex items-center">
@@ -135,34 +167,62 @@ const Common = ({document, managers, flash, users}) => {
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Роҳбарият</dt>
-                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    {
-                                        document.manager
-                                            ?
-                                            document.manager.name
-                                            :
-                                            (
-                                                <select
-                                                    name="manager_id"
-                                                    id="manager_id"
-                                                    defaultValue=""
-                                                    onChange={(e) => setData('manager_id', e.target.value)}
-                                                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                >
-                                                    <option value="" disabled>Интихоб кунед</option>
-                                                    {
-                                                        managers.map((manager, index) => (
-                                                            <option
-                                                                key={index}
-                                                                value={manager.id}>{manager.name}
-
-                                                            </option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            )
-                                    }
+                                <dt className="text-sm font-medium leading-6 text-gray-900">Муовино</dt>
+                                <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list"
+                                        className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                        {
+                                            document.deputy.length >= 1 ?
+                                                (
+                                                    document.deputy.map((deputy, index) => (
+                                                        <li key={index}
+                                                            className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                            <div className="flex w-0 flex-1 items-center">
+                                                                <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                                                    <span
+                                                                        className="truncate font-medium">{deputy.name}</span>
+                                                                    <span
+                                                                        className="flex-shrink-0 text-gray-400">{deputy.department}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    ))
+                                                )
+                                                :
+                                                (<span>
+                                                    <div
+                                                        className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                        <Select
+                                                            placeholder={"Интихоб кунед..."}
+                                                            id={"receivers"}
+                                                            noOptionsMessage={"Ин гуна истифодабарнада нест!"}
+                                                            searchInputPlaceholder={""}
+                                                            isSearchable
+                                                            isMultiple
+                                                            value={selectedDeputies}
+                                                            onChange={fnDeputySelected}
+                                                            options={managers}
+                                                            classNames={{
+                                                                menuButton: ({isDisabled}) => (
+                                                                    `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${isDisabled
+                                                                        ? "bg-gray-200"
+                                                                        : "block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                                    }`
+                                                                ),
+                                                                menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                                                                listItem: ({isSelected}) => (
+                                                                    `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${isSelected
+                                                                        ? `text-white bg-blue-500`
+                                                                        : `text-gray-500 hover:bg-indigo-100 hover:text-indigo-600`
+                                                                    }`
+                                                                )
+                                                            }}
+                                                            primaryColor={"indigo"}
+                                                        />
+                                                    </div>
+                                                </span>)
+                                        }
+                                    </ul>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

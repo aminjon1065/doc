@@ -58,7 +58,6 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        $managers = User::where('role', 'management')->get();
         $typesDocuments = TypesDocument::all();
         $users = User::all()->map(function ($user) {
             if ($user->role == 'user') {
@@ -69,8 +68,17 @@ class DocumentController extends Controller
             }
             return null;
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
+        $deputies = User::all()->map(function ($user) {
+            if ($user->role == 'deputy') {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->name . '-' . $user->department . ' (' . $user->region . ')'
+                ];
+            }
+            return null;
+        })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
         return Inertia::render('CreateDocument/index', [
-            'managers' => $managers,
+            'deputies' => $deputies,
             'users' => $users,
             'typesDocuments' => $typesDocuments
         ]);
@@ -82,17 +90,18 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $documentTypeArr = TypesDocument::all();
-
         $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
             'code' => 'required|string',
-            'manager_id' => 'nullable|exists:users,id',
             'category' => 'nullable|string',
-            'files.*' => 'nullable|file|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,jpg,jpeg,png,gif|max:1024'
+            'files.*' => 'nullable|file|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,jpg,jpeg,png,gif|max:102400'
         ]);
         $document = new Document;
         $document->created_by_id = Auth::id();
+//        $toBoss = filter_var($request->input('toBoss'), FILTER_VALIDATE_BOOLEAN);
+//        $request->merge(['toBoss' => $toBoss]);
+        $document->toBoss = $request->input('toBoss') === 'true' ? 1 : 0;
         $document->title = $request->input('title');
         $document->description = $request->input('description');
         $document->code = $request->input('code');
@@ -103,12 +112,15 @@ class DocumentController extends Controller
                 break;
             }
         }
-        $document->manager_id = $request->input('manager_id');
         $document->category = $request->input('category');
         $document->status = $request->filled('status') ? $request->input('status') : 'created';
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
         $document->date_done = $request->has('is_controlled') && $request->has('date_done') ? $request->date_done : null;
         $document->save();
+        $deputyIds = $request->input('deputy');
+        if (is_array($deputyIds)) {
+            $document->deputy()->sync($deputyIds);
+        }
         // Сохраняем файлы
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
@@ -138,22 +150,12 @@ class DocumentController extends Controller
     public function show(Document $document)
     {
         $this->authorize('view', $document);
-        $document->load(['files', 'creator', 'receivers', 'manager', 'responses']);
+        $document->load(['files', 'creator', 'receivers', 'deputy', 'responses']);
+        $bossName = $document->toBoss ? User::where('role', 'boss')->first()->name : null;
         return Inertia::render('ShowDocument/index', [
             'document' => $document,
+            'bossName' => $bossName
         ]);
-        //        if (Auth::user()->isCommonDepartment()) {
-        //            $managers = User::where('role', 'management')->get();
-        //            $document->load(['files', 'creator', 'receivers']);
-        //            return Inertia::render('Documents/CommonShow', [
-        //                'document' => $document,
-        //                'managers' => $managers
-        //            ]);
-        //        }
-        //        $document->load(['files', 'creator', 'receivers']);
-        //        return Inertia::render('Documents/UserShow', [
-        //            'document' => $document,
-        //        ]);
     }
 
     /**
@@ -171,13 +173,25 @@ class DocumentController extends Controller
             }
             return null;
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
-        $managers = User::where('role', 'management')->get();
-        $document->load(['files', 'creator', 'receivers', 'manager','responses']);
+        $deputies = User::all()->map(function ($user) {
+            if ($user->role == 'deputy') {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->name . '-' . $user->department . ' (' . $user->region . ')'
+                ];
+            }
+            return null;
+        })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
+
+        $document->load(['files', 'creator', 'receivers', 'deputy', 'responses']);
         //        $document->load(['files', 'creator', 'receivers']);
+        $bossName = $document->toBoss ? User::where('role', 'boss')->first() : null;
+
         return Inertia::render('EditDocument/index', [
             'document' => $document,
-            'managers' => $managers,
+            'managers' => $deputies,
             'users' => $users,
+            'bossName' => $bossName
         ]);
     }
 
@@ -221,7 +235,7 @@ class DocumentController extends Controller
             $document->receivers()->sync($receiverIds);
         }
 
-        if (Auth::user()->isManagementDepartment()) {
+        if (Auth::user()->isManagementRole()) {
             return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
         }
         return redirect()->route('documents.index')->with('success', 'Документ успешно расмотрен');

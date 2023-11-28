@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('created_by_id');
-            $table->unsignedBigInteger('manager_id')->nullable();
+            $table->boolean('toBoss')->default(false);
             $table->string('category')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
@@ -26,7 +26,6 @@ return new class extends Migration {
             $table->boolean('is_read')->default(false);
             $table->timestamps();
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('manager_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
         });
     }

@@ -30,9 +30,9 @@ class DocumentPolicy
         if ($user->role === 'user') {
             return $document->created_by_id == $user->id || $document->receivers->contains($user);
         }
-        if ($user->role === 'management') {
-            return $document->manager()->id == $user->id;
-        }
+//        if ($user->role === 'management') {
+//            return $document->manager()->id == $user->id;
+//        }
         // Запретить доступ для всех остальных
         return false;
     }

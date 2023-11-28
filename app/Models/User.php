@@ -61,7 +61,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class, 'manager_id');
     }
-    
+
+    public function deputyDocuments(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class, 'document_deputy', 'deputy_id', 'document_id');
+    }
+
     public function receivedDocuments(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'document_user', 'receiver_id', 'document_id');
@@ -72,14 +77,24 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isCommonDepartment()
+    public function isCommonRole()
     {
         return $this->role === 'common';
     }
 
-    public function isManagementDepartment()
+    public function isManagementRole()
     {
         return $this->role === 'management';
+    }
+
+    public function isBossRole()
+    {
+        return $this->role === 'boss';
+    }
+
+    public function isDeputiesRole()
+    {
+        return $this->role === 'deputies';
     }
 
     public function isAdmin()

@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('region');
             $table->string('rank');
             $table->string('avatar')->nullable();
-            $table->enum('role', ['admin', 'common', 'management', 'user']);
+            $table->enum('role', ['admin', 'common', 'boss', 'deputy', 'user']);
             $table->rememberToken();
             $table->timestamps();
         });

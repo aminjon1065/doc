@@ -5,7 +5,7 @@ import Manager from "@/Pages/ShowDocument/Manager.jsx";
 import Common from "@/Pages/ShowDocument/Common.jsx";
 import {Head} from "@inertiajs/react";
 
-const Index = ({auth, document}) => {
+const Index = ({auth, document, bossName}) => {
     const user = auth.user;
     return (
         <AuthenticatedLayout
@@ -24,7 +24,7 @@ const Index = ({auth, document}) => {
             }
             {
                 user.role === 'common' && (
-                    <Common document={document} userId={user.id}/>
+                    <Common document={document} bossName={bossName} userId={user.id}/>
                 )
             }
         </AuthenticatedLayout>
