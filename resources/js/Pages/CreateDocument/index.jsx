@@ -15,10 +15,18 @@ const Index = ({auth, deputies, users, typesDocuments, currentLocale}) => {
                 user.role === 'management' && <div>Manager</div>
             }
             {
-                user.role === 'user' && <User typesDocuments={typesDocuments} currentLocale={currentLocale}/>
+                user.role === 'user' && <User
+                    typesDocuments={typesDocuments}
+                    currentLocale={currentLocale}
+                />
             }
             {
-                user.role === 'common' && <Common deputies={deputies} users={users} typesDocuments={typesDocuments} currentLocale={currentLocale}/>
+                user.role === 'common' && <Common
+                    deputies={deputies}
+                    users={users}
+                    typesDocuments={typesDocuments}
+                    currentLocale={currentLocale}
+                />
             }
         </AuthenticatedLayout>
     );
