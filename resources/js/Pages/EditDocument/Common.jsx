@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, useForm} from "@inertiajs/react";
+import React, {useState} from 'react';
+import {useForm} from "@inertiajs/react";
 import formatterDay from "@/Helpers/dateFormatter.js";
 import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
 import {ArrowDownTrayIcon, EyeIcon} from "@heroicons/react/24/outline/index.js";
@@ -15,12 +14,11 @@ import ShowReply from "@/Components/ShowReply.jsx";
 import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
 import {FcCheckmark} from "react-icons/fc";
 
-const Common = ({document, managers, bossName, flash, users}) => {
-    console.log(document);
+const Common = ({document, deputies, bossName, flash, users}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
     const initialDeputyIds = document.deputy.map(deputy => deputy.id);
     const {data, setData, put, errors} = useForm({
-        manager_id: document.manager_id || '',
+        toBoss: document.toBoss || '',
         date_done: document.date_done || '',
         category: document.category || '',
         is_controlled: document.is_controlled || '',
@@ -122,21 +120,32 @@ const Common = ({document, managers, bossName, flash, users}) => {
                                     {document.creator.name}
                                 </dd>
                             </div>
-                            {
-                                bossName && (
-                                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt className="text-sm font-medium text-gray-900">Раис</dt>
-                                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                            <div className="flex items-center space-x-3">
+
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">Раис</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    {
+                                        bossName ? (
+
+                                                <div className="flex items-center space-x-3">
                                         <span>
                                             {bossName.name}
                                         </span>
-                                                <FcCheckmark/>
-                                            </div>
-                                        </dd>
-                                    </div>
-                                )
-                            }
+                                                    <FcCheckmark/>
+                                                </div>
+                                            )
+                                            :
+                                            <input
+                                                type="checkbox"
+                                                name="toBoss"
+                                                id="toBoss"
+                                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                                checked={data.toBoss}
+                                                onChange={(event) => setData('toBoss', event.target.checked)}/>
+                                    }
+                                </dd>
+                            </div>
+
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex items-center">
@@ -201,7 +210,7 @@ const Common = ({document, managers, bossName, flash, users}) => {
                                                             isMultiple
                                                             value={selectedDeputies}
                                                             onChange={fnDeputySelected}
-                                                            options={managers}
+                                                            options={deputies}
                                                             classNames={{
                                                                 menuButton: ({isDisabled}) => (
                                                                     `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${isDisabled

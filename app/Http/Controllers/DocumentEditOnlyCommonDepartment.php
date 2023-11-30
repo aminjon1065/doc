@@ -12,7 +12,16 @@ class DocumentEditOnlyCommonDepartment extends Controller
     public function edit(Document $document, Request $request)
     {
         $this->authorize('edit', $document);
-        $managers = User::where('role', 'management')->get();
+        $deputies = User::all()->map(function ($user) {
+            if ($user->role == 'deputy') {
+                return [
+                    'value' => $user->id,
+                    'label' => $user->name . '-' . $user->department . ' (' . $user->region . ')'
+                ];
+            }
+            return null;
+        })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
+        //
         $users = User::all()->map(function ($user) {
             if ($user->role == 'user') {
                 return [
@@ -22,11 +31,13 @@ class DocumentEditOnlyCommonDepartment extends Controller
             }
             return null;
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
-        $document->load(['files', 'creator', 'receivers', 'manager']);
+        $document->load(['files', 'creator', 'receivers', 'deputy']);
+        $bossName = User::where('role', 'boss')->first()->name;
         return Inertia::render('CreateDocument/DocumentEditOnlyCommonDepartment', [
             'document' => $document,
-            'managers' => $managers,
+            'deputies' => $deputies,
             'users' => $users,
+            'bossName' => $bossName
         ]);
     }
 }

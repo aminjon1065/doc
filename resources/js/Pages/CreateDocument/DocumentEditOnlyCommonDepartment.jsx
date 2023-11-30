@@ -9,22 +9,29 @@ import Modal from "@/Components/Modal.jsx";
 import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
+import formatForDatetimeLocal from "@/Helpers/formatForDatetimeLocal.js";
 
-const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => {
+const DocumentEditOnlyCommonDepartment = ({auth, document, deputies, users, toBoss}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
+    const initialDeputyIds = document.deputy.map(deputy => deputy.id);
     const initialReceivers = document.receivers.map(receiver => ({
         value: receiver.id,
         label: `${receiver.name} - ${receiver.department} (${receiver.region})`
     }));
+    const initialDeputies = document.deputy.map(deputy => ({
+        value: deputy.id,
+        label: `${deputy.name} - ${deputy.department} (${deputy.region})`
+    }));
     const {data, setData, put, errors} = useForm({
-        manager_id: document.manager_id || '',
+        created_at: document.created_at || '',
         date_done: document.date_done || '',
         category: document.category || '',
         is_controlled: document.is_controlled || '',
         status: document.status || '',
-        receivers: initialReceiverIds,
+        deputies: initialDeputyIds
     });
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
+    const [selectedDeputies, setSelectedDeputies] = useState(initialDeputies)
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
@@ -33,9 +40,11 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         const receiverIds = selectedOptions.map(option => option.value);
         setData('receivers', receiverIds);
     };
-    useEffect(() => {
-        console.log("Data to be sent:", data);
-    }, [data]);
+    const fnDeputySelected = (selectedOptions) => {
+        setSelectedDeputies(selectedOptions);
+        const deputyIds = selectedOptions.map(option => option.value);
+        setData('deputies', deputyIds);
+    }
     const fullViewFn = () => {
         setFullView(!fullView);
     }
@@ -47,7 +56,7 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
         console.log(data);
         e.preventDefault();
         put(route('documents.update', document.id), {
-            data: {...data, receivers: data.receivers},
+            data: {...data, receivers: data.receivers, deputies: data.deputies},
             preserveScroll: true,
             onSuccess: () => {
                 console.log("success")
@@ -104,32 +113,49 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">Ба раис</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    {document.toBoss ? document.toBoss.name : "Раиси шумо интихоб нашудааст"}
+                                </dd>
+                            </div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">Роҳбарият</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {
-                                        document.manager
-                                            ?
-                                            document.manager.name
-                                            :
-                                            (
-                                                <select
-                                                    name="manager_id"
-                                                    id="manager_id"
-                                                    onChange={(e) => setData('manager_id', e.target.value)}
-                                                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                >
-                                                    <option value="" disabled selected>Интихоб кунед</option>
-                                                    {
-                                                        managers.map((manager, index) => (
-                                                            <option
-                                                                key={index}
-                                                                value={manager.id}>{manager.name}
-
-                                                            </option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            )
+                                        document.deputy
+                                        &&
+                                        (
+                                            <div
+                                                className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                <Select
+                                                    placeholder={"Интихоб кунед..."}
+                                                    id={"receivers"}
+                                                    noOptionsMessage={"Ин гуна истифодабарнада нест!"}
+                                                    searchInputPlaceholder={""}
+                                                    isSearchable
+                                                    isMultiple
+                                                    value={selectedDeputies}
+                                                    onChange={fnDeputySelected}
+                                                    options={deputies}
+                                                    classNames={{
+                                                        menuButton: ({isDisabled}) => (
+                                                            `flex text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${isDisabled
+                                                                ? "bg-gray-200"
+                                                                : "block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            }`
+                                                        ),
+                                                        menu: "absolute z-10 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                                                        listItem: ({isSelected}) => (
+                                                            `block transition duration-200 px-2 py-2 cursor-pointer select-none truncate rounded ${isSelected
+                                                                ? `text-white bg-blue-500`
+                                                                : `text-gray-500 hover:bg-indigo-100 hover:text-indigo-600`
+                                                            }`
+                                                        )
+                                                    }}
+                                                    primaryColor={"indigo"}
+                                                />
+                                            </div>
+                                        )
                                     }
                                 </dd>
                             </div>
@@ -232,6 +258,21 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
                             </div>
                             <div className="flex justify-between items-center space-x-2 mb-5">
                                 <div className={`sm:col-span-3 w-full`}>
+                                    <InputLabel htmlFor={"created_at"}>
+                                        Дата
+                                    </InputLabel>
+                                    <input
+                                        id={"created_at"}
+                                        value={formatForDatetimeLocal(data.created_at)}
+                                        onChange={(event) => setData('created_at', event.target.value)}
+                                        type="datetime-local"
+                                        className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                    />
+                                    {errors.created_at && <span>{errors.created_at}</span>}
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center space-x-2 mb-5">
+                                <div className={`sm:col-span-3 w-full`}>
                                     <InputLabel htmlFor={"category"}>
                                         Категория
                                     </InputLabel>
@@ -283,6 +324,7 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
                                         <div
                                             className="flex items-center h-5 space-x-2">
                                             <input
+                                                defaultChecked={document.is_controlled}
                                                 disabled={document.is_controlled}
                                                 value={document.is_controlled == null ? '' : document.is_controlled}
                                                 onChange={(event) => setData('is_controlled', event.target.checked)}
@@ -294,7 +336,7 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, managers, users}) => 
                                             <div>
                                                 <input
                                                     disabled={data.date_done}
-                                                    value={data.date_done == null ? '' : data.date_done}
+                                                    value={data.date_done == null ? '' : formatForDatetimeLocal(data.date_done)}
                                                     onChange={(event) => setData('date_done', event.target.value)}
                                                     type="datetime-local"
                                                     className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"

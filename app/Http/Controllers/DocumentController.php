@@ -189,7 +189,7 @@ class DocumentController extends Controller
 
         return Inertia::render('EditDocument/index', [
             'document' => $document,
-            'managers' => $deputies,
+            'deputies' => $deputies,
             'users' => $users,
             'bossName' => $bossName
         ]);
@@ -200,6 +200,7 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+//        dd($request->all());
         if ($request->category) {
             if ($document->status !== 'reviewed' && $request->status !== 'reviewed') {
                 return back()->with('error', 'ReviewedError');
@@ -207,15 +208,14 @@ class DocumentController extends Controller
         }
 
         $validatedData = $request->validate([
-            'manager_id' => 'nullable|exists:users,id',
+            'deputies' => 'nullable|array',
             'category' => 'nullable|string',
             'status' => 'required|string',
             'is_controlled' => 'nullable|boolean',
             'date_done' => 'nullable|date',
             'receivers' => 'nullable|array',
         ]);
-        $document->manager_id = $request->input('manager_id', $document->manager_id);
-
+        $document->toBoss = $request->input('toBoss', $document->toBoss);
         $document->category = $request->input('category', $document->category);
         $document->status = $request->filled('status') ? $request->input('status') : $document->status;
         $document->is_controlled = $request->filled('is_controlled') ? 1 : 0;
@@ -233,6 +233,14 @@ class DocumentController extends Controller
             }
             // Обновление списка получателей
             $document->receivers()->sync($receiverIds);
+        }
+        if ($request->has('deputies')) {
+            $deputiesIds = $request->input('deputies', []);
+            // Отправка писем только новым получателям
+            $currentDeputiesIds = $document->deputy->pluck('id')->toArray();
+            $receiversToAdd = array_diff($deputiesIds, $currentDeputiesIds);
+            // Обновление списка получателей
+            $document->deputy()->sync($deputiesIds);
         }
 
         if (Auth::user()->isManagementRole()) {

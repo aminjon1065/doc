@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Modal from "@/Components/Modal.jsx";
 import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
-import { PaperClipIcon } from "@heroicons/react/20/solid/index.js";
-import { ArrowDownTrayIcon, EyeIcon, PencilIcon } from "@heroicons/react/24/outline/index.js";
-import { Link } from "@inertiajs/react";
-import { __ } from "@/Libs/Lang.jsx";
+import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
+import {ArrowDownTrayIcon, EyeIcon, PencilIcon} from "@heroicons/react/24/outline/index.js";
+import {Link} from "@inertiajs/react";
+import {__} from "@/Libs/Lang.jsx";
 import ReplyToDocument from '@/Components/ReplyToDocument';
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 
-const Common = ({ document, userId, bossName }) => {
+const Common = ({document, userId, bossName}) => {
+    console.log(document);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showResponseModal, setShowResponseModal] = useState();
@@ -22,12 +23,11 @@ const Common = ({ document, userId, bossName }) => {
         setFileUrl(url)
         setShowModal(true);
     }
-
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
-                fullViewFn={fullViewFn}>
-                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl} />
+                   fullViewFn={fullViewFn}>
+                <FileViewer fullView={fullView} onClose={() => setShowModal(false)} fileUrl={fileUrl}/>
             </Modal>
             <div className="flex justify-between">
                 <span className={"text-sm"}>Статус: <span
@@ -36,10 +36,10 @@ const Common = ({ document, userId, bossName }) => {
                     className={"text-sm"}
                 >
                     <Link as={"button"}
-                        className={"text-indigo-600 hover:text-indigo-500 flex hover:bg-gray-300 py-2 px-4 rounded justify-between space-x-2 items-center"}
-                        href={route(`document-edit-only-common-department.edit`, { 'id': document.id })}
+                          className={"text-indigo-600 hover:text-indigo-500 flex hover:bg-gray-300 py-2 px-4 rounded justify-between space-x-2 items-center"}
+                          href={route(`document-edit-only-common-department.edit`, {'id': document.id})}
                     >
-                        <PencilIcon className={"w-4 h-4"} />
+                        <PencilIcon className={"w-4 h-4"}/>
                         <span>{__("Edit")}</span>
                     </Link>
                 </span>
@@ -58,7 +58,7 @@ const Common = ({ document, userId, bossName }) => {
                                 <dt className="text-sm font-medium text-gray-900">{__("DateIn")}/{__("ControlDate")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                        className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : __("IsNotControlled")}
+                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : __("IsNotControlled")}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -75,7 +75,26 @@ const Common = ({ document, userId, bossName }) => {
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Manager")}</dt>
-                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.manager?.name}</dd>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    <ul role="list"
+                                        className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                        {
+                                            document.deputy.map((deputy, index) => (
+                                                <li key={index}
+                                                    className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                    <div className="flex w-0 flex-1 items-center">
+                                                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                                                    <span
+                                                                        className="truncate font-medium">{deputy.name}</span>
+                                                            <span
+                                                                className="flex-shrink-0 text-gray-400">{deputy.department} / {deputy.region}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Title")}</dt>
@@ -84,7 +103,7 @@ const Common = ({ document, userId, bossName }) => {
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Text")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    <div dangerouslySetInnerHTML={{ __html: document.description }}></div>
+                                    <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -101,7 +120,7 @@ const Common = ({ document, userId, bossName }) => {
                                                             <div className="flex w-0 flex-1 items-center">
                                                                 <PaperClipIcon
                                                                     className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                    aria-hidden="true" />
+                                                                    aria-hidden="true"/>
                                                                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
                                                                     <span
                                                                         className="truncate font-medium">{file.file_name}</span>
@@ -118,16 +137,16 @@ const Common = ({ document, userId, bossName }) => {
                                                                 >
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <EyeIcon className={"w-4 h-4"} />
+                                                                        <EyeIcon className={"w-4 h-4"}/>
                                                                         <span>{__("See")}</span>
                                                                     </div>
                                                                 </button>
                                                                 <a href={`/storage/${file.file_path}`}
-                                                                    download={`/storage/${file.file_path}`}
-                                                                    className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                   download={`/storage/${file.file_path}`}
+                                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
                                                                     <div
                                                                         className={"flex justify-between items-center space-x-1"}>
-                                                                        <ArrowDownTrayIcon className={"w-4 h-4"} />
+                                                                        <ArrowDownTrayIcon className={"w-4 h-4"}/>
                                                                         <span>{__("Download")}</span>
                                                                     </div>
                                                                 </a>
@@ -211,8 +230,8 @@ const Common = ({ document, userId, bossName }) => {
                     null
             }
             <Modal show={showResponseModal} onClose={() => setShowResponseModal(false)} fullView={fullView}
-                fullViewFn={fullViewFn}>
-                <ReplyToDocument documentId={document.id} userId={userId} onClose={() => setShowResponseModal(false)} />
+                   fullViewFn={fullViewFn}>
+                <ReplyToDocument documentId={document.id} userId={userId} onClose={() => setShowResponseModal(false)}/>
             </Modal>
         </>
     );

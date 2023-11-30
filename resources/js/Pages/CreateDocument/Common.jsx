@@ -201,8 +201,8 @@ const Common = ({users, deputies, typesDocuments, currentLocale}) => {
                                 }`
                             )
                         }}
+                     primaryColor={"#6366F1"}
                     />
-
                     {errors.deputy && <span>{errors.deputy}</span>}
                 </div>
 
@@ -211,6 +211,7 @@ const Common = ({users, deputies, typesDocuments, currentLocale}) => {
                         {__('Users')}
                     </InputLabel>
                     <Select
+                        primaryColor={"#6366F1"}
                         placeholder={"Интихоб кунед..."}
                         id={"receivers"}
                         noOptionsMessage={"Ин гуна истифодабарнада нест!"}
