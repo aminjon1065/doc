@@ -16,7 +16,7 @@ class EnsureUserIsManagement
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || Auth::user()->role !== 'boss' || Auth::user()->role === 'deputy') {
+        if (!Auth::check() || (Auth::user()->role !== 'boss' && Auth::user()->role !== 'deputy')) {
             // Если пользователь не авторизован или его роль не 'management', перенаправьте его
             return redirect('/'); // или куда-то ещё, куда вы хотите перенаправить неавторизованных пользователей
         }

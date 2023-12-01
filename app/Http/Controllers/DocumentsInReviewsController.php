@@ -23,8 +23,9 @@ class DocumentsInReviewsController extends Controller
             ->search($searchTerm)
             ->isControlled($isControlled)
             ->status($status)
-//            ->whereManager()
-            ->dateDone($dateDone)
+            ->whereBoss()
+            ->whereDeputy()
+//            ->whereBossOrDeputy()
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);

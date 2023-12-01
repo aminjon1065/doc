@@ -66,9 +66,58 @@ class Document extends Model
     /**
      * Локальный запрос для выбора документов, где авторизованный пользователь является менеджером.
      */
-    public function scopeWhereManager($query)
+    public function scopeWhereBoss($query)
     {
-        return $query->where('manager_id', Auth::id());
+        if (Auth::check() && Auth::user()->role === 'boss') {
+            // Фильтрация документов, где toBoss установлено в true
+            return $query->where('toBoss', true);
+        }
+
+        return $query;
+    }
+
+//    public function scopeWhereManager($query)
+//    {
+//        return $query->where('manager_id', Auth::id());
+//    }
+
+
+    /**
+     * Локальный запрос для выбора документов, где авторизованный пользователь является получателем.
+     */
+    public function scopeWhereDeputy($query)
+    {
+        if (Auth::check() && Auth::user()->role === 'deputy') {
+            $userId = Auth::id();
+            return $query->whereHas('deputy', function ($query) use ($userId) {
+                $query->where('deputy_id', $userId); // Проверяет, присутствует ли пользователь в списке заместителей для документа
+            });
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereBossOrDeputy($query)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $userId = $user->id;
+            $userRole = $user->role;
+
+            if ($userRole === 'boss') {
+                // Если пользователь - босс, то выбираем документы для босса
+                $query->where('toBoss', true);
+            }
+
+            if ($userRole === 'deputy') {
+                // Если пользователь - заместитель, то выбираем документы для заместителей
+                $query->orWhereHas('deputy', function ($query) use ($userId) {
+                    $query->where('deputy_id', $userId);
+                });
+            }
+        }
+
+        return $query;
     }
 
 
@@ -85,6 +134,12 @@ class Document extends Model
         })->with(['creator', 'files', 'receivers']);
     }
 
+/**
+     * Получить документы для конкретного заместителя с дополнительными отношениями.
+     *
+     * @param int $userId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function userOpenDocument(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_open_document', 'document_id', 'user_id')->withPivot('is_open')->withTimestamps();

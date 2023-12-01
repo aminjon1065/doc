@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('created_by_id');
-            $table->boolean('toBoss')->default(false);
+            $table->boolean('toBoss')->default(false)->nullable();
             $table->string('category')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
