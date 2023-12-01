@@ -22,7 +22,7 @@ class DocumentPolicy
     public function view(User $user, Document $document): bool
     {
         // Если пользователь имеет роль 'common', разрешить доступ
-        if ($user->role === 'common' || $user->role === 'management') {
+        if ($user->role === 'common' || $user->role === 'boss' || $user->role === 'deputy') {
             return true;
         }
         // Если пользователь имеет роль 'user', разрешить доступ только если он создатель документа

@@ -10,7 +10,7 @@ import Select from "react-tailwindcss-select";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputLabel from "@/Components/InputLabel.jsx";
 
-const Management = ({document, managers}) => {
+const Management = ({document, deputies}) => {
     const {data, setData, put, errors} = useForm({
         manager_id: document.manager_id || '',
         date_done: document.date_done || '',
@@ -101,7 +101,7 @@ const Management = ({document, managers}) => {
                                 <dt className="text-sm font-medium text-gray-900">Роҳбарият</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {
-                                        document.manager
+                                        document.deputies
                                             ?
                                             document.manager.name
                                             :

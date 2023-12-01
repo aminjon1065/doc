@@ -139,9 +139,9 @@ const AddTypeDocument = ({auth, typesDocuments, currentLocale}) => {
                             </td>
                             <td className=" px-3 py-4 text-sm text-gray-500"> {currentLocale === "ru" ? typeDocument.type_ru : typeDocument.type_tj}</td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                <Link href={route('types-document.edit', typeDocument.id)} className="text-indigo-600 hover:text-indigo-900">
                                     Edit<span className="sr-only">, {typeDocument.code}</span>
-                                </a>
+                                </Link>
                             </td>
                         </tr>
                     ))}

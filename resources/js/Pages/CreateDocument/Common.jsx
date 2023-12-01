@@ -201,7 +201,7 @@ const Common = ({users, deputies, typesDocuments, currentLocale}) => {
                                 }`
                             )
                         }}
-                     primaryColor={"#6366F1"}
+                        primaryColor={"#6366F1"}
                     />
                     {errors.deputy && <span>{errors.deputy}</span>}
                 </div>

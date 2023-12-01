@@ -23,7 +23,7 @@ class DocumentsInReviewsController extends Controller
             ->search($searchTerm)
             ->isControlled($isControlled)
             ->status($status)
-            ->whereManager()
+//            ->whereManager()
             ->dateDone($dateDone)
             ->createdAtBetween($startDate, $endDate)
             ->orderBy('created_at', 'desc')

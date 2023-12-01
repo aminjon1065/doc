@@ -55,7 +55,7 @@ class TypesDocumentController extends Controller
      */
     public function show(TypesDocument $typesDocument)
     {
-        //
+
     }
 
     /**
@@ -63,7 +63,9 @@ class TypesDocumentController extends Controller
      */
     public function edit(TypesDocument $typesDocument)
     {
-        //
+        return Inertia::render('AdminPages/EditTypes', [
+            'typesDocuments' => $typesDocument
+        ]);
     }
 
     /**
@@ -71,7 +73,17 @@ class TypesDocumentController extends Controller
      */
     public function update(Request $request, TypesDocument $typesDocument)
     {
-        //
+        $request->validate([
+            'code' => 'required|unique:types_documents,code,' . $typesDocument->id,
+            'type_tj' => 'required|unique:types_documents,type_tj,' . $typesDocument->id,
+            'type_ru' => 'required|unique:types_documents,type_ru,' . $typesDocument->id,
+        ]);
+        $typesDocument->update([
+            'code' => $request->code,
+            'type_tj' => $request->type_tj,
+            'type_ru' => $request->type_ru,
+        ]);
+        return redirect()->back()->with('success', 'Тип документа успешно обновлен');
     }
 
     /**
