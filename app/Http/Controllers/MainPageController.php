@@ -19,8 +19,7 @@ class MainPageController extends Controller
             case 'common':
                 $route = 'documents.index';
                 break;
-            case 'deputy':
-            case 'boss':
+            case 'deputy' or    'boss':
                 $route = 'documents-in-reviews.index';
                 break;
             case 'user':

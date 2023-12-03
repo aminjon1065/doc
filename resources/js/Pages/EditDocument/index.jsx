@@ -3,6 +3,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
 import Common from "@/Pages/EditDocument/Common.jsx";
 import Management from "@/Pages/EditDocument/Management.jsx";
+import Deputy from "@/Pages/EditDocument/Deputy.jsx";
+import Boss from "@/Pages/EditDocument/Boss.jsx";
 
 const Index = ({auth, document, bossName, deputies, users, flash}) => {
     return (
@@ -16,7 +18,10 @@ const Index = ({auth, document, bossName, deputies, users, flash}) => {
                         users={users}/>
             }
             {
-                auth.user.role === 'boss' && <Management auth={auth} document={document} deputies={deputies}/>
+                auth.user.role === 'boss' && <Boss auth={auth} document={document} deputies={deputies} users={users}/>
+            }
+            {
+                auth.user.role === 'deputy' && <Deputy document={document} deputies={deputies}/>
             }
         </AuthenticatedLayout>
     );
