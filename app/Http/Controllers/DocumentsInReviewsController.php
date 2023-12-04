@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\TypesDocument;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,6 +12,7 @@ class DocumentsInReviewsController extends Controller
     public function index(Request $request)
     {
 
+        $typesDocuments = TypesDocument::all();
         $searchTerm = $request->input('search');
         $status = $request->input('status');
         $dateDone = $request->input('date_done');
@@ -37,6 +39,7 @@ class DocumentsInReviewsController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
             'is_controlled' => $isControlled,
+            'typesDocuments' => $typesDocuments
         ]);
     }
 }

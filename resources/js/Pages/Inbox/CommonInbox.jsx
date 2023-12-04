@@ -173,7 +173,6 @@ const CommonInbox = ({
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {
                     documents.data.length >= 1

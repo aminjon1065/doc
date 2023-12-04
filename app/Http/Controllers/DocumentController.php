@@ -200,6 +200,7 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+        $this->authorize('view', $document);
 //        dd($request->all());
         if ($request->category) {
             if ($document->status !== 'reviewed' && $request->status !== 'reviewed') {
@@ -242,11 +243,13 @@ class DocumentController extends Controller
             // Обновление списка получателей
             $document->deputy()->sync($deputiesIds);
         }
-
-        if (Auth::user()->isManagementRole()) {
+        if (Auth::user()->isBossRole() or Auth::user()->isDeputiesRole()) {
             return redirect()->route('documents-in-reviews.index')->with('success', 'Документ успешно расмотрен');
         }
-        return redirect()->route('documents.index')->with('success', 'Документ успешно расмотрен');
+        if (Auth::user()->isCommonRole()) {
+            return redirect()->route('documents.index')->with('success', 'Документ успешно расмотрен');
+        }
+        return redirect()->route('inbox.index')->with('success', 'Документ успешно расмотрен');
     }
 
     /**
