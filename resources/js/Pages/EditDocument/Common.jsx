@@ -64,7 +64,6 @@ const Common = ({document, deputies, bossName, flash, users}) => {
     const openFileModal = (fileUrl) => {
         setFileUrl(fileUrl);
         setShowModal(true);
-        console.log(fileUrl);
     }
     const openResponseModal = () => {
         setShowResponseModal(true);

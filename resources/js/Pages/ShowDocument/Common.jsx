@@ -11,13 +11,16 @@ import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 
 const Common = ({document, userId, bossName}) => {
-    console.log(document);
     const [fullView, setFullView] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showResponseModal, setShowResponseModal] = useState();
     const [fileUrl, setFileUrl] = useState('');
     const fullViewFn = () => {
         setFullView(!fullView);
+    }
+    const openFileModal = (fileUrl) => {
+        setFileUrl(fileUrl);
+        setShowModal(true);
     }
     const openModal = (url) => {
         setFileUrl(url)
