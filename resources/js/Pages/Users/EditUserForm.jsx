@@ -111,7 +111,8 @@ const EditUserForm = ({auth, user, flash}) => {
                                     <option value="admin">{__("Admin")}</option>
                                     <option value="user">{__("User")}</option>
                                     <option value="common">{__("Common")}</option>
-                                    <option value="management">{__("Management")}</option>
+                                    <option value="boss">{__("Boss")}</option>
+                                    <option value="deputy">{__("Deputy")}</option>
                                 </select>
                                 <InputError message={errors.name} className="mt-2"/>
                             </div>

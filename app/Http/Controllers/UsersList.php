@@ -38,7 +38,7 @@ class UsersList extends Controller
             'department' => 'required|string|max:255',
             'region' => 'required|string|max:255',
             'rank' => 'required|string|max:255',
-            'role' => 'required|in:admin,common,user,management',
+            'role' => 'required|in:admin,common,user,boss,deputy',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         $user = User::create([
@@ -77,7 +77,7 @@ class UsersList extends Controller
             'department' => 'nullable|string|max:255',
             'region' => 'nullable|string|max:255',
             'rank' => 'nullable|string|max:255',
-            'role' => 'nullable|in:admin,common,user,management',
+            'role' => 'nullable|in:admin,common,user,boss,deputy',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
