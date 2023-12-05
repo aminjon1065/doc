@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, Link, router} from "@inertiajs/react";
-import Alert from "@/Components/Alert.jsx";
 import Datepicker from "react-tailwindcss-datepicker";
 import TextInput from "@/Components/TextInput.jsx";
 import {ChevronRightIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline/index.js";
@@ -10,18 +8,21 @@ import Pagination from "@/Components/Pagination.jsx";
 import pickBy from 'lodash/pickBy';
 import {usePrevious} from 'react-use';
 import formatterDay from "@/Helpers/dateFormatter.js";
+import {__} from "@/Libs/Lang.jsx";
 
-const CommonInbox = ({
-                         auth,
-                         documents,
-                         page,
-                         searchTerm,
-                         status,
-                         dateDone,
-                         startDate,
-                         endDate,
-                         is_controlled,
-                     }) => {
+const CommonSent = ({
+                        auth,
+                        documents,
+                        page,
+                        searchTerm,
+                        status,
+                        dateDone,
+                        startDate,
+                        endDate,
+                        currentLocale,
+                        typesDocuments,
+                        is_controlled,
+                    }) => {
     const [values, setValues] = useState({
         page: page || 1,
         search: searchTerm || '',
@@ -41,6 +42,14 @@ const CommonInbox = ({
     const handleCheckboxChange = (event) => {
         const key = event.target.name;
         const value = event.target.checked;
+        setValues(values => ({
+            ...values,
+            [key]: value
+        }));
+    }
+    const selectTypeChange = (event) => {
+        const key = event.target.name;
+        const value = event.target.value;
         setValues(values => ({
             ...values,
             [key]: value
@@ -95,13 +104,22 @@ const CommonInbox = ({
                                 onChange={handleValueChangeDates}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex w-6/12">
                             <select
-                                className="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-
+                                className="block w-2/4 rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                name={"typeDocument"}
+                                onChange={selectTypeChange}
                             >
-                                <option value="all">Ҳама</option>
-                                <option value="read">Хондашуда</option>
+                                <option value="">{__("DocumentType")}</option>
+                                {
+                                    typesDocuments.map((type, index) => (
+                                        <option key={index}
+                                                value={type.code}
+                                        >
+                                            {type.code} - {currentLocale === 'ru' ? type.type_ru : type.type_tj}
+                                        </option>
+                                    ))
+                                }
                             </select>
                         </div>
                     </div>
@@ -208,4 +226,4 @@ const CommonInbox = ({
     );
 };
 
-export default CommonInbox;
+export default CommonSent;

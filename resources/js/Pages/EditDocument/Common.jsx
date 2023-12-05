@@ -13,6 +13,7 @@ import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
 import {FcCheckmark} from "react-icons/fc";
+import formatForDatetimeLocal from "@/Helpers/formatForDatetimeLocal.js";
 
 const Common = ({document, deputies, bossName, flash, users}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
@@ -404,7 +405,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                         <div
                                             className="flex items-center h-5 space-x-2">
                                             <input
-                                                disabled={document.is_controlled}
+                                                defaultChecked={document.is_controlled}
                                                 value={document.is_controlled == null ? '' : document.is_controlled}
                                                 onChange={(event) => setData('is_controlled', event.target.checked)}
                                                 id="control"
@@ -414,8 +415,8 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                             />
                                             <div>
                                                 <input
-                                                    disabled={data.date_done}
-                                                    value={data.date_done == null ? '' : data.date_done}
+                                                    // disabled={data.date_done}
+                                                    value={formatForDatetimeLocal(data.date_done)}
                                                     onChange={(event) => setData('date_done', event.target.value)}
                                                     type="datetime-local"
                                                     className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"

@@ -18,10 +18,12 @@ const Index = ({auth, document, bossName, deputies, users, flash}) => {
                         users={users}/>
             }
             {
-                auth.user.role === 'boss' && <Boss auth={auth} flash={flash} document={document} deputies={deputies} users={users}/>
+                auth.user.role === 'boss' &&
+                <Boss auth={auth} flash={flash} document={document} deputies={deputies} users={users}/>
             }
             {
-                auth.user.role === 'deputy' && <Deputy document={document} deputies={deputies}/>
+                auth.user.role === 'deputy' &&
+                <Deputy document={document} users={users} flash={flash}/>
             }
         </AuthenticatedLayout>
     );

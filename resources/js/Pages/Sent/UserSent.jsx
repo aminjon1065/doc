@@ -10,6 +10,7 @@ import Pagination from "@/Components/Pagination.jsx";
 import pickBy from 'lodash/pickBy';
 import {usePrevious} from 'react-use';
 import formatterDay from "@/Helpers/dateFormatter.js";
+import {__} from "@/Libs/Lang.jsx";
 
 const UserSent = ({
                       auth,
@@ -18,7 +19,9 @@ const UserSent = ({
                       searchTerm,
                       status,
                       dateDone,
+                      typesDocuments,
                       startDate,
+                      currentLocale,
                       endDate,
                       is_controlled,
                   }) => {
@@ -54,6 +57,14 @@ const UserSent = ({
             [key]: value
         }));
     }
+    const selectTypeChange = (event) => {
+        const key = event.target.name;
+        const value = event.target.value;
+        setValues(values => ({
+            ...values,
+            [key]: value
+        }));
+    }
     const prevValues = usePrevious(values);
     useEffect(() => {
         if (prevValues) {
@@ -78,8 +89,8 @@ const UserSent = ({
                                 separator="то"
                                 classNames={
                                     `block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
-                                i18n={'tg'}
-                                placeholder={"Аз кай то кай"}
+                                i18n={currentLocale === 'ru' ? 'ru' : 'tg'}
+                                placeholder={__("PeriodDatePicker")}
                                 useRange
                                 showShortcuts={true}
                                 configs={{
@@ -95,22 +106,31 @@ const UserSent = ({
                                 onChange={handleValueChangeDates}
                             />
                         </div>
-                        <div className="flex">
+                        <div className="flex w-6/12">
                             <select
-                                className="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-
+                                className="block w-2/4 rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                name={"typeDocument"}
+                                onChange={selectTypeChange}
                             >
-                                <option value="all">Ҳама</option>
-                                <option value="read">Хондашуда</option>
+                                <option value="">{__("DocumentType")}</option>
+                                {
+                                    typesDocuments.map((type, index) => (
+                                        <option key={index}
+                                                value={type.code}
+                                        >
+                                            {type.code} - {currentLocale === 'ru' ? type.type_ru : type.type_tj}
+                                        </option>
+                                    ))
+                                }
                             </select>
                         </div>
                     </div>
-                    <div className={"flex items-center justify-center space-x-2"}>
+                    <div className={"flex items-center justify-center space-x-2 w-6/12"}>
                         <div
                             className={"flex items-center justify-center space-x-2 border border-gray-300 px-3 py-1.5 rounded-md"}>
                             <label htmlFor="control"
                                    className=" text-sm items-center text-gray-700">
-                                Назоратӣ
+                                {__("IsControlled")}
                             </label>
                             <div
                                 className="flex items-center space-x-2">
@@ -145,7 +165,6 @@ const UserSent = ({
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {
                     documents.data.length >= 1

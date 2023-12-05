@@ -173,7 +173,6 @@ const UserInbox = ({
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {
                     documents.data.length >= 1

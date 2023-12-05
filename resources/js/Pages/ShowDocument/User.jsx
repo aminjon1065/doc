@@ -9,6 +9,7 @@ import {__} from "@/Libs/Lang.jsx";
 import ReplyToDocument from '@/Components/ReplyToDocument';
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
+import {FcCheckmark} from "react-icons/fc";
 
 const User = ({document, userId}) => {
     console.log(document)
@@ -91,8 +92,40 @@ const User = ({document, userId}) => {
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">Раис</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    {
+                                        document.toBoss && <div className="flex items-center space-x-3">
+                                            <FcCheckmark/>
+                                        </div>
+                                    }
+                                </dd>
+                            </div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Manager")}</dt>
-                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.manager?.name}</dd>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    {
+                                        document.deputy.length >= 1 && <ul role="list"
+                                                                           className="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                            {
+                                                document.deputy.map((deputy, index) => (
+                                                    <li key={index}
+                                                        className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                        <div className="flex w-0 flex-1 items-center">
+                                                            <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                                                    <span
+                                                                        className="truncate font-medium">{deputy.name}</span>
+                                                                <span
+                                                                    className="flex-shrink-0 text-gray-400">{deputy.department} / {deputy.region}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    }
+
+                                </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-900">{__("Title")}</dt>

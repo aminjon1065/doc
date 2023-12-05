@@ -1,10 +1,10 @@
-const formatDay = new Intl.DateTimeFormat("ru-RU", {
+const formatDay = new Intl.DateTimeFormat("tj-TJ", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'UTC'
+    timeZone: 'Asia/Dushanbe'
 });
 
 const formatterDay = (date) => {
@@ -21,3 +21,5 @@ const formatterDay = (date) => {
 };
 
 export default formatterDay;
+
+

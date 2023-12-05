@@ -10,12 +10,14 @@ const Index = ({
                    documents,
                    flash,
                    page,
+                   currentLocale,
                    searchTerm,
                    status,
                    dateDone,
                    startDate,
                    endDate,
                    is_controlled,
+                   typesDocuments,
                }) => {
     const user = auth.user;
     return (
@@ -33,6 +35,8 @@ const Index = ({
                 startDate={startDate}
                 endDate={endDate}
                 is_controlled={is_controlled}
+                typesDocuments={typesDocuments}
+                currentLocale={currentLocale}
             />
             }
             {
@@ -45,6 +49,8 @@ const Index = ({
                     startDate={startDate}
                     endDate={endDate}
                     is_controlled={is_controlled}
+                    typesDocuments={typesDocuments}
+                    currentLocale={currentLocale}
                 />
             }
         </AuthenticatedLayout>
