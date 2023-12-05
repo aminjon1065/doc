@@ -22,7 +22,7 @@ class SentController extends Controller
         $typeDocument = $request->input('typeDocument');
         $perPage = 10; // Количество элементов на странице
         $documents = Document::
-        where('category', 'inbox')
+        where('category', 'sent')
             ->with(['files', 'creator', 'receivers'])
             ->search($searchTerm)
             ->isControlled($isControlled)
