@@ -325,7 +325,6 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, deputies, users, toBo
                                             className="flex items-center h-5 space-x-2">
                                             <input
                                                 defaultChecked={document.is_controlled}
-                                                disabled={document.is_controlled}
                                                 value={document.is_controlled == null ? '' : document.is_controlled}
                                                 onChange={(event) => setData('is_controlled', event.target.checked)}
                                                 id="control"
@@ -335,8 +334,8 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, deputies, users, toBo
                                             />
                                             <div>
                                                 <input
-                                                    disabled={data.date_done}
-                                                    value={data.date_done == null ? '' : formatForDatetimeLocal(data.date_done)}
+                                                    // disabled={data.date_done}
+                                                    value={formatForDatetimeLocal(data.date_done)}
                                                     onChange={(event) => setData('date_done', event.target.value)}
                                                     type="datetime-local"
                                                     className="block w-full rounded-md border-0 px-2 py-1 text-gray-900   placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
