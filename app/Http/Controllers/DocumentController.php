@@ -137,8 +137,8 @@ class DocumentController extends Controller
         $receiverIds = $request->input('receivers');
         if (is_array($receiverIds)) {
             $document->receivers()->sync($receiverIds);
-            $receivers = User::whereIn('id', $receiverIds)->get();
-            Mail::to($receivers)->send(new DocumentCreatedMail($document));
+//            $receivers = User::whereIn('id', $receiverIds)->get();
+//            Mail::to($receivers)->send(new DocumentCreatedMail($document));
         }
 
         return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
