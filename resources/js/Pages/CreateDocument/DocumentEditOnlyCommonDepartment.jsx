@@ -113,9 +113,9 @@ const DocumentEditOnlyCommonDepartment = ({auth, document, deputies, users, toBo
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Ба раис</dt>
+                                <dt className="text-sm font-medium text-gray-900">Директор</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    {document.toBoss ? document.toBoss.name : "Раиси шумо интихоб нашудааст"}
+                                    {document.toBoss ? document.toBoss.name : null}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
