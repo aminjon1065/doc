@@ -228,10 +228,10 @@ class DocumentController extends Controller
             $currentReceiverIds = $document->receivers->pluck('id')->toArray();
             $receiversToAdd = array_diff($receiverIds, $currentReceiverIds);
 
-            if (!empty($receiversToAdd)) {
-                $newReceivers = User::whereIn('id', $receiversToAdd)->get();
-                Mail::to($newReceivers)->send(new DocumentCreatedMail($document));
-            }
+//            if (!empty($receiversToAdd)) {
+//                $newReceivers = User::whereIn('id', $receiversToAdd)->get();
+//                Mail::to($newReceivers)->send(new DocumentCreatedMail($document));
+//            }
             // Обновление списка получателей
             $document->receivers()->sync($receiverIds);
         }
