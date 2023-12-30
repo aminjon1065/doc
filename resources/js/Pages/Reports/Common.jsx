@@ -47,7 +47,7 @@ const Common = ({typesDocuments, currentLocale}) => {
                 link.parentNode.removeChild(link);
             })
             .catch((error) => {
-                console.log(error);
+                alert("Ошибка при генерации отчета")
             });
     }
 

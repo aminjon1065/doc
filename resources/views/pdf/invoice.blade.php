@@ -64,12 +64,17 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($documentCountsByType as $type => $count)
+    @if(count($documentCountsByType) >=1)
+        @foreach ($documentCountsByType as $type => $count)
+            <tr>
+                <td>{{ $type }}</td>
+                <td>{{ $count }}</td>
+            </tr>
+        @endforeach
+    @else
         <tr>
-            <td>{{ $type }}</td>
-            <td>{{ $count }}</td>
-        </tr>
-    @endforeach
+            <td colspan="2">{{$lang==="ru" ? "Нет данных" : "Маълумот ёфт нашуд"}}</td>
+    @endif
     </tbody>
 </table>
 </body>
