@@ -1,6 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, router, useForm} from "@inertiajs/react";
+import React, {useCallback, useState} from 'react';
+import {router, useForm} from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import {typeDocument} from "@/Helpers/typeDocuments.js";
@@ -8,6 +7,7 @@ import EditorComponent from "@/Components/EditorComponent.jsx";
 import {useDropzone} from 'react-dropzone'
 import {DocumentIcon, XMarkIcon} from "@heroicons/react/24/outline/index.js";
 import {BsFileEarmarkPdfFill, BsFileEarmarkWordFill, BsFileEarmarkExcelFill} from "react-icons/bs";
+import {__} from '@/Libs/Lang.jsx';
 
 const User = ({typesDocuments}) => {
         const {data, setData, post, processing, errors} = useForm({
@@ -86,7 +86,7 @@ const User = ({typesDocuments}) => {
                 <div className="flex justify-between items-center space-x-2">
                     <div className={`sm:col-span-3 w-full`}>
                         <InputLabel htmlFor={"title"}>
-                            Сарлавҳа
+                            {__('Title')}
                             <sup
                                 className={"text-red-500 font-bold"}
                             >
@@ -104,7 +104,7 @@ const User = ({typesDocuments}) => {
                     </div>
                     <div className={`sm:col-span-3 w-full`}>
                         <InputLabel htmlFor={"type"}>
-                            Намуди ҳуҷҷат
+                            {__('TypeDocument')}
                             <sup
                                 className={"text-red-500 font-bold"}
                             >
@@ -119,7 +119,7 @@ const User = ({typesDocuments}) => {
                             onChange={(event) => setData('code', event.target.value)}
                         >
                             <option disabled={true} value="">
-                                Намуди ҳуҷҷатро интихоб кунед
+                                {__('Select')}
                             </option>
                             {typesDocuments.map((item, index) => (
                                 <option value={item.code} key={index}>
@@ -133,14 +133,14 @@ const User = ({typesDocuments}) => {
                 <div className="sm:col-span-6">
                     <label htmlFor="description"
                            className="block text-sm font-medium text-gray-700">
-                        Мактуб
+                        {__('Text')}
                     </label>
                     <div
                         className="z-10">
                         <EditorComponent getContent={getContent}/>
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
-                        пурра кардани матни ҳуҷҷат ва д.
+                        {__('TextInfo')}
                     </p>
                 </div>
                 <div className={'sm:col-span-6'}>
@@ -174,7 +174,7 @@ const User = ({typesDocuments}) => {
                                           <span
                                               className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                                           >
-                                              Боргиркунии ҳуҷҷатҳо
+                                              {__('UploadDocuments')}
                                           </span>
                             </div>
                             <p className="text-xs text-gray-500">DOCX,
@@ -319,7 +319,7 @@ const User = ({typesDocuments}) => {
                     <button
                         className={"bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
                     >
-                        Send
+                        {__('Save')}
                     </button>
                 </div>
             </form>

@@ -254,10 +254,10 @@ const Common = ({users, deputies, typesDocuments, currentLocale}) => {
                         onChange={(event) => setData('category', event.target.value)}
                     >
                         <option disabled={true} value="">
-                            Намуди категорияро интихоб кунед
+                            {__("Select")}
                         </option>
-                        <option value="inbox">Воридотӣ</option>
-                        <option value="sent">Содиротӣ</option>
+                        <option value="inbox">{__("Inbox")}</option>
+                        <option value="sent">{__("Sent")}</option>
                     </select>
                     {errors.title && <span>{errors.title}</span>}
                 </div>
@@ -274,10 +274,10 @@ const Common = ({users, deputies, typesDocuments, currentLocale}) => {
                             onChange={(event) => setData('status', event.target.value)}
                         >
                             <option disabled={true} value="">
-                                Намуди статусро интихоб кунед
+                                {__("Select")}
                             </option>
-                            <option value="in_review">Дар баррасӣ</option>
-                            <option value="reviewed">Баррасӣ шуд</option>
+                            <option value="in_review">{__("in_review")}</option>
+                            <option value="reviewed">{__("reviewed")}</option>
                         </select>
                         {errors.title && <span>{errors.title}</span>}
                     </div>

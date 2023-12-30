@@ -160,7 +160,7 @@ const Common = ({document, userId, bossName}) => {
                                                 :
                                                 <li
                                                     className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                                    empty
+                                                    {__("Empty")}
                                                 </li>
                                         }
                                     </ul>
@@ -192,7 +192,7 @@ const Common = ({document, userId, bossName}) => {
                                                 :
                                                 <li
                                                     className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                                    empty
+                                                    {__("Empty")}
                                                 </li>
                                         }
                                     </ul>

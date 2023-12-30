@@ -115,14 +115,14 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                     <div className="border-t border-gray-100">
                         <dl className="divide-y divide-gray-100">
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Аз номи ки</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("From")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.name}
                                 </dd>
                             </div>
 
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Раис</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("ToTheBoss")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {
                                         bossName ? (
@@ -147,36 +147,36 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                             </div>
 
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Кай кабул шуд/вақти назоратӣ</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("DateIn")}/{__("ControlDate")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex items-center">
                                     {formatterDay(document.created_at)} / {document.date_done ? <span
-                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : "Назорати нест"}
+                                    className={"bg-red-400 text-white py-1 px-2 rounded"}>{formatterDay(document.date_done)}</span> : __("IsNotControlled")}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Раёсат/шуъба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Rayosat")}/{__("Department")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.department}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Вазифа/рутба</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Position")}/{__("Rank")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.position} / {document.creator.rank}
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Сарлавҳа</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Title")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{document.title}</dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-900">Матн</dt>
+                                <dt className="text-sm font-medium text-gray-900">{__("Text")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     <div dangerouslySetInnerHTML={{__html: document.description}}></div>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Муовинон</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Deputies")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -235,7 +235,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Ҳуҷҷатҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Documents")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -285,14 +285,14 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                                 :
                                                 <li
                                                     className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                                    empty
+                                                    {__("Empty")}
                                                 </li>
                                         }
                                     </ul>
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium leading-6 text-gray-900">Истифодабарандаҳо</dt>
+                                <dt className="text-sm font-medium leading-6 text-gray-900">{__("Users")}</dt>
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
@@ -353,7 +353,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                             <div className="flex justify-between items-center space-x-2 mb-5">
                                 <div className={`sm:col-span-3 w-full`}>
                                     <InputLabel htmlFor={"category"}>
-                                        Категория
+                                        {__("Category")}
                                     </InputLabel>
                                     <select
                                         disabled={document.category}
@@ -364,7 +364,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                         onChange={(event) => setData('category', event.target.value)}
                                     >
                                         <option disabled value="">
-                                            Намуди категорияро интихоб кунед
+                                            {__("Select")}
                                         </option>
                                         <option value="inbox">Воридотӣ</option>
                                         <option value="sent">Содиротӣ</option>
@@ -385,11 +385,11 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                             onChange={(event) => setData('status', event.target.value)}
                                         >
                                             <option disabled value="">
-                                                Намуди статусро интихоб кунед
+                                                {__("Select")}
                                             </option>
-                                            <option value="created">Сохта шуд</option>
-                                            <option value="in_review">Дар баррасӣ</option>
-                                            <option value="reviewed">Баррасӣ шуд</option>
+                                            <option value="created">{__("created")}</option>
+                                            <option value="in_review">{__("in_review")}</option>
+                                            <option value="reviewed">{__("reviewed")}</option>
                                         </select>
                                         {errors.title && <span>{errors.title}</span>}
                                     </div>
@@ -397,7 +397,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                                 <div className={`sm:col-span-3 w-full`}>
                                     <label htmlFor="control"
                                            className="block text-sm font-medium text-gray-700">
-                                        Назоратӣ
+                                        {__("IsControlled")}
                                     </label>
                                     <div
                                         className={"flex items-center space-x-2 border border-gray-300 rounded-md  px-2 py-1.5"}>
@@ -429,7 +429,7 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                     </div>
                     <div className="px-4 py-6 flex justify-end items-center">
                         <PrimaryButton className={""} onClick={handleSubmit}>
-                            {__("Save")}
+                            {__("Update")}
                         </PrimaryButton>
                     </div>
                 </div>
