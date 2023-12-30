@@ -4,6 +4,7 @@ import UserInbox from "@/Pages/Inbox/UserInbox.jsx";
 import CommonInbox from "@/Pages/Inbox/CommonInbox.jsx";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
+import {__} from "@/Libs/Lang.jsx";
 
 const Index = ({
                    auth,
@@ -21,11 +22,12 @@ const Index = ({
                    currentLocale
                }) => {
     const user = auth.user;
+
     return (
         <AuthenticatedLayout
             user={user}
         >
-            <Head title={"Inbox"}/>
+            <Head title={__("Inbox")}/>
             {user.role === 'management' && <ManagerInbox/>}
             {user.role === 'user' && <UserInbox
                 documents={documents}

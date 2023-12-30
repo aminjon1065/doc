@@ -31,7 +31,7 @@ export default function Pagination({nextPage, prevPage, currentPage, total, to, 
     }
     return (
         <nav
-            className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+            className="flex items-center justify-between border-t border-gray-200 bg-white py-4"
             aria-label="Pagination"
         >
             <div className="hidden sm:block">

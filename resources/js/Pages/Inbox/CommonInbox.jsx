@@ -84,7 +84,6 @@ const CommonInbox = ({
     const handleCloseAlert = () => setVisible(false);
     return (
         <>
-            <Head title="Воридотӣ"/>
             {visible && flash.success &&
                 <Alert onClose={handleCloseAlert} message={flash.success}/>
             }
@@ -103,10 +102,10 @@ const CommonInbox = ({
                                 showShortcuts={true}
                                 configs={{
                                     shortcuts: {
-                                        today: 'Имрӯз',
-                                        yesterday: 'Дирӯз',
-                                        past: (period) => `${period} рузи охир`,
-                                        currentMonth: ' Ҳамин моҳ',
+                                        today: __("Today"),
+                                        yesterday: __("Yesterday"),
+                                        past: (period) => `${period} ${__("PeriodDay")}`,
+                                        currentMonth: __("LastMonth"),
                                         pastMonth: 'Моҳи гузашта',
                                     },
                                 }}
@@ -120,7 +119,7 @@ const CommonInbox = ({
                                 name={"typeDocument"}
                                 onChange={selectTypeChange}
                             >
-                                <option value="">{__("DocumentType")}</option>
+                                <option value="">{__("AllTypeDocuments")}</option>
                                 {
                                     typesDocuments.map((type, index) => (
                                         <option key={index}
@@ -133,12 +132,12 @@ const CommonInbox = ({
                             </select>
                         </div>
                     </div>
-                    <div className={"flex items-center justify-center space-x-2 w-6/12"}>
+                    <div className={"flex items-center justify-end space-x-2 w-6/12"}>
                         <div
                             className={"flex items-center justify-center space-x-2 border border-gray-300 px-3 py-1.5 rounded-md"}>
                             <label htmlFor="control"
                                    className=" text-sm items-center text-gray-700">
-                                Назоратӣ
+                                {__("IsControlled")}
                             </label>
                             <div
                                 className="flex items-center space-x-2">
@@ -223,7 +222,7 @@ const CommonInbox = ({
                             ))}
                         </ul>
                         :
-                        "Мактуб надоред"
+                        __("Empty")
                 }
             </div>
             <Pagination currentPage={documents.current_page} nextPage={documents.next_page_url}

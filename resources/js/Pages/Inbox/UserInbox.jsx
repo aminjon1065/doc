@@ -84,7 +84,6 @@ const UserInbox = ({
     const handleCloseAlert = () => setVisible(false);
     return (
         <>
-            <Head title="Воридотӣ"/>
             {visible && flash.success &&
                 <Alert onClose={handleCloseAlert} message={flash.success}/>
             }
