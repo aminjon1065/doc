@@ -105,8 +105,8 @@ const CommonInbox = ({
                                         today: __("Today"),
                                         yesterday: __("Yesterday"),
                                         past: (period) => `${period} ${__("PeriodDay")}`,
-                                        currentMonth: __("LastMonth"),
-                                        pastMonth: 'Моҳи гузашта',
+                                        currentMonth: __("CurrentMonth"),
+                                        pastMonth: __("LastMonth"),
                                     },
                                 }}
                                 value={{startDate, endDate}}
