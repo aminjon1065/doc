@@ -105,11 +105,11 @@ const Index = ({
                                 showShortcuts={true}
                                 configs={{
                                     shortcuts: {
-                                        today: 'Имрӯз',
-                                        yesterday: 'Дирӯз',
-                                        past: (period) => `${period} рузи охир`,
-                                        currentMonth: ' Ҳамин моҳ',
-                                        pastMonth: 'Моҳи гузашта',
+                                        today: __("Today"),
+                                        yesterday: __("Yesterday"),
+                                        past: (period) => `${period} ${__("PeriodDay")}`,
+                                        currentMonth: __("CurrentMonth"),
+                                        pastMonth: __("LastMonth"),
                                     },
                                 }}
                                 value={{startDate, endDate}}

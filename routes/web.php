@@ -40,6 +40,8 @@ Route::middleware('locale')->group(function () {
         Route::resource('types-document', TypesDocumentController::class);
         Route::post('reply-to-documents/', [DocumentResponseControllerAlias::class, 'store'])->name('reply-to-documents.store');
         Route::get('document-edit-only-common-department/{document}', [App\Http\Controllers\DocumentEditOnlyCommonDepartment::class, 'edit'])->name('document-edit-only-common-department.edit');
+        Route::get('generate', [App\Http\Controllers\ReportController::class, 'generatePDF'])->name('report.generatePDF');
+        Route::get('reports', [App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
     });
     Route::get('/documents-in-reviews', [App\Http\Controllers\DocumentsInReviewsController::class, 'index'])->name('documents-in-reviews.index')->middleware(['auth', 'management']);
     require __DIR__ . '/auth.php';

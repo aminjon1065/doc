@@ -95,9 +95,9 @@ const CommonSent = ({
                                     shortcuts: {
                                         today: __("Today"),
                                         yesterday: __("Yesterday"),
-                                        past: (period) => `${period} рузи охир`,
-                                        currentMonth: __("LastMonth"),
-                                        pastMonth: 'Моҳи гузашта',
+                                        past: (period) => `${period} ${__("PeriodDay")}`,
+                                        currentMonth: __("CurrentMonth"),
+                                        pastMonth: __("LastMonth"),
                                     },
                                 }}
                                 value={{startDate, endDate}}

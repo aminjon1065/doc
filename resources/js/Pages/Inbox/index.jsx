@@ -22,7 +22,6 @@ const Index = ({
                    currentLocale
                }) => {
     const user = auth.user;
-
     return (
         <AuthenticatedLayout
             user={user}
