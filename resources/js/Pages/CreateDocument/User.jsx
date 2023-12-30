@@ -326,5 +326,4 @@ const User = ({typesDocuments}) => {
         );
     }
 ;
-
 export default User;
