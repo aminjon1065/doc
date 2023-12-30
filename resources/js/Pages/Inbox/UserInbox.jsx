@@ -116,11 +116,11 @@ const UserInbox = ({
                         </div>
                         <div className="flex w-6/12">
                             <select
-                                className="block w-2/4 rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 py-1.5 pr-14 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 name={"typeDocument"}
                                 onChange={selectTypeChange}
                             >
-                                <option value="">{__("DocumentType")}</option>
+                                <option value="">{__("AllTypeDocuments")}</option>
                                 {
                                     typesDocuments.map((type, index) => (
                                         <option key={index}
@@ -227,7 +227,7 @@ const UserInbox = ({
                             ))}
                         </ul>
                         :
-                        "Мактуб надоред"
+                        __("Empty")
                 }
             </div>
             <Pagination currentPage={documents.current_page} nextPage={documents.next_page_url}
