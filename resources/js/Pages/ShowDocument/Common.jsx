@@ -4,11 +4,13 @@ import FileViewer from "@/Components/FileViewer.jsx";
 import formatterDay from "@/Helpers/dateFormatter.js";
 import {PaperClipIcon} from "@heroicons/react/20/solid/index.js";
 import {ArrowDownTrayIcon, EyeIcon, PencilIcon} from "@heroicons/react/24/outline/index.js";
-import {Link} from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import {__} from "@/Libs/Lang.jsx";
 import ReplyToDocument from '@/Components/ReplyToDocument';
 import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
+import DangerButton from "@/Components/DangerButton.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 const Common = ({document, userId, bossName}) => {
     const [fullView, setFullView] = useState(false);
@@ -26,6 +28,18 @@ const Common = ({document, userId, bossName}) => {
         setFileUrl(url)
         setShowModal(true);
     }
+    const {delete: destroy} = useForm();
+    const deleteDocument = (e) => {
+        const sureDelete = confirm("Точно?");
+        if (!sureDelete) {
+            return;
+        }
+        e.preventDefault();
+        destroy(route('documents.destroy', document.id), {
+            preserveScroll: true
+        });
+    }
+
     return (
         <>
             <Modal show={showModal} onClose={() => setShowModal(false)} fullView={fullView}
@@ -199,6 +213,11 @@ const Common = ({document, userId, bossName}) => {
                                 </dd>
                             </div>
                         </dl>
+                    </div>
+                    <div className="px-4 py-6 flex justify-between items-center">
+                        <DangerButton className={""} onClick={deleteDocument}>
+                            {__("Delete")}
+                        </DangerButton>
                     </div>
                 </div>
             </article>
