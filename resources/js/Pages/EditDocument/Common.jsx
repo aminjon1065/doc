@@ -14,11 +14,12 @@ import ShowReply from "@/Components/ShowReply.jsx";
 import ReplyToDocument from "@/Components/ReplyToDocument/index.jsx";
 import {FcCheckmark} from "react-icons/fc";
 import formatForDatetimeLocal from "@/Helpers/formatForDatetimeLocal.js";
+import DangerButton from "@/Components/DangerButton.jsx";
 
 const Common = ({document, deputies, bossName, flash, users}) => {
     const initialReceiverIds = document.receivers.map(receiver => receiver.id);
     const initialDeputyIds = document.deputy.map(deputy => deputy.id);
-    const {data, setData, put, errors} = useForm({
+    const {data, setData, put, errors, delete: destroy} = useForm({
         toBoss: document.toBoss || '',
         date_done: document.date_done || '',
         category: document.category || '',
@@ -35,6 +36,17 @@ const Common = ({document, deputies, bossName, flash, users}) => {
         value: deputy.id,
         label: `${deputy.name} - ${deputy.department} (${deputy.region})`
     }));
+
+    const deleteDocument = (e) => {
+        const sureDelete = confirm("Точно?");
+        if (!sureDelete) {
+            return;
+        }
+        e.preventDefault();
+        destroy(route('documents.destroy', document.id), {
+            preserveScroll: true
+        });
+    }
 
     const [selectedReceivers, setSelectedReceivers] = useState(initialReceivers);
     const [selectedDeputies, setSelectedDeputies] = useState(initialDeputies)
@@ -427,7 +439,10 @@ const Common = ({document, deputies, bossName, flash, users}) => {
                             </div>
                         </dl>
                     </div>
-                    <div className="px-4 py-6 flex justify-end items-center">
+                    <div className="px-4 py-6 flex justify-between items-center">
+                        <DangerButton className={""} onClick={deleteDocument}>
+                            {__("Delete")}
+                        </DangerButton>
                         <PrimaryButton className={""} onClick={handleSubmit}>
                             {__("Update")}
                         </PrimaryButton>

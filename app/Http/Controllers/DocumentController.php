@@ -140,7 +140,6 @@ class DocumentController extends Controller
             $receivers = User::whereIn('id', $receiverIds)->get();
 //            Mail::to($receivers)->send(new DocumentCreatedMail($document));
         }
-
         return redirect()->route('inbox.index')->with('success', 'Документ успешно отправлен');
     }
 
@@ -257,6 +256,8 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        //
+        $this->authorize('delete', $document);
+        $document->delete();
+        return redirect()->route('documents.index')->with('success', 'Документ успешно удален');
     }
 }
