@@ -75,6 +75,7 @@ const CommonSent = ({
             });
         }
     }, [values]);
+    console.log(documents)
     return (
         <>
             <Head title="Воридотӣ"/>
@@ -194,6 +195,12 @@ const CommonSent = ({
                                         </div>
                                         <div className={"flex items-center justify-start gap-x-6 w-[60%]"}>
                                             <span>{mail.title}</span>
+                                        </div>
+                                        <div className={`flex items-center justify-center gap-x-6 w-[15%]`}>
+                                            <span
+                                                className={`${mail.status === 'created' ? 'bg-orange-300' : mail.status === 'in_review' ? 'bg-yellow-300' : mail.status === 'reviewed' ? 'bg-green-600' : ''} px-2 py-1 rounded text-sm`}>
+                                                {__(mail.status)}
+                                            </span>
                                         </div>
                                         <div className="flex items-center gap-x-2">
                                             <div className="hidden sm:flex sm:flex-col sm:items-end">
