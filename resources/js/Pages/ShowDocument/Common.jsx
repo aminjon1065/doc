@@ -11,6 +11,7 @@ import {RiQuestionAnswerFill} from "react-icons/ri";
 import ShowReply from "@/Components/ShowReply.jsx";
 import DangerButton from "@/Components/DangerButton.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import {FcCheckmark} from "react-icons/fc";
 
 const Common = ({document, userId, bossName}) => {
     const [fullView, setFullView] = useState(false);
@@ -69,6 +70,30 @@ const Common = ({document, userId, bossName}) => {
                                 <dt className="text-sm font-medium text-gray-900">{__("From")}</dt>
                                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     {document.creator.name}
+                                </dd>
+                            </div>
+                            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-900">{__("ToTheBoss")}</dt>
+                                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    {
+                                        bossName ? (
+
+                                                <div className="flex items-center space-x-3">
+                                        <span>
+                                            {bossName.name}
+                                        </span>
+                                                    <FcCheckmark/>
+                                                </div>
+                                            )
+                                            :
+                                            <input
+                                                type="checkbox"
+                                                name="toBoss"
+                                                id="toBoss"
+                                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                                checked={document.toBoss}
+                                                onChange={(event) => setData('toBoss', event.target.checked)}/>
+                                    }
                                 </dd>
                             </div>
                             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
