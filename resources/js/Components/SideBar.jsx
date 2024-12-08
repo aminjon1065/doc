@@ -26,11 +26,9 @@ const accessibleItems = {
     'common': ['NewDocument', 'CommonDocuments', 'Inbox', 'Sent', 'Users', 'TypeDocument', 'Reports'],
     'boss': ['ReviewDocument'],
     'deputy': ['ReviewDocument'],
-    'user': ['NewDocument', 'Inbox', 'Sent', 'Reports'],
+    'user': ['NewDocument', 'Inbox', 'Sent'],
     'admin': ['Users', "TypeDocument"],
 };
-
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
